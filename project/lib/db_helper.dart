@@ -227,6 +227,43 @@ class DBHelper {
     }
   }
 
+  //get friends requests
+  Future<List<User>> getFriendRequests({required String id}) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/user/get-friend-requests'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "id": id,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      //print(data);
+      List<User> users = [];
+      for (var t in data) {
+        users.add(
+          User(
+            id: t['_id'],
+            firstName: t['firstName'],
+            lastName: t['lastName'],
+            email: t['email'],
+            password: "", //hide password
+            friends: t['friends'].cast<String>(),
+            friendRequests: t['friendRequests'].cast<String>(),
+          ),
+        );
+      }
+      //update friendrequests in localstorage
+      storage.setItem('friendRequests', users.map((e) => e.id).toList());
+      return users;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
+
   //POST SYSTEM
 
   Future addPost({
