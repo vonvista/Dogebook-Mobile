@@ -3,6 +3,8 @@ import 'db_helper.dart';
 
 import 'models/user_model.dart';
 
+import 'profile_page.dart';
+
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
@@ -95,8 +97,17 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
       subtitle: Text(username),
-      onTap: () {
-        //NOTE: Navigation to profile
+      onTap:
+          //navigate to profile page
+          () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(
+              userId: id,
+            ),
+          ),
+        );
       },
     );
   }
