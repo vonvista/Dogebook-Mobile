@@ -198,6 +198,28 @@ class _FriendPageState extends State<FriendPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: ListView(
+        padding: EdgeInsets.all(10),
+        children: <Widget>[
+          const Text(
+            'Friend Requests',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          _friendRequestsList(),
+          const Text(
+            'Friends',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          _friendsList(),
+        ],
+      ),
+    );
   }
 }
