@@ -186,7 +186,9 @@ class _FeedState extends State<Feed> {
                       ),
                       IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () {},
+                        onPressed: () {
+                          _handlePostDelete(id);
+                        },
                       ),
                     ],
                   ),
