@@ -34,6 +34,48 @@ class _CommentsState extends State<Comments> {
     print(widget.id);
   }
 
+  //comment tile
+  Widget _commentTile(String id, String name, String comment, String createdAt, String userId) {
+    return ListTile(
+      leading: ProfilePicture(
+        name: name,
+        radius: 25,
+        fontsize: 21,
+      ),
+      title: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          Text(
+            name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            'at $createdAt',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+      subtitle: Text(comment),
+      //trailing delete button if user is the author
+      trailing: storage.getItem('_id') == userId
+          ? IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //NOTE: add delete comment logic
+              },
+            )
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
