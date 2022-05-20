@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'models/user_model.dart';
+import 'signup_page.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -92,12 +93,24 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.white,
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            _handleSignUp();
+          },
           style: ElevatedButton.styleFrom(
               //set the button to no background
               ),
         ),
       ],
+    );
+  }
+
+  void _handleSignUp() {
+    //navigate to signup page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignUpPage(),
+      ),
     );
   }
 
