@@ -62,6 +62,37 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: ListView(
+        children: [
+          //text view profile
+          Text('  View your profile', style: TextStyle(fontSize: 20)),
+          _userListTile(
+            //get string from snapshot
+            storage.getItem('_id'),
+            "${storage.getItem("firstName")} ${storage.getItem("lastName")}",
+            storage.getItem('email'),
+          ),
+          Divider(height: 10),
+          //build logout
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton(
+              child: Text('Logout'),
+              onPressed: () {
+                storage.clear();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
