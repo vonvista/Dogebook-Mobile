@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'db_helper.dart';
 
 import 'models/user_model.dart';
 import 'signup_page.dart';
@@ -21,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final LocalStorage storage = LocalStorage('project');
+
+  DBHelper db = DBHelper();
 
   @override
   void initState() {
@@ -102,6 +105,40 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
+  }
+
+  void _handleLogin() async {
+    dynamic result = await db.userLogin({
+      "email": _emailController.text,
+      "password": _passwordController.text,
+    });
+    if (result['err'] != null) {
+      print(result['err']);
+    } else {
+      //go to home page
+      //set result to local storage
+      print(result);
+      User user = User(
+        id: result['_id'],
+        firstName: result['firstName'],
+        lastName: result['lastName'],
+        email: result['email'],
+        password: result['password'],
+        friends: result['friends'].cast<String>(),
+        friendRequests: result['friendRequests'].cast<String>(),
+      );
+
+      await storage.setItem('_id', result['_id']);
+      await storage.setItem('firstName', result['firstName']);
+      await storage.setItem('lastName', result['lastName']);
+      await storage.setItem('username', result['username']);
+      await storage.setItem('email', result['email']);
+      await storage.setItem('password', result['password']);
+      await storage.setItem('friends', result['friends']);
+      await storage.setItem('friendRequests', result['friendRequests']);
+
+      //go to home page
+    }
   }
 
   void _handleSignUp() {
