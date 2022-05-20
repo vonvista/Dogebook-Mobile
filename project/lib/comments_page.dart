@@ -143,6 +143,23 @@ class _CommentsState extends State<Comments> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Comments'),
+      ),
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            _commentList(),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: _commentField(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
