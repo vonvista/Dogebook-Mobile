@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'models/user_model.dart';
 
 import 'feed_page.dart';
+import 'search_page.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: <Widget>[
           Feed(),
-          Text('Search'),
+          SearchPage(),
           SizedBox(
             height: 20,
           ),
