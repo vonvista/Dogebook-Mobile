@@ -137,4 +137,29 @@ class DBHelper {
       throw Exception('Failed to load internet data');
     }
   }
+
+  Future addPost({
+    required String userId,
+    required String content,
+    required String privacy,
+  }) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/post/add'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "userId": userId,
+          "content": content,
+          "privacy": privacy,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
 }
