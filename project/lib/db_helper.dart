@@ -489,4 +489,28 @@ class DBHelper {
       throw Exception('Failed to load internet data');
     }
   }
+
+  //delete comment
+  Future deleteComment({
+    required String commentId,
+  }) async {
+    print(commentId);
+    final response = await http.delete(
+      Uri.parse('http://$serverIP:3001/comment/delete'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "id": commentId,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      //print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
 }
