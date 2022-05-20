@@ -17,6 +17,20 @@ class FriendPage extends StatefulWidget {
 }
 
 class _FriendPageState extends State<FriendPage> {
+  final LocalStorage storage = LocalStorage('project');
+
+  late Future<List<User>> friends;
+  late Future<List<User>> friendRequests;
+
+  DBHelper db = DBHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    friendRequests = db.getFriendRequests(id: storage.getItem('_id'));
+    friends = db.getFriends(id: storage.getItem('_id'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
