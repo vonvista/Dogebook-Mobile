@@ -132,6 +132,43 @@ class _FriendPageState extends State<FriendPage> {
     );
   }
 
+  //create future builder list of search results
+  Widget _friendRequestsList() {
+    return FutureBuilder<List<User>>(
+      future: friendRequests,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.length > 0) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _friendReqTile(
+                  snapshot.data![index].id,
+                  snapshot.data![index].firstName,
+                  snapshot.data![index].email,
+                );
+              },
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+            );
+          } else {
+            return Container(
+              padding: EdgeInsets.all(30),
+              child: Center(
+                child: Text('No friend requests :('),
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
