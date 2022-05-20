@@ -169,6 +169,33 @@ class _FriendPageState extends State<FriendPage> {
     );
   }
 
+  Widget _friendsList() {
+    return FutureBuilder<List<User>>(
+      future: friends,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _friendTile(
+                snapshot.data![index].id,
+                snapshot.data![index].firstName,
+                snapshot.data![index].email,
+              );
+            },
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
