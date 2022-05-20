@@ -14,6 +14,45 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  //create search controller
+  final TextEditingController _searchController = TextEditingController();
+
+  late Future<List<User>> searchResults;
+
+  DBHelper db = DBHelper();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  //create search bar with submit button
+  Widget _searchBar() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search',
+                //rounded
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
