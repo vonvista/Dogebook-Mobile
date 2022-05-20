@@ -81,6 +81,34 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  //create future builder list of search results
+  Widget _searchResults() {
+    return FutureBuilder<List<User>>(
+      future: searchResults,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _userListTile(
+                snapshot.data![index].id,
+                snapshot.data![index].firstName + " " + snapshot.data![index].lastName,
+                snapshot.data![index].email,
+              );
+            },
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
