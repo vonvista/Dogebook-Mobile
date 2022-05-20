@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'models/user_model.dart';
 import 'models/post_model.dart';
+import 'models/comment_model.dart';
 import 'package:intl/intl.dart';
 
 import 'package:localstorage/localstorage.dart';
@@ -420,6 +421,41 @@ class DBHelper {
     if (response.statusCode == 200) {
       var data = (jsonDecode(response.body));
       return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
+
+  //COMMENTS
+
+  //get comments for post
+  Future<List<Comment>> getComments(String postId) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/comment/get'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "postId": postId,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      List<Comment> comments = [];
+      print(data);
+      for (var t in data) {
+        comments.add(
+          Comment(
+            id: t['_id'],
+            userId: t['userId']['_id'],
+            name: t['userId']['firstName'] + " " + t['userId']['lastName'],
+            comment: t['comment'],
+            createdAt: convertTime(t['createdAt']),
+          ),
+        );
+      }
+      return comments;
     } else {
       throw Exception('Failed to load internet data');
     }
