@@ -158,7 +158,20 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _handleSignUp() {}
+  void _handleSignUp() {
+    if (_formKey.currentState!.validate()) {
+      db.addUser(User(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        friends: [],
+        friendRequests: [],
+      ));
+    } else {
+      print('invalid');
+    }
+  }
 
   //build SignUpPage without using scaffold
   @override
