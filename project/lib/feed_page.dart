@@ -173,7 +173,16 @@ class _FeedState extends State<Feed> {
                     children: <Widget>[
                       IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () {},
+                        onPressed: () {
+                          _postController.text = post;
+                          privacy = postPrivacy;
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return _postDialog(mode: 'edit', id: id);
+                            },
+                          );
+                        },
                       ),
                       IconButton(
                         icon: Icon(Icons.delete),
