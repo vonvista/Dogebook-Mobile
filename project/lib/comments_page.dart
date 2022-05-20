@@ -34,6 +34,36 @@ class _CommentsState extends State<Comments> {
     print(widget.id);
   }
 
+  void _handleAddComment() async {
+    final String comment = _commentController.text;
+    //if post is empty
+    if (comment.isEmpty) {
+      return;
+    }
+    //post to server
+    dynamic result = await db.addComment(
+      comment: comment,
+      userId: storage.getItem('_id'),
+      postId: widget.id,
+    );
+    if (result['err'] != null) {
+      print(result['err']);
+    } else {
+      Comment newComment = Comment(
+        id: result['_id'],
+        userId: result['userId']['_id'],
+        name: result['userId']['firstName'] + " " + result['userId']['lastName'],
+        comment: result['comment'],
+        createdAt: db.convertTime(result['createdAt']),
+      );
+
+      setState(() {
+        //append result on first index of the future list
+        Future.value(comments = comments.then((value) => [...value, newComment]));
+      });
+    }
+  }
+
   //comment tile
   Widget _commentTile(String id, String name, String comment, String createdAt, String userId) {
     return ListTile(
@@ -95,7 +125,7 @@ class _CommentsState extends State<Comments> {
           IconButton(
             icon: Icon(Icons.send),
             onPressed: () {
-              //NOTE: add add comment logic
+              _handleAddComment();
             },
           ),
         ],
