@@ -172,6 +172,34 @@ class DBHelper {
     }
   }
 
+  Future<User> getUser({required String id}) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/user/find'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "id": id,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      //specify that data is json
+      var data = (jsonDecode(response.body));
+      return User(
+        id: data['_id'],
+        firstName: data['firstName'],
+        lastName: data['lastName'],
+        email: data['email'],
+        password: "", //hide password
+        friends: data['friends'].cast<String>(), //cast to list of strings,
+        friendRequests: data['friendRequests'].cast<String>(), // "as List<String> doesn't seem to work"
+      );
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
+
   Future addPost({
     required String userId,
     required String content,
