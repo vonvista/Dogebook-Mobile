@@ -35,4 +35,56 @@ class _FriendPageState extends State<FriendPage> {
   Widget build(BuildContext context) {
     return Container();
   }
+
+  //create list tile for search results
+  Widget _friendReqTile(String id, String name, String username) {
+    return ListTile(
+      leading: Hero(
+        tag: 'image_$id',
+        child: const Icon(
+          Icons.person,
+          color: Colors.blue,
+        ),
+      ),
+      title: Hero(
+        tag: "text_$id",
+        child: Material(
+          color: Colors.transparent,
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      subtitle: Text(username),
+      //trailing accept and reject buttons
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () {
+              //NOTE: add accepting of requests
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      onTap:
+          //navigate to profile page
+          () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(
+              userId: id,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
