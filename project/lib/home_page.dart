@@ -4,6 +4,7 @@ import 'models/user_model.dart';
 
 import 'feed_page.dart';
 import 'search_page.dart';
+import 'user_page.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           Text('Friends'),
-          Text('Profile'),
+          UserPage(),
         ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
