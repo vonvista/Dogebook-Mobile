@@ -55,6 +55,30 @@ class _FriendPageState extends State<FriendPage> {
     }
   }
 
+  void _handleRemoveFriend(String id) async {
+    dynamic result = await db.removeFriend(
+      userId: id,
+      friendId: storage.getItem('_id'),
+    );
+
+    if (result['err'] != null) {
+      print(result['err']);
+      //show snackbar error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['err']),
+          //set duration
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } else {
+      setState(() {
+        friends = Future.value(db.getFriends(id: storage.getItem('_id')));
+        friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
+      });
+    }
+  }
+
   //create list tile for search results
   Widget _friendReqTile(String id, String name, String username) {
     return ListTile(
@@ -136,7 +160,7 @@ class _FriendPageState extends State<FriendPage> {
           ElevatedButton(
             child: Text('Remove friend'),
             onPressed: () {
-              //NOTE: add remove friend handler
+              _handleRemoveFriend(id);
             },
           ),
         ],
