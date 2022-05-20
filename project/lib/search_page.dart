@@ -26,6 +26,24 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
   }
 
+  //handle search
+  void _handleSearch() async {
+    final String search = _searchController.text;
+    //if post is empty
+    if (search.isEmpty) {
+      return;
+    }
+    //post to server
+    dynamic result = await db.findUser(
+      username: search,
+    );
+    //set search results
+
+    setState(() {
+      searchResults = Future.value(result);
+    });
+  }
+
   //create search bar with submit button
   Widget _searchBar() {
     return Container(
@@ -46,7 +64,9 @@ class _SearchPageState extends State<SearchPage> {
           ),
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {},
+            onPressed: () {
+              _handleSearch();
+            },
           ),
         ],
       ),
