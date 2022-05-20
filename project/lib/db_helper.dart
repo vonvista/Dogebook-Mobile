@@ -302,6 +302,31 @@ class DBHelper {
     }
   }
 
+  //accept friend request
+  Future acceptFriendRequest({
+    required String userId,
+    required String friendId,
+  }) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/user/accept-friend-request'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "userId": userId,
+          "friendId": friendId,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      //print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
+
   //POST SYSTEM
 
   Future addPost({
