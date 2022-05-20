@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
+import 'comments_page.dart';
 
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
@@ -93,6 +94,18 @@ class _FeedState extends State<Feed> {
     setState(() {
       posts = Future.wait([posts, newPosts as Future<List<Post>>]).then((value) => value.expand((x) => x).toList());
     });
+  }
+
+  void _handleComments(String id) async {
+    //go to comments page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Comments(
+          id: id,
+        ),
+      ),
+    );
   }
 
   //create button for add post
@@ -207,7 +220,9 @@ class _FeedState extends State<Feed> {
                   Text('Comments'),
                 ],
               ),
-              onPressed: () {},
+              onPressed: () {
+                _handleComments(id);
+              },
             ),
           ],
         ),
