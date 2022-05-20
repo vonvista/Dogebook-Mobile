@@ -109,8 +109,18 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  //build search page
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: <Widget>[
+            _searchBar(),
+            _searchResults(),
+          ],
+        ),
+      ),
+    );
   }
 }
