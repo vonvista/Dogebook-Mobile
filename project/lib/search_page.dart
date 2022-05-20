@@ -17,7 +17,7 @@ class _SearchPageState extends State<SearchPage> {
   //create search controller
   final TextEditingController _searchController = TextEditingController();
 
-  late Future<List<User>> searchResults;
+  late Future<List<User>> searchResults = Future.value([]);
 
   DBHelper db = DBHelper();
 
