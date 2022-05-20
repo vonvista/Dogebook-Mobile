@@ -5,6 +5,7 @@ import 'models/user_model.dart';
 import 'feed_page.dart';
 import 'search_page.dart';
 import 'user_page.dart';
+import 'friend_page.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 20,
           ),
-          Text('Friends'),
+          FriendPage(),
           UserPage(),
         ].elementAt(_selectedIndex),
       ),

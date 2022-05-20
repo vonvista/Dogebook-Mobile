@@ -31,11 +31,6 @@ class _FriendPageState extends State<FriendPage> {
     friends = db.getFriends(id: storage.getItem('_id'));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-
   //create list tile for search results
   Widget _friendReqTile(String id, String name, String username) {
     return ListTile(
@@ -135,5 +130,10 @@ class _FriendPageState extends State<FriendPage> {
         );
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
