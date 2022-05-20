@@ -87,4 +87,53 @@ class _FriendPageState extends State<FriendPage> {
       },
     );
   }
+
+  //create list tile for search results
+  Widget _friendTile(String id, String name, String username) {
+    return ListTile(
+      leading: Hero(
+        tag: 'image_$id',
+        child: const Icon(
+          Icons.person,
+          color: Colors.blue,
+        ),
+      ),
+      title: Hero(
+        tag: "text_$id",
+        child: Material(
+          color: Colors.transparent,
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      subtitle: Text(username),
+      //trailing accept and reject buttons
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          //Remove friend text button
+          ElevatedButton(
+            child: Text('Remove friend'),
+            onPressed: () {
+              //NOTE: add remove friend handler
+            },
+          ),
+        ],
+      ),
+      onTap:
+          //navigate to profile page
+          () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(
+              userId: id,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
