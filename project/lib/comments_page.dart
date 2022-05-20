@@ -64,6 +64,22 @@ class _CommentsState extends State<Comments> {
     }
   }
 
+  void _handleDeleteComment(String id) async {
+    //post to server
+    dynamic result = await db.deleteComment(
+      commentId: id,
+    );
+    //set comments to exclude delete post by result
+    String deletedId = result['_id'];
+    setState(() {
+      Future.value(
+        comments = comments.then(
+          (value) => value.where((comment) => comment.id != deletedId).toList(),
+        ),
+      );
+    });
+  }
+
   //comment tile
   Widget _commentTile(String id, String name, String comment, String createdAt, String userId) {
     return ListTile(
@@ -99,7 +115,7 @@ class _CommentsState extends State<Comments> {
           ? IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                //NOTE: add delete comment logic
+                _handleDeleteComment(id);
               },
             )
           : null,
