@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'db_helper.dart';
 
 import 'package:localstorage/localstorage.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'models/post_model.dart';
 import 'models/user_model.dart';
@@ -50,42 +51,93 @@ class _FeedState extends State<Feed> {
           ),
         ),
         const SizedBox(width: 10),
-        // Text("Show posts of: "),
-        // //create dropdown selector for viewing public or friends post
-        // DropdownButton<String>(
-        //   value: privacy,
-        //   icon: Icon(Icons.arrow_drop_down),
-        //   iconSize: 24,
-        //   elevation: 16,
-        //   style: TextStyle(color: Colors.deepPurple),
-        //   underline: Container(
-        //     height: 2,
-        //     color: Colors.deepPurpleAccent,
-        //   ),
-        //   onChanged: (String? newValue) {
-        //     setState(() {
-        //       privacy = newValue!;
-        //     });
-        //   },
-        //   //items with text and icon for public and friends
-        //   items: <String>['public', 'friends']
-        //       .map<DropdownMenuItem<String>>((String value) {
-        //     return DropdownMenuItem<String>(
-        //       value: value,
-        //       child: Row(
-        //         children: <Widget>[
-        //           Icon(
-        //             value == 'public' ? Icons.public : Icons.people,
-        //             color: Colors.deepPurple,
-        //           ),
-        //           const SizedBox(width: 10),
-        //           Text(value),
-        //         ],
-        //       ),
-        //     );
-        //   }).toList(),
-        //),
       ],
+    );
+  }
+
+  //create card widget for posts, with comments icon
+  Widget _postCard(
+    String id,
+    String name,
+    String time,
+    String post,
+    String postPrivacy,
+    String userId,
+  ) {
+    return Card(
+      margin: EdgeInsets.all(10),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                //man icon
+                ProfilePicture(
+                  name: name,
+                  radius: 25,
+                  fontsize: 21,
+                ),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 10),
+                    Row(children: [
+                      Text(
+                        time,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      SizedBox(width: 5),
+                      Icon(
+                        postPrivacy == 'public' ? Icons.public : Icons.people,
+                        size: 12,
+                      ),
+                    ]),
+                  ],
+                ),
+                //Expanded
+                Expanded(
+                  child: Container(),
+                ),
+                //show edit and delete buttons if user is the owner of the post
+                if (userId == storage.getItem('_id'))
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(post),
+            Divider(height: 20),
+            //button with icon on left for comments
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.comment),
+                  SizedBox(width: 10),
+                  Text('Comments'),
+                ],
+              ),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
