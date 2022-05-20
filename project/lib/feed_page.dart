@@ -429,6 +429,25 @@ class _FeedState extends State<Feed> {
     }
   }
 
+  void _handlePostDelete(String id) async {
+    //post to server
+    dynamic result = await db.deletePost(
+      id: id,
+    );
+    if (result['err'] != null) {
+      print(result['err']);
+    } else {
+      String deletedId = result['_id'];
+      setState(() {
+        Future.value(
+          posts = posts.then(
+            (value) => value.where((post) => post.id != deletedId).toList(),
+          ),
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //scrollable list of posts
