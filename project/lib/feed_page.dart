@@ -297,7 +297,13 @@ class _FeedState extends State<Feed> {
               children: [
                 ElevatedButton(
                   child: Text('Post'),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (mode == 'add') {
+                      _handlePost();
+                    } else {
+                      _handlePostEdit(id);
+                    }
+                  },
                 ),
                 //create dropdown menu with options public or friends
                 SizedBox(width: 10),
