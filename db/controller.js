@@ -92,6 +92,9 @@ exports.findUsers = async function(req, res, next) {
   //find users whose first name or last name matches any of the searchNames
   for (var i = 0; i < searchNames.length; i++) {
     //find users whose first name or last name matches any of the searchNames
+    if(searchNames[i] == ''){
+      continue;
+    }
     const searchedUsers = await User.find({$or: [{firstName: {$regex: searchNames[i], $options: 'i'}}, {lastName: {$regex: searchNames[i], $options: 'i'}}]});
     //add to users array
     users = users.concat(searchedUsers);
