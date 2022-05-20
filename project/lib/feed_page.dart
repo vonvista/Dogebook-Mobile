@@ -56,14 +56,7 @@ class _FeedState extends State<Feed> {
   }
 
   //create card widget for posts, with comments icon
-  Widget _postCard(
-    String id,
-    String name,
-    String time,
-    String post,
-    String postPrivacy,
-    String userId,
-  ) {
+  Widget _postCard(String id, String name, String time, String post, String postPrivacy, String userId) {
     return Card(
       margin: EdgeInsets.all(10),
       child: Padding(

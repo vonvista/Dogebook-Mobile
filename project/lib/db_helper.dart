@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'models/user_model.dart';
+import 'models/post_model.dart';
+import 'package:intl/intl.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -10,6 +12,16 @@ class DBHelper {
   final LocalStorage storage = LocalStorage('project');
 
   final String serverIP = "10.0.0.61";
+
+  final int limit = 10;
+
+  String convertTime(String time) {
+    //convert ISO time to date and time format
+    DateTime dateTime = DateTime.parse(time);
+    //return date in format: hh:mm, June 1, 2020
+    //DateFormat('MMMM').format(DateTime(0, month))
+    return DateFormat('hh:mm a, MMMM d, yyyy').format(dateTime);
+  }
 
   Future userLogin(Object user) async {
     final response = await http.post(
@@ -51,6 +63,41 @@ class DBHelper {
       } else {
         //print("successful");
       }
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
+
+  Future<List<Post>> getPublicPostsLim(String postId) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/post/get-public-all-lim'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "limit": 10,
+          "postId": postId,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      //print(data);
+      List<Post> posts = [];
+      for (var t in data) {
+        posts.add(
+          Post(
+            id: t['_id'],
+            userId: t['userId']['_id'],
+            name: t['userId']['firstName'] + " " + t['userId']['lastName'],
+            content: t['content'],
+            privacy: t['privacy'],
+            createdAt: convertTime(t['createdAt']),
+          ),
+        );
+        //print(t['_id']);
+      }
+      return posts;
     } else {
       throw Exception('Failed to load internet data');
     }
