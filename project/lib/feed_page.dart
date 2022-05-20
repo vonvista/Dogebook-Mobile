@@ -341,6 +341,43 @@ class _FeedState extends State<Feed> {
     );
   }
 
+  //handle Post
+  void _handlePost() async {
+    //get post text
+    final String post = _postController.text;
+    //if post is empty
+    if (post.isEmpty) {
+      return;
+    }
+    //post to server
+    dynamic result = await db.addPost(
+      userId: storage.getItem('_id'),
+      content: post,
+      privacy: privacy,
+    );
+
+    if (result['err'] != null) {
+      print(result['err']);
+    } else {
+      //go to home page
+      Navigator.pop(context);
+      _postController.text = '';
+
+      Post newPost = Post(
+        id: result['_id'],
+        userId: result['userId']['_id'],
+        name: result['userId']['firstName'] + " " + result['userId']['lastName'],
+        content: result['content'],
+        privacy: result['privacy'],
+        createdAt: db.convertTime(result['createdAt']),
+      );
+      setState(() {
+        //append result on first index of the future list
+        posts = posts.then((value) => [newPost, ...value]);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //scrollable list of posts
