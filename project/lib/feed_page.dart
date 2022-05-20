@@ -249,6 +249,21 @@ class _FeedState extends State<Feed> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    //scrollable list of posts
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: ListView(
+        controller: _postScrollController,
+        shrinkWrap: widget.mode == 'normal' ? false : true,
+        physics: ClampingScrollPhysics(),
+        children: <Widget>[
+          _postBar(),
+          SizedBox(height: 10),
+          //add list of posts
+          _postsList(),
+        ],
+      ),
+      color: Color.fromARGB(31, 187, 187, 187),
+    );
   }
 }
