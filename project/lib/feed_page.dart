@@ -110,7 +110,14 @@ class _FeedState extends State<Feed> {
               ],
             ),
             //on press placeholder
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return _postDialog(mode: 'add');
+                },
+              );
+            },
           ),
         ),
         const SizedBox(width: 10),
@@ -243,6 +250,93 @@ class _FeedState extends State<Feed> {
         }
         return Container();
         // return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  //FOR POST DIALOG
+  //create dialog with multiline field and button for posting
+  Widget _postDialog({required String mode, String id = ""}) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              children: [
+                Text(
+                  mode == 'add' ? "Create Post" : "Edit Post",
+                  style: TextStyle(fontSize: 14),
+                ),
+                //fill space
+                Expanded(child: SizedBox()),
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: _postController,
+              maxLines: 5,
+              decoration: InputDecoration(
+                hintText: 'What\'s on your mind?',
+                //black border
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                ElevatedButton(
+                  child: Text('Post'),
+                  onPressed: () {},
+                ),
+                //create dropdown menu with options public or friends
+                SizedBox(width: 10),
+                Expanded(child: SizedBox()),
+                _postPrivacyDropdown(),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _postPrivacyDropdown() {
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter dropDownState) {
+        return DropdownButton<String>(
+          value: privacy,
+          icon: Icon(Icons.arrow_drop_down),
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
+          ),
+          //set onchange
+          onChanged: (String? newValue) {
+            dropDownState(() {
+              privacy = newValue!;
+            });
+          },
+          items: <String>['public', 'friends'].map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        );
       },
     );
   }
