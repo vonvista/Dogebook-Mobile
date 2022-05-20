@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'models/user_model.dart';
 
+import 'feed_page.dart';
+
 import 'package:localstorage/localstorage.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       //create bottom navigation bar with feed, search, icon, friends, and profile
       body: Center(
         child: <Widget>[
-          Text('Feed'),
+          Feed(),
           Text('Search'),
           SizedBox(
             height: 20,

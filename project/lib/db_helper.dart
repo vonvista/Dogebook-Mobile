@@ -102,4 +102,39 @@ class DBHelper {
       throw Exception('Failed to load internet data');
     }
   }
+
+  Future<List<Post>> getUserPostsLim(String id, String next) async {
+    //print("AD" + id);
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/post/get-user-posts-lim'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "limit": 10,
+          "id": id,
+          "next": next,
+        },
+      ),
+    );
+
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      //print(data);
+      List<Post> posts = [];
+      for (var t in data) {
+        posts.add(Post(
+          id: t['_id'],
+          userId: t['userId']['_id'],
+          name: t['userId']['firstName'] + " " + t['userId']['lastName'],
+          content: t['content'],
+          privacy: t['privacy'],
+          createdAt: convertTime(t['createdAt']),
+        ));
+      }
+      return posts;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
 }
