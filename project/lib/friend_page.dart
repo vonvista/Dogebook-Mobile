@@ -9,6 +9,8 @@ import 'models/post_model.dart';
 import 'feed_page.dart';
 import 'profile_page.dart';
 
+//NOTE: Missing feature pa yung rejecting friend request
+
 class FriendPage extends StatefulWidget {
   const FriendPage({Key? key}) : super(key: key);
 
