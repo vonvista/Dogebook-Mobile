@@ -378,6 +378,41 @@ class _FeedState extends State<Feed> {
     }
   }
 
+  void _handlePostEdit(String id) async {
+    //get post text
+
+    //post to server
+    dynamic result = await db.editPost(
+      id: id,
+      content: _postController.text,
+      privacy: privacy,
+    );
+
+    if (result['err'] != null) {
+      print(result['err']);
+    } else {
+      Navigator.pop(context);
+      Post newPost = Post(
+        id: result['_id'],
+        userId: result['userId']['_id'],
+        name: result['userId']['firstName'] + " " + result['userId']['lastName'],
+        content: result['content'],
+        privacy: result['privacy'],
+        createdAt: db.convertTime(result['createdAt']),
+      );
+
+      setState(() {
+        //update post with new post on the list of posts using post id
+        Future.value(posts = posts.then((value) => value.map((post) {
+              if (post.id == id) {
+                return newPost;
+              }
+              return post;
+            }).toList()));
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //scrollable list of posts
