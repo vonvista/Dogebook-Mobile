@@ -103,6 +103,44 @@ class _CommentsState extends State<Comments> {
     );
   }
 
+  //create comment list
+  Widget _commentList() {
+    return Container(
+      child: FutureBuilder<List<Comment>>(
+        future: comments,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!.length > 0
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return _commentTile(
+                        snapshot.data![index].id,
+                        snapshot.data![index].name,
+                        snapshot.data![index].comment,
+                        snapshot.data![index].createdAt,
+                        snapshot.data![index].userId,
+                      );
+                    },
+                  )
+                : Container(
+                    padding: const EdgeInsets.all(30),
+                    child: const Align(
+                      alignment: Alignment.topCenter,
+                      child: Text('No comments yet'),
+                    ),
+                  );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return CircularProgressIndicator();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
