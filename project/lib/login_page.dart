@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'db_helper.dart';
 
 import 'models/user_model.dart';
+import 'home_page.dart';
 import 'signup_page.dart';
 
 import 'package:localstorage/localstorage.dart';
@@ -138,6 +139,12 @@ class _LoginPageState extends State<LoginPage> {
       await storage.setItem('friendRequests', result['friendRequests']);
 
       //go to home page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
+      );
     }
   }
 
@@ -171,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               _passwordField(),
               const SizedBox(height: 10),
-              _buildButton('Login', () => {}),
+              _buildButton('Login', _handleLogin),
               const SizedBox(height: 10),
               _buildSignUp(),
             ],

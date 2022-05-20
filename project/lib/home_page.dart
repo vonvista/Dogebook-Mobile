@@ -5,15 +5,83 @@ import 'models/user_model.dart';
 import 'package:localstorage/localstorage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+  String id = "";
+
+  LocalStorage storage = LocalStorage('project');
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  void _onItemTapped(int index) {
+    if (index == 2) {
+      return;
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      //create bottom navigation bar with feed, search, icon, friends, and profile
+      body: Center(
+        child: <Widget>[
+          Text('Feed'),
+          Text('Search'),
+          SizedBox(
+            height: 20,
+          ),
+          Text('Friends'),
+          Text('Profile'),
+        ].elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Feed',
+            backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+            backgroundColor: Colors.orange,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box),
+            label: 'Add',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Friends',
+            backgroundColor: Colors.pink,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+            backgroundColor: Colors.green,
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.white,
+        onTap: _onItemTapped,
+      ),
+    );
   }
 }
