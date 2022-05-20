@@ -284,6 +284,7 @@ class _FeedState extends State<Feed> {
                   icon: Icon(Icons.close),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    _postController.clear();
                   },
                 ),
               ],
