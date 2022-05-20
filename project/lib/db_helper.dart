@@ -187,4 +187,25 @@ class DBHelper {
       throw Exception('Failed to load internet data');
     }
   }
+
+  //delete post
+  Future deletePost({
+    required String id,
+  }) async {
+    final response = await http.delete(
+      Uri.parse('http://$serverIP:3001/post/delete'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {"_id": id},
+      ),
+    );
+    //print("HERe");
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
 }
