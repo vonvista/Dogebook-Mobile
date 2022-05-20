@@ -76,6 +76,33 @@ class _CommentsState extends State<Comments> {
     );
   }
 
+  //create expanding comment field that is maximum of 3 lines with submit button
+  Widget _commentField() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'Comment',
+              ),
+              maxLines: 3,
+              controller: _commentController,
+            ),
+          ),
+          //icon button to submit comment
+          IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () {
+              //NOTE: add add comment logic
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
