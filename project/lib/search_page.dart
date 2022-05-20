@@ -53,6 +53,34 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  //create list tile for search results
+  Widget _userListTile(String id, String name, String username) {
+    return ListTile(
+      leading: Hero(
+        tag: 'image_$id',
+        child: ProfilePicture(
+          name: name,
+          radius: 25,
+          fontsize: 21,
+        ),
+      ),
+      title: Hero(
+        tag: "text_$id",
+        child: Material(
+          color: Colors.transparent,
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      subtitle: Text(username),
+      onTap: () {
+        //NOTE: Navigation to profile
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
