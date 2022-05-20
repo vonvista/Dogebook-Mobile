@@ -35,6 +35,27 @@ class _ProfilePageState extends State<ProfilePage> {
     print(storage.getItem('friends').contains(widget.userId));
   }
 
+  void handleSendRequest() async {
+    dynamic result = await db.sendFriendRequest(
+      userId: widget.userId,
+      friendId: storage.getItem('_id'),
+    );
+
+    if (result['err'] != null) {
+      print(result['err']);
+      //show snackbar error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['err']),
+          //set duration
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } else {
+      print(result);
+    }
+  }
+
   //create edit profile button
   Widget _editProfileButton() {
     return Container(
@@ -56,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
               : ElevatedButton(
                   child: Text('Send friend request'),
                   onPressed: () {
-                    //NOTE: Put here send friend request logic
+                    handleSendRequest();
                   },
                 ),
     );
