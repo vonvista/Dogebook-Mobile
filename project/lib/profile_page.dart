@@ -10,6 +10,7 @@ import 'models/user_model.dart';
 import 'models/post_model.dart';
 
 import 'feed_page.dart';
+import 'userupdate/update_user.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -70,7 +71,13 @@ class _ProfilePageState extends State<ProfilePage> {
           ? ElevatedButton(
               child: Text('Edit Profile'),
               onPressed: () {
-                print("Saem");
+                //got to user update page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateUser(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
