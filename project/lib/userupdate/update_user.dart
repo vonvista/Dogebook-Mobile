@@ -34,6 +34,10 @@ class _UpdateUserState extends State<UpdateUser> {
   @override
   void initState() {
     super.initState();
+    //set initial value for controllers from localstorage
+    _firstNameController.text = storage.getItem('firstName');
+    _lastNameController.text = storage.getItem('lastName');
+    _emailController.text = storage.getItem('email');
   }
 
   Widget _inputField(String hintText, String labelText, TextEditingController controller) {
@@ -44,7 +48,6 @@ class _UpdateUserState extends State<UpdateUser> {
         hintText: hintText,
         icon: Icon(Icons.person),
       ),
-      obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please $hintText';
@@ -102,13 +105,46 @@ class _UpdateUserState extends State<UpdateUser> {
                 const SizedBox(height: 10),
                 _inputField('Enter your email', 'Email', _emailController),
                 const SizedBox(height: 10),
-                _buildButton('Update profile', () => {}),
+                _buildButton('Update profile', _handleUpdateUser),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _handleUpdateUser() async {
+    //validate form
+    if (_formKey.currentState!.validate()) {
+      //get user details
+      //check if passwords match
+      print("WDADA");
+      dynamic result = await db.updateUser(
+        userId: storage.getItem('_id'),
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        email: _emailController.text,
+      );
+
+      if (result['err'] != null) {
+        print(result['err']);
+        //show snackbar error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['err']),
+            //set duration
+            duration: Duration(seconds: 1),
+          ),
+        );
+      } else {
+        print(result);
+        //set localstorage values
+        await storage.setItem('firstName', _firstNameController.text);
+        await storage.setItem('lastName', _lastNameController.text);
+        await storage.setItem('email', _emailController.text);
+      }
+    }
   }
 
   @override
