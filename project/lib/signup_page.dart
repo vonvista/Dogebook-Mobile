@@ -225,20 +225,23 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         backgroundColor: colors.deg1,
       ),
-      body: ListView(
-        //center
-
-        children: [
-          signUpForm(),
-          Container(
-            padding: const EdgeInsets.all(10),
-            alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-            ),
+      body: Center(
+        child: SingleChildScrollView(
+          //center
+          child: Column(
+            children: [
+              signUpForm(),
+              Container(
+                padding: const EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 50,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       backgroundColor: colors.deg2,
     );

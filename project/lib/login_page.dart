@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
+import 'colors.dart';
+import 'package:lottie/lottie.dart';
 
 import 'models/user_model.dart';
 import 'home_page.dart';
@@ -18,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   //create email and password controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  AppColors colors = AppColors();
 
   //create a global key for form validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -157,33 +161,67 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget loginForm() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      alignment: Alignment.center,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Log in',
+                  //text size to 40
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 30),
+                _emailField(),
+                const SizedBox(height: 10),
+                _passwordField(),
+                const SizedBox(height: 10),
+                _buildButton('Login', _handleLogin),
+                const SizedBox(height: 10),
+                _buildSignUp(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(30.0),
-        child: Form(
-          key: _formKey,
+      body: Center(
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Log in',
-                //text size to 40
-                style: TextStyle(fontSize: 40),
+            children: [
+              Lottie.asset(
+                'assets/lottie/signup.json',
+                height: 200,
               ),
-              const SizedBox(height: 30),
-              _emailField(),
-              const SizedBox(height: 10),
-              _passwordField(),
-              const SizedBox(height: 10),
-              _buildButton('Login', _handleLogin),
-              const SizedBox(height: 10),
-              _buildSignUp(),
+              loginForm(),
+              Container(
+                padding: const EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 50,
+                ),
+              ),
             ],
           ),
         ),
       ),
+      backgroundColor: colors.deg2,
     );
   }
 }
