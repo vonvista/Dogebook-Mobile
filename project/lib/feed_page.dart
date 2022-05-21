@@ -5,6 +5,7 @@ import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
+import 'package:transition/transition.dart';
 
 import 'models/post_model.dart';
 import 'models/user_model.dart';
@@ -102,13 +103,13 @@ class _FeedState extends State<Feed> {
   void _handleComments(String id) async {
     //go to comments page
     Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Comments(
-          id: id,
-        ),
-      ),
-    );
+        context,
+        // MaterialPageRoute(
+        //   builder: (context) => Comments(
+        //     id: id,
+        //   ),
+        // ),
+        Transition(child: Comments(id: id), transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
   }
 
   //create button for add post
