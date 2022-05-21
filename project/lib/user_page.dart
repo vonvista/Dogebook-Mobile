@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
+import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -18,6 +19,8 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   final LocalStorage storage = LocalStorage('project');
+
+  AppColors colors = AppColors();
 
   @override
   void initState() {
@@ -64,10 +67,17 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
+      alignment: Alignment.center,
       child: ListView(
+        shrinkWrap: true,
         children: [
           //text view profile
-          Text('  View your profile', style: TextStyle(fontSize: 20)),
+          const Center(
+            child: Text(
+              '  View your profile',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+          ),
           _userListTile(
             //get string from snapshot
             storage.getItem('_id'),
