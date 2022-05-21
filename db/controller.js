@@ -150,6 +150,36 @@ exports.findUserById = async function(req, res, next) {
   }
 }
 
+//update first name, last name, and email (email must not be taken)
+exports.updateUser = async function(req, res, next) {
+  //find user by userId
+  const user = await User.findById(req.body.userId);
+  if(user){
+    //check if email is taken, other than the current user
+    const emailExists = await User.findOne({email: req.body.email, _id: {$ne: req.body.userId}});
+    if(emailExists){
+      res.send({err:'Email already taken'});
+    }
+    else {
+      user.firstName = req.body.firstName;
+      user.lastName = req.body.lastName;
+      user.email = req.body.email;
+      user.save(function(err) {
+        if (!err) {
+          res.send(user);
+        }
+        else {
+          res.send({err:'Unable to save user'});
+          console.log(err);
+        }
+      });
+    }
+  }
+  else {
+    res.send({err:'User not found'});
+  }
+}
+
 //aggregate friend requests
 exports.getFriendRequests = async function(req, res, next) {
   const user = await User.findById(req.body.id);

@@ -21,6 +21,7 @@ module.exports = (app) => {
   app.post('/user/find', controller.findUserById);
 
   app.post('/user/update-pass', controller.updatePassword);
+  app.post('/user/update', controller.updateUser);
 
   app.post('/user/send-friend-request', controller.sendFriendRequest);
   app.post('/user/remove-friend', controller.removeFriend);
