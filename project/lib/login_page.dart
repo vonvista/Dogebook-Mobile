@@ -76,7 +76,6 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         //set button color
-        primary: Colors.blue,
         minimumSize: const Size.fromHeight(50),
       ),
     );

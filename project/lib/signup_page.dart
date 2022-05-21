@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/db_helper.dart';
 import 'models/user_model.dart';
+import 'colors.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   DBHelper db = DBHelper();
+
+  AppColors colors = AppColors();
 
   //create username, email, password, and repeat password controllers
   final TextEditingController _firstNameController = TextEditingController();
@@ -126,7 +129,6 @@ class _SignUpPageState extends State<SignUpPage> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         //set button color
-        primary: Colors.blue,
         minimumSize: const Size.fromHeight(50),
       ),
     );
@@ -173,54 +175,72 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  Widget signUpForm() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      alignment: Alignment.center,
+      child: Card(
+        //radius for card
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  'Sign up',
+                  //text size to 40
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 30),
+                _firstNameField(),
+                const SizedBox(height: 10),
+                _lastNameField(),
+                const SizedBox(height: 10),
+                _emailField(),
+                const SizedBox(height: 10),
+                _passwordField(),
+                const SizedBox(height: 10),
+                _repeatPasswordField(),
+                const SizedBox(height: 10),
+                _buildButton('Sign Up', _handleSignUp),
+                //create back button on upper left of screen
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   //build SignUpPage without using scaffold
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(30.0),
-        child: Stack(
-          children: [
-            //create back button to go back to login page
-            Align(
-              //position on upper left
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'Sign up',
-                    //text size to 40
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  const SizedBox(height: 30),
-                  _firstNameField(),
-                  const SizedBox(height: 10),
-                  _lastNameField(),
-                  const SizedBox(height: 10),
-                  _emailField(),
-                  const SizedBox(height: 10),
-                  _passwordField(),
-                  const SizedBox(height: 10),
-                  _repeatPasswordField(),
-                  const SizedBox(height: 10),
-                  _buildButton('Sign Up', _handleSignUp),
-                  //create back button on upper left of screen
-                ],
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        backgroundColor: colors.deg1,
       ),
+      body: ListView(
+        //center
+
+        children: [
+          signUpForm(),
+          Container(
+            padding: const EdgeInsets.all(10),
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/images/logo.png',
+              height: 50,
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: colors.deg2,
     );
   }
 }
