@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
 import 'comments_page.dart';
+import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
@@ -26,6 +27,8 @@ class _FeedState extends State<Feed> {
   //variable for post privacy
   String privacy = 'public';
   String viewPostsOf = 'public';
+
+  AppColors colors = AppColors();
 
   DBHelper db = DBHelper();
 
@@ -498,7 +501,7 @@ class _FeedState extends State<Feed> {
           _postsList(),
         ],
       ),
-      color: Color.fromARGB(31, 187, 187, 187),
+      color: colors.deg5,
     );
   }
 }

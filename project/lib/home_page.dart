@@ -6,6 +6,7 @@ import 'feed_page.dart';
 import 'search_page.dart';
 import 'user_page.dart';
 import 'friend_page.dart';
+import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   String id = "";
 
+  AppColors colors = AppColors();
   LocalStorage storage = LocalStorage('project');
 
   @override
@@ -56,31 +58,47 @@ class _HomePageState extends State<HomePage> {
         ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              //change color of icon when selected or not
+              color: _selectedIndex == 0 ? Colors.white : colors.deg2dark,
+            ),
             label: 'Feed',
-            backgroundColor: Colors.red,
+            backgroundColor: colors.deg2,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(
+              Icons.search,
+              //change color of icon when selected or not
+              color: _selectedIndex == 1 ? Colors.white : colors.deg2dark,
+            ),
             label: 'Search',
-            backgroundColor: Colors.orange,
+            backgroundColor: colors.deg2,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_box),
             label: 'Add',
-            backgroundColor: Colors.blue,
+            backgroundColor: colors.deg2,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
+            icon: Icon(
+              Icons.people,
+              //change color of icon when selected or not
+              color: _selectedIndex == 3 ? Colors.white : colors.deg2dark,
+            ),
             label: 'Friends',
-            backgroundColor: Colors.pink,
+            backgroundColor: colors.deg2,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              //change color of icon when selected or not
+              color: _selectedIndex == 4 ? Colors.white : colors.deg2dark,
+            ),
             label: 'Profile',
-            backgroundColor: Colors.green,
+            backgroundColor: colors.deg2,
           ),
         ],
         currentIndex: _selectedIndex,
