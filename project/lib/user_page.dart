@@ -3,6 +3,7 @@ import 'db_helper.dart';
 import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
+import 'package:lottie/lottie.dart';
 
 import 'models/user_model.dart';
 import 'models/post_model.dart';
@@ -71,6 +72,7 @@ class _UserPageState extends State<UserPage> {
       child: ListView(
         shrinkWrap: true,
         children: [
+          Lottie.asset('assets/lottie/moodydog.json'),
           //text view profile
           const Center(
             child: Text(
@@ -86,20 +88,28 @@ class _UserPageState extends State<UserPage> {
           ),
           Divider(height: 10),
           //build logout
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              child: Text('Logout'),
-              onPressed: () {
-                storage.clear();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage(),
-                  ),
-                );
-              },
-            ),
+          ElevatedButton(
+            child: Text('Update Password'),
+            onPressed: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => LoginPage(),
+              //   ),
+              // );
+            },
+          ),
+          ElevatedButton(
+            child: Text('Logout'),
+            onPressed: () {
+              storage.clear();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
+            },
           ),
         ],
       ),

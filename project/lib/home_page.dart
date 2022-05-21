@@ -78,7 +78,12 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: colors.deg2,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_box),
+            icon: //image of logo.png
+                Image.asset(
+              'assets/images/logo.png',
+              width: 30,
+              height: 30,
+            ),
             label: 'Add',
             backgroundColor: colors.deg2,
           ),
