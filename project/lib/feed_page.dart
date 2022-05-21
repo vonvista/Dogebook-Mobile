@@ -285,7 +285,14 @@ class _FeedState extends State<Feed> {
                   child: hasMorePost
                       ? //created button to load more posts
                       ElevatedButton(
-                          child: Text('Load More'),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const <Widget>[
+                              Text('Load More'),
+                              SizedBox(width: 10),
+                              Icon(Icons.arrow_downward),
+                            ],
+                          ),
                           onPressed: () {
                             fetchNextPosts();
                           },
