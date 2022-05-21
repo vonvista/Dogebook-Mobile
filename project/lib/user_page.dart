@@ -4,6 +4,7 @@ import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'models/user_model.dart';
 import 'models/post_model.dart';
@@ -33,9 +34,10 @@ class _UserPageState extends State<UserPage> {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
-        child: const Icon(
-          Icons.person,
-          color: Colors.blue,
+        child: ProfilePicture(
+          name: name,
+          radius: 31,
+          fontsize: 21,
         ),
       ),
       title: Hero(
