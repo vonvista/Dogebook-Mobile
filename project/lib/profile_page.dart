@@ -72,6 +72,11 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 print("Saem");
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: colors.deg2,
+                minimumSize: Size.fromHeight(40),
+              ),
             )
           : storage.getItem('friends').contains(widget.userId)
               ? ElevatedButton(

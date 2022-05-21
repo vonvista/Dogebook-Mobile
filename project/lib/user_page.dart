@@ -11,6 +11,7 @@ import 'models/post_model.dart';
 
 import 'login_page.dart';
 import 'profile_page.dart';
+import 'userupdate/update_password.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -93,12 +94,12 @@ class _UserPageState extends State<UserPage> {
           ElevatedButton(
             child: Text('Update Password'),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => LoginPage(),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpdatePassword(),
+                ),
+              );
             },
           ),
           ElevatedButton(
