@@ -548,7 +548,7 @@ class DBHelper {
     required String newPassword,
   }) async {
     final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/update-password'),
+      Uri.parse('http://$serverIP:3001/user/update-pass'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(
         {

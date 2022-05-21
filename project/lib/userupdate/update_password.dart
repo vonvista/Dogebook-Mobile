@@ -67,7 +67,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     );
   }
 
-  Widget loginForm() {
+  Widget passwordForm() {
     return Container(
       padding: const EdgeInsets.all(20),
       alignment: Alignment.center,
@@ -102,13 +102,51 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 const SizedBox(height: 10),
                 _passwordField('Repeat your new password', 'Repeat Password', _repeatPassController),
                 const SizedBox(height: 10),
-                _buildButton('Update password', () => {}),
+                _buildButton('Update password', _handleUpdatePassword),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _handleUpdatePassword() async {
+    //validate form
+    if (_formKey.currentState!.validate()) {
+      //get user details
+      //check if passwords match
+      if (_newPassController.text == _repeatPassController.text) {
+        dynamic result = await db.updatePassword(
+          userId: storage.getItem('_id'),
+          oldPassword: _oldPassController.text,
+          newPassword: _newPassController.text,
+        );
+
+        if (result['err'] != null) {
+          print(result['err']);
+          //show snackbar error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(result['err']),
+              //set duration
+              duration: Duration(seconds: 1),
+            ),
+          );
+        } else {
+          print(result);
+        }
+      } else {
+        //show error
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Passwords do not match'),
+            //set duration
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -122,7 +160,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              loginForm(),
+              passwordForm(),
               Container(
                 padding: const EdgeInsets.all(10),
                 alignment: Alignment.center,
