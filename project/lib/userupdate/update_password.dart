@@ -160,6 +160,9 @@ class _UpdatePasswordState extends State<UpdatePassword> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                child: Lottie.asset('assets/lottie/password.json', height: 100),
+              ),
               passwordForm(),
               Container(
                 padding: const EdgeInsets.all(10),
