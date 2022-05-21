@@ -80,10 +80,13 @@ class _SearchPageState extends State<SearchPage> {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
-        child: ProfilePicture(
-          name: name,
-          radius: 25,
-          fontsize: 21,
+        child: Material(
+          color: Colors.transparent,
+          child: ProfilePicture(
+            name: name,
+            radius: 25,
+            fontsize: 21,
+          ),
         ),
       ),
       title: Hero(

@@ -142,8 +142,12 @@ class _FeedState extends State<Feed> {
   Widget _postCard(String id, String name, String time, String post, String postPrivacy, String userId) {
     return Card(
       margin: EdgeInsets.all(10),
+      //radius
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: <Widget>[
             Row(
@@ -154,21 +158,21 @@ class _FeedState extends State<Feed> {
                   radius: 25,
                   fontsize: 21,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       name,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Row(children: [
                       Text(
                         time,
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Icon(
                         postPrivacy == 'public' ? Icons.public : Icons.people,
                         size: 12,
@@ -185,7 +189,7 @@ class _FeedState extends State<Feed> {
                   Row(
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.edit),
+                        icon: const Icon(Icons.edit),
                         onPressed: () {
                           _postController.text = post;
                           privacy = postPrivacy;
@@ -198,7 +202,7 @@ class _FeedState extends State<Feed> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           _handlePostDelete(id);
                         },
@@ -207,14 +211,27 @@ class _FeedState extends State<Feed> {
                   ),
               ],
             ),
-            SizedBox(height: 10),
-            Text(post),
-            Divider(height: 20),
+            const SizedBox(height: 10),
+            //justification on left
+            Align(
+              child: Text(
+                post,
+                style: const TextStyle(fontSize: 16),
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            const Divider(height: 20),
             //button with icon on left for comments
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                //transparent button
+                primary: Colors.transparent,
+                shadowColor: Colors.transparent,
+                onPrimary: Colors.black,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+                children: const <Widget>[
                   Icon(Icons.comment),
                   SizedBox(width: 10),
                   Text('Comments'),
