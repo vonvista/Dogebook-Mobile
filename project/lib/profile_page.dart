@@ -88,6 +88,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     handleSendRequest();
                   },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: colors.deg2,
+                    minimumSize: Size.fromHeight(40),
+                  ),
                 ),
     );
   }

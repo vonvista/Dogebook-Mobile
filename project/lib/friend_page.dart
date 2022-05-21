@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'db_helper.dart';
 
 import 'package:localstorage/localstorage.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'models/user_model.dart';
 import 'models/post_model.dart';
@@ -86,9 +87,10 @@ class _FriendPageState extends State<FriendPage> {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
-        child: const Icon(
-          Icons.person,
-          color: Colors.blue,
+        child: ProfilePicture(
+          name: name,
+          radius: 25,
+          fontsize: 21,
         ),
       ),
       title: Hero(
@@ -138,9 +140,10 @@ class _FriendPageState extends State<FriendPage> {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
-        child: const Icon(
-          Icons.person,
-          color: Colors.blue,
+        child: ProfilePicture(
+          name: name,
+          radius: 25,
+          fontsize: 21,
         ),
       ),
       title: Hero(
@@ -194,7 +197,7 @@ class _FriendPageState extends State<FriendPage> {
               itemBuilder: (BuildContext context, int index) {
                 return _friendReqTile(
                   snapshot.data![index].id,
-                  snapshot.data![index].firstName,
+                  snapshot.data![index].firstName + ' ' + snapshot.data![index].lastName,
                   snapshot.data![index].email,
                 );
               },
@@ -224,18 +227,27 @@ class _FriendPageState extends State<FriendPage> {
       future: friends,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _friendTile(
-                snapshot.data![index].id,
-                snapshot.data![index].firstName,
-                snapshot.data![index].email,
-              );
-            },
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-          );
+          if (snapshot.data!.length > 0) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _friendTile(
+                  snapshot.data![index].id,
+                  snapshot.data![index].firstName + ' ' + snapshot.data![index].lastName,
+                  snapshot.data![index].email,
+                );
+              },
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+            );
+          } else {
+            return Container(
+              padding: EdgeInsets.all(30),
+              child: Center(
+                child: Text('No friends :('),
+              ),
+            );
+          }
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
@@ -259,6 +271,10 @@ class _FriendPageState extends State<FriendPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          Divider(
+            height: 20,
+          ),
+          SizedBox(height: 5),
           _friendRequestsList(),
           const Text(
             'Friends',
@@ -267,6 +283,10 @@ class _FriendPageState extends State<FriendPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          Divider(
+            height: 20,
+          ),
+          SizedBox(height: 5),
           _friendsList(),
         ],
       ),
