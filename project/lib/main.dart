@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'login_page.dart';
 
+import 'colors.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -25,6 +27,17 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        //elevated button styling
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors().deg2),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+          ),
+        ),
       ),
       home: const LoginPage(),
     );

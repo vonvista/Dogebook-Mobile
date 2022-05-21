@@ -117,12 +117,21 @@ class _FeedState extends State<Feed> {
       children: [
         Expanded(
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: colors.deg2,
+              onPrimary: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              //height
+              minimumSize: Size(0, 50),
+            ),
             //text and icon
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const <Widget>[
                 Icon(Icons.add),
-                Text('Add Post'),
+                Text('Create Post'),
               ],
             ),
             //on press placeholder
@@ -136,7 +145,6 @@ class _FeedState extends State<Feed> {
             },
           ),
         ),
-        const SizedBox(width: 10),
       ],
     );
   }
@@ -144,7 +152,7 @@ class _FeedState extends State<Feed> {
   //create card widget for posts, with comments icon
   Widget _postCard(String id, String name, String time, String post, String postPrivacy, String userId) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(5),
       //radius
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -489,17 +497,21 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     //scrollable list of posts
     return Container(
-      padding: EdgeInsets.all(10),
-      child: ListView(
-        controller: _postScrollController,
-        shrinkWrap: widget.mode == 'normal' ? false : true,
-        physics: ClampingScrollPhysics(),
-        children: <Widget>[
-          _postBar(),
-          SizedBox(height: 10),
-          //add list of posts
-          _postsList(),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          controller: _postScrollController,
+          shrinkWrap: widget.mode == 'normal' ? false : true,
+          physics: ClampingScrollPhysics(),
+          children: <Widget>[
+            Align(
+              child: _postBar(),
+            ),
+            //add list of posts
+            SizedBox(height: 10),
+            _postsList(),
+          ],
+        ),
       ),
       color: colors.deg5,
     );
