@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
+import 'colors.dart';
 
 import 'models/user_model.dart';
 
@@ -18,6 +19,8 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   //create search controller
   final TextEditingController _searchController = TextEditingController();
+
+  AppColors colors = AppColors();
 
   late Future<List<User>> searchResults = Future.value([]);
 
@@ -59,19 +62,26 @@ class _SearchPageState extends State<SearchPage> {
                 hintText: 'Search',
                 //rounded
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
                 ),
+                filled: true,
+                fillColor: Colors.white,
               ),
+              //change size of text field
             ),
           ),
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
               _handleSearch();
             },
           ),
         ],
       ),
+      color: colors.deg2,
     );
   }
 
