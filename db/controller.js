@@ -218,6 +218,37 @@ exports.acceptFriendRequest = async function(req, res, next) {
   }
 }
 
+//reject friend request
+exports.rejectFriendRequest = async function(req, res, next) {
+  const user = await User.findById(req.body.userId);
+  const friend = await User.findById(req.body.friendId);
+  if(user && friend){
+    //pull friend request from user
+    await friend.friendRequests.pull(user._id);
+    // await user.save(function(err) {
+    //   if (!err) {
+    //   }
+    //   else {
+    //     res.send({err:'Unable to save user'});
+    //     console.log(err);
+    //   }
+    // });
+    await friend.save(function(err) {
+      if (!err) {
+        res.send({suc: 'Friend request rejected'});
+      }
+      else {
+        res.send({err:'Unable to save user'});
+        console.log(err);
+      }
+    });
+    
+  }
+  else {
+    res.send({err:'User not found'});
+  }
+}
+
 //remove friends
 exports.removeFriend = async function(req, res, next) {
   const user = await User.findById(req.body.userId);
@@ -274,12 +305,20 @@ exports.getAllPublicPosts = async function(req, res, next) {
 exports.getAllPublicPostsLimited = async function(req, res, next) {
   // get user posts sorted by data in descending order and limit to 10 starting from postid
   var posts;
+  user = await User.findById(req.body.userId);
+  console.log("GET POSTS");
   if(req.body.postId != ""){
-    // console.log("HERE")
-    posts = await Post.find({privacy: 'public', _id: {$lt: req.body.postId}}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
+    //get public post and friend post from array of friends in descending order and limit to 10 starting from postid
+    posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: {$in: user.friends}}], _id: {$lt: req.body.postId}}).sort({createdAt: -1}).limit(10).populate('userId', 'firstName lastName');
+
+    // posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: req.body.id}], _id: {$lt: req.body.postId}}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
+    // posts = await Post.find({privacy: 'public', _id: {$lt: req.body.postId}}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
   }
   else {
-    posts = await Post.find({privacy: 'public'}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
+    //get public post and friends post in descending order and limit to 10
+    posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: {$in: user.friends}}, {privacy: 'friends', userId: req.body.userId} ]}).sort({createdAt: -1}).limit(10).populate('userId', 'firstName lastName');
+    //posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: req.body.id}]}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
+    // posts = await Post.find({privacy: 'public'}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
   }
 
   res.send(posts);

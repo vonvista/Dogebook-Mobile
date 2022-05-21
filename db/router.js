@@ -23,6 +23,7 @@ module.exports = (app) => {
   app.post('/user/send-friend-request', controller.sendFriendRequest);
   app.post('/user/remove-friend', controller.removeFriend);
   app.post('/user/accept-friend-request', controller.acceptFriendRequest);
+  app.post('/user/reject-friend-request', controller.rejectFriendRequest);
   app.post('/user/get-friend-requests', controller.getFriendRequests);
   app.post('/user/get-friends', controller.getFriends);
 

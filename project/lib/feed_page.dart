@@ -86,7 +86,7 @@ class _FeedState extends State<Feed> {
     dynamic newPosts;
     print("FETCH!");
     if (widget.mode == "normal") {
-      newPosts = db.getPublicPostsLim(lastpostid);
+      newPosts = db.getPublicPostsLim(lastpostid, storage.getItem("_id"));
     } else if (widget.mode == "widget") {
       newPosts = db.getUserPostsLim(widget.userId, lastpostid);
     }

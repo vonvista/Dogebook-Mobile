@@ -69,7 +69,7 @@ class DBHelper {
     }
   }
 
-  Future<List<Post>> getPublicPostsLim(String postId) async {
+  Future<List<Post>> getPublicPostsLim(String postId, String userId) async {
     final response = await http.post(
       Uri.parse('http://$serverIP:3001/post/get-public-all-lim'),
       headers: {"Content-Type": "application/json"},
@@ -77,6 +77,7 @@ class DBHelper {
         {
           "limit": 10,
           "postId": postId,
+          "userId": userId,
         },
       ),
     );
@@ -295,7 +296,7 @@ class DBHelper {
         );
       }
       //update friends in localstorage
-      storage.setItem('friends', users.map((e) => e.id).toList());
+      //await storage.setItem('friends', users.map((e) => e.id).toList());
 
       return users;
     } else {
@@ -322,6 +323,32 @@ class DBHelper {
     if (response.statusCode == 200) {
       var data = (jsonDecode(response.body));
       //print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
+
+  //reject friend request
+  Future rejectFriendRequest({
+    required String userId,
+    required String friendId,
+  }) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/user/reject-friend-request'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "userId": userId,
+          "friendId": friendId,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      print("NANDITO");
+      print(data);
       return data;
     } else {
       throw Exception('Failed to load internet data');

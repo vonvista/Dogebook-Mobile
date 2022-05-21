@@ -58,6 +58,31 @@ class _FriendPageState extends State<FriendPage> {
     }
   }
 
+  //handle reject request
+  void _handleRejectRequest(String id) async {
+    dynamic result = await db.rejectFriendRequest(
+      userId: id,
+      friendId: await storage.getItem('_id'),
+    );
+    print(result);
+    if (result['err'] != null) {
+      print(result['err']);
+      //show snackbar error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['err']),
+          //set duration
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } else {
+      setState(() {
+        friends = Future.value(db.getFriends(id: storage.getItem('_id')));
+        friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
+      });
+    }
+  }
+
   void _handleRemoveFriend(String id) async {
     dynamic result = await db.removeFriend(
       userId: id,
@@ -79,6 +104,8 @@ class _FriendPageState extends State<FriendPage> {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
         friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
       });
+      //set friends in localstorage to the new list
+      await storage.setItem('friends', await friends.then((value) => value));
     }
   }
 
@@ -116,7 +143,9 @@ class _FriendPageState extends State<FriendPage> {
           ),
           IconButton(
             icon: Icon(Icons.clear),
-            onPressed: () {},
+            onPressed: () {
+              _handleRejectRequest(id);
+            },
           ),
         ],
       ),
