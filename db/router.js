@@ -20,6 +20,8 @@ module.exports = (app) => {
   app.post('/user/search', controller.findUsers);
   app.post('/user/find', controller.findUserById);
 
+  app.post('/user/update-pass', controller.updatePassword);
+
   app.post('/user/send-friend-request', controller.sendFriendRequest);
   app.post('/user/remove-friend', controller.removeFriend);
   app.post('/user/accept-friend-request', controller.acceptFriendRequest);

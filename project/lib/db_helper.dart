@@ -540,4 +540,31 @@ class DBHelper {
       throw Exception('Failed to load internet data');
     }
   }
+
+  //update password
+  Future updatePassword({
+    required String userId,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    final response = await http.post(
+      Uri.parse('http://$serverIP:3001/user/update-password'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "userId": userId,
+          "oldPassword": oldPassword,
+          "newPassword": newPassword,
+        },
+      ),
+    );
+    //get data from jsonplaceholder and catch error
+    if (response.statusCode == 200) {
+      var data = (jsonDecode(response.body));
+      //print(data);
+      return data;
+    } else {
+      throw Exception('Failed to load internet data');
+    }
+  }
 }

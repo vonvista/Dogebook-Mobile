@@ -109,6 +109,34 @@ exports.findUsers = async function(req, res, next) {
   }
 }
 
+//update password 
+exports.updatePassword = async function(req, res, next) {
+  //find user by userId
+  const user = await User.findById(req.body.userId);
+  if(user){
+    const passwordMatch = await bcrypt.compare(req.body.oldPassword, user.password);
+    if(passwordMatch){
+      const hashedPassword = await bcrypt.hash(req.body.newPassword, saltRounds);
+      user.password = hashedPassword;
+      user.save(function(err) {
+        if (!err) {
+          res.send(user);
+        }
+        else {
+          res.send({err:'Unable to save user'});
+          console.log(err);
+        }
+      });
+    }
+    else {
+      res.send({err:'Incorrect password'});
+    }
+  }
+  else {
+    res.send({err:'User not found'});
+  }
+}
+
 //find user by id
 exports.findUserById = async function(req, res, next) {
   console.log(req.body)
