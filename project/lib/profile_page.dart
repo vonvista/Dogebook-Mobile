@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
 
+import 'colors.dart';
+
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
@@ -27,6 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
   DBHelper db = DBHelper();
 
   final LocalStorage storage = LocalStorage('project');
+
+  AppColors colors = AppColors();
 
   @override
   void initState() {
@@ -73,6 +77,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ? ElevatedButton(
                   child: Text('Friends'),
                   onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: colors.deg2,
+                    minimumSize: Size.fromHeight(40),
+                  ),
                 )
               : ElevatedButton(
                   child: Text('Send friend request'),
@@ -89,8 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        backgroundColor: colors.deg1,
       ),
       body: Center(
         child: FutureBuilder<User>(
@@ -105,22 +114,39 @@ class _ProfilePageState extends State<ProfilePage> {
                   Center(
                     child: Hero(
                       tag: "image_${snapshot.data!.id}",
-                      child: ProfilePicture(
-                        name: snapshot.data!.firstName + ' ' + snapshot.data!.lastName,
-                        radius: 31,
-                        fontsize: 21,
+                      //add white border to profile picture
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(50),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.all(2),
+                          child: ProfilePicture(
+                            name: snapshot.data!.firstName + ' ' + snapshot.data!.lastName,
+                            radius: 31,
+                            fontsize: 21,
+                          ),
+                        ),
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
                   Center(
                     child: Hero(
                       tag: "text_${snapshot.data!.id}",
                       child: Material(
+                        color: Colors.transparent,
                         child: Text(
                           snapshot.data!.firstName + " " + snapshot.data!.lastName,
                           style: TextStyle(
                             fontSize: 30,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -130,7 +156,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   Center(
                     child: Text(
                       snapshot.data!.email,
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ),
                   _editProfileButton(),
@@ -144,6 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
       ),
+      backgroundColor: colors.deg2,
     );
   }
 }

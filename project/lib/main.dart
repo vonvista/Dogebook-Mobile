@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(AppColors().deg2),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(15.0),
               ),
             ),
           ),
