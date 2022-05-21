@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'db_helper.dart';
+import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
@@ -19,6 +20,7 @@ class Comments extends StatefulWidget {
 
 class _CommentsState extends State<Comments> {
   late Future<List<Comment>> comments;
+  AppColors colors = AppColors();
 
   LocalStorage storage = LocalStorage('project');
 
@@ -146,6 +148,7 @@ class _CommentsState extends State<Comments> {
           ),
         ],
       ),
+      color: Colors.white,
     );
   }
 
@@ -192,17 +195,20 @@ class _CommentsState extends State<Comments> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Comments'),
+        backgroundColor: colors.deg1,
       ),
       body: Container(
-        child: Stack(
+        child: ListView(
           children: <Widget>[
+            _commentField(),
             _commentList(),
-            SafeArea(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: _commentField(),
-              ),
-            ),
+
+            // SafeArea(
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: _commentField(),
+            //   ),
+            // ),
           ],
         ),
       ),
