@@ -159,7 +159,7 @@ class _UpdateUserState extends State<UpdateUser> {
           child: Column(
             children: [
               Container(
-                child: Lottie.asset('assets/lottie/updateprofile.json', height: 100),
+                child: Lottie.asset('assets/lottie/profile.json', height: 100),
               ),
               userForm(),
               Container(

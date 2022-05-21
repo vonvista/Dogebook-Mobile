@@ -23,6 +23,8 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   final LocalStorage storage = LocalStorage('project');
 
+  bool rebuild = false;
+
   AppColors colors = AppColors();
 
   @override
@@ -33,6 +35,7 @@ class _UserPageState extends State<UserPage> {
   //create list tile for user
   Widget _userListTile(String id, String name, String username) {
     return ListTile(
+      key: ObjectKey(rebuild),
       leading: Hero(
         tag: 'image_$id',
         child: ProfilePicture(
@@ -54,15 +57,20 @@ class _UserPageState extends State<UserPage> {
       subtitle: Text(username),
       onTap:
           //navigate to profile page
-          () {
-        Navigator.push(
+          () async {
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ProfilePage(
               userId: id,
             ),
           ),
+          //refresh page
         );
+        print("HERE HEEW");
+        setState(() {
+          rebuild = !rebuild;
+        });
       },
     );
   }
@@ -93,8 +101,8 @@ class _UserPageState extends State<UserPage> {
           //build logout
           ElevatedButton(
             child: Text('Update Password'),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => UpdatePassword(),

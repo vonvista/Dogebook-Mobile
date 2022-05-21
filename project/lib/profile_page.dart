@@ -27,6 +27,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late Future<User> user;
 
+  bool rebuild = false;
+
   DBHelper db = DBHelper();
 
   final LocalStorage storage = LocalStorage('project');
@@ -61,6 +63,21 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void _handleUpdateUser() async {
+    //got to user update page
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UpdateUser(),
+      ),
+    );
+    //refresh the page
+    setState(() {
+      user = db.getUser(id: widget.userId);
+      rebuild = !rebuild;
+    });
+  }
+
   //create edit profile button
   Widget _editProfileButton() {
     return Container(
@@ -71,13 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ? ElevatedButton(
               child: Text('Edit Profile'),
               onPressed: () {
-                //got to user update page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UpdateUser(),
-                  ),
-                );
+                _handleUpdateUser();
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
@@ -181,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   _editProfileButton(),
-                  Feed(mode: "widget", userId: widget.userId),
+                  Feed(mode: "widget", userId: widget.userId, key: ObjectKey(rebuild)),
                 ],
               );
             } else if (snapshot.hasError) {

@@ -22,6 +22,8 @@ class _SearchPageState extends State<SearchPage> {
 
   AppColors colors = AppColors();
 
+  bool rebuild = false;
+
   late Future<List<User>> searchResults = Future.value([]);
 
   DBHelper db = DBHelper();
@@ -112,8 +114,8 @@ class _SearchPageState extends State<SearchPage> {
       subtitle: Text(username),
       onTap:
           //navigate to profile page
-          () {
-        Navigator.push(
+          () async {
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ProfilePage(
@@ -121,6 +123,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         );
+        _handleSearch();
       },
     );
   }
