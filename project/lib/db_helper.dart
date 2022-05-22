@@ -53,31 +53,37 @@ class DBHelper {
   }
 
   Future addUser(User user) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/add'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "firstName": user.firstName,
-          "lastName": user.lastName,
-          "email": user.email,
-          "password": user.password,
-          "friends": user.friends,
-          "friendRequests": user.friendRequests
-        },
-      ),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/add'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "firstName": user.firstName,
+            "lastName": user.lastName,
+            "email": user.email,
+            "password": user.password,
+            "friends": user.friends,
+            "friendRequests": user.friendRequests
+          },
+        ),
+      );
 
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      if (data["err"] != null) {
-        //print(data["err"]);
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data["err"] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Signed up!', type: 'suc');
+        return data;
       } else {
-        //print("successful");
+        throw Exception('Failed to load internet data');
       }
-    } else {
-      throw Exception('Failed to load internet data');
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 

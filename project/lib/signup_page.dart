@@ -19,7 +19,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatPasswordController = TextEditingController();
 
@@ -160,9 +159,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _handleSignUp() {
+  void _handleSignUp() async {
     if (_formKey.currentState!.validate()) {
-      db.addUser(User(
+      dynamic result = await db.addUser(User(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
         email: _emailController.text,
@@ -170,6 +169,10 @@ class _SignUpPageState extends State<SignUpPage> {
         friends: [],
         friendRequests: [],
       ));
+      if (result != null) {
+        //pop the sign up page
+        Navigator.pop(context);
+      }
     } else {
       print('invalid');
     }

@@ -38,6 +38,13 @@ exports.userAdd = async function(req, res, next) {
   // console.log(req.body);
 
   var hashedPassword = await bcrypt.hash(req.body.password, saltRounds); //encrpyt password first -vov
+
+  //check if there's a user with the same email, if not create a new user
+  const user = await User.findOne({email: req.body.email});
+  if(user){
+    res.send({err:'There is already a user with this email'});
+    return;
+  }
   
   var newUser = new User({
     firstName: req.body.firstName,
