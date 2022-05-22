@@ -48,9 +48,7 @@ class _CommentsState extends State<Comments> {
       userId: storage.getItem('_id'),
       postId: widget.id,
     );
-    if (result['err'] != null) {
-      print(result['err']);
-    } else {
+    if (result != null) {
       Comment newComment = Comment(
         id: result['_id'],
         userId: result['userId']['_id'],
@@ -72,14 +70,16 @@ class _CommentsState extends State<Comments> {
       commentId: id,
     );
     //set comments to exclude delete post by result
-    String deletedId = result['_id'];
-    setState(() {
-      Future.value(
-        comments = comments.then(
-          (value) => value.where((comment) => comment.id != deletedId).toList(),
-        ),
-      );
-    });
+    if (result != null) {
+      String deletedId = result['_id'];
+      setState(() {
+        Future.value(
+          comments = comments.then(
+            (value) => value.where((comment) => comment.id != deletedId).toList(),
+          ),
+        );
+      });
+    }
   }
 
   //comment tile

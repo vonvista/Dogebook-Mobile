@@ -505,7 +505,8 @@ class DBHelper {
         statusMessage.showSnackBar(message: 'Post created', type: 'suc');
         return data;
       } else {
-        throw Exception('Failed to load internet data');
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
       }
     } catch (e) {
       statusMessage.showSnackBar(message: e.toString(), type: 'err');
@@ -540,7 +541,8 @@ class DBHelper {
         statusMessage.showSnackBar(message: 'Post edited', type: 'suc');
         return data;
       } else {
-        throw Exception('Failed to load internet data');
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
       }
     } catch (e) {
       statusMessage.showSnackBar(message: e.toString(), type: 'err');
@@ -571,7 +573,8 @@ class DBHelper {
         statusMessage.showSnackBar(message: 'Post deleted', type: 'suc');
         return data;
       } else {
-        throw Exception('Failed to load internet data');
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
       }
     } catch (e) {
       statusMessage.showSnackBar(message: e.toString(), type: 'err');
@@ -583,34 +586,43 @@ class DBHelper {
 
   //get comments for post
   Future<List<Comment>> getComments(String postId) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/comment/get'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "postId": postId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      List<Comment> comments = [];
-      print(data);
-      for (var t in data) {
-        comments.add(
-          Comment(
-            id: t['_id'],
-            userId: t['userId']['_id'],
-            name: t['userId']['firstName'] + " " + t['userId']['lastName'],
-            comment: t['comment'],
-            createdAt: convertTime(t['createdAt']),
-          ),
-        );
+    List<Comment> comments = [];
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/comment/get'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "postId": postId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if ((data is! List) && data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return comments;
+        }
+        for (var t in data) {
+          comments.add(
+            Comment(
+              id: t['_id'],
+              userId: t['userId']['_id'],
+              name: t['userId']['firstName'] + " " + t['userId']['lastName'],
+              comment: t['comment'],
+              createdAt: convertTime(t['createdAt']),
+            ),
+          );
+        }
+        return comments;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return comments;
       }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
       return comments;
-    } else {
-      throw Exception('Failed to load internet data');
     }
   }
 
@@ -620,26 +632,34 @@ class DBHelper {
     required String userId,
     required String comment,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/comment/add'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "postId": postId,
-          "userId": userId,
-          "comment": comment,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      print("GERERE");
-      print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/comment/add'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "postId": postId,
+            "userId": userId,
+            "comment": comment,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Comment added', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
@@ -647,23 +667,33 @@ class DBHelper {
   Future deleteComment({
     required String commentId,
   }) async {
-    print(commentId);
-    final response = await http.delete(
-      Uri.parse('http://$serverIP:3001/comment/delete'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "id": commentId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      print(commentId);
+      final response = await http.delete(
+        Uri.parse('http://$serverIP:3001/comment/delete'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "id": commentId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Comment deleted', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
