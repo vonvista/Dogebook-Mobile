@@ -168,36 +168,45 @@ class DBHelper {
   }
 
   Future findUser({required String username}) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/search'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "username": username,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      //specify that data is json
-      var data = (jsonDecode(response.body));
-
-      List<User> users = [];
-      for (var t in data) {
-        users.add(User(
-          id: t['_id'],
-          firstName: t['firstName'],
-          lastName: t['lastName'],
-          email: t['email'],
-          password: "", //hide password
-          friends: t['friends'].cast<String>(), //cast to list of strings,
-          friendRequests: t['friendRequests'].cast<String>(), // "as List<String> doesn't seem to work"
-        ));
+    List<User> users = [];
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/search'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "username": username,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        //specify that data is json
+        var data = (jsonDecode(response.body));
+        //print if data is json
+        if ((data is! List) && data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return users;
+        }
+        for (var t in data) {
+          users.add(User(
+            id: t['_id'],
+            firstName: t['firstName'],
+            lastName: t['lastName'],
+            email: t['email'],
+            password: "", //hide password
+            friends: t['friends'].cast<String>(), //cast to list of strings,
+            friendRequests: t['friendRequests'].cast<String>(), // "as List<String> doesn't seem to work"
+          ));
+        }
+        //if error message
+        return users;
+      } else {
+        throw Exception('Failed to load internet data');
       }
-      //if error message
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
       return users;
-    } else {
-      throw Exception('Failed to load internet data');
     }
   }
 

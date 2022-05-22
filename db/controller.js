@@ -103,15 +103,13 @@ exports.findUsers = async function(req, res, next) {
       continue;
     }
     const searchedUsers = await User.find({$or: [{firstName: {$regex: searchNames[i], $options: 'i'}}, {lastName: {$regex: searchNames[i], $options: 'i'}}]});
-    //add to users array, avoid duplicate
     for (var j = 0; j < searchedUsers.length; j++) {
-      if(!users.has(searchedUsers[j])){
-        users.add(searchedUsers[j]);
-      }
+
+      users.add(searchedUsers[j]);
     }
   }
 
-  // console.log([...users])
+  console.log([...users])
   if(users){
     res.send([...users]);
   }

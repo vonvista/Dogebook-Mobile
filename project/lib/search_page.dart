@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
       username: search,
     );
     //set search results
-
+    //NOTE: To be fixed, may duplicates parin sa search, fix in db
     setState(() {
       searchResults = Future.value(result);
     });
