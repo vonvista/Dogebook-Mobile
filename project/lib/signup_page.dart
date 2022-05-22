@@ -77,6 +77,10 @@ class _SignUpPageState extends State<SignUpPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your email';
         }
+        //validate if its a valid email
+        if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
         return null;
       },
     );
