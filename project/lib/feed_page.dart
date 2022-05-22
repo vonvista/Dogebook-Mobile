@@ -506,9 +506,12 @@ class _FeedState extends State<Feed> {
           shrinkWrap: widget.mode == 'normal' ? false : true,
           physics: ClampingScrollPhysics(),
           children: <Widget>[
-            Align(
-              child: _postBar(),
-            ),
+            //hide post bar if userId is not current user
+            (widget.mode == "widget" && widget.userId == storage.getItem('_id')) || widget.mode == "normal"
+                ? Align(
+                    child: _postBar(),
+                  )
+                : Container(),
             //add list of posts
             SizedBox(height: 10),
             _postsList(),
