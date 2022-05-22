@@ -1,20 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'models/user_model.dart';
 import 'models/post_model.dart';
 import 'models/comment_model.dart';
+import 'snackbar.dart';
 import 'package:intl/intl.dart';
 
 import 'package:localstorage/localstorage.dart';
 
 class DBHelper {
   final LocalStorage storage = LocalStorage('project');
-
   final String serverIP = "10.0.0.61";
 
   final int limit = 10;
+
+  final StatusMessage statusMessage = StatusMessage();
 
   String convertTime(String time) {
     //convert ISO time to date and time format
@@ -25,18 +28,27 @@ class DBHelper {
   }
 
   Future userLogin(Object user) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/login'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(user),
-    );
-
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/login'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(user),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Logged in!', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 

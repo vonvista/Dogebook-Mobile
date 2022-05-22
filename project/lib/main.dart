@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'login_page.dart';
 
 import 'colors.dart';
+import 'globals.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: snackbarKey,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

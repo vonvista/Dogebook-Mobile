@@ -116,8 +116,8 @@ class _LoginPageState extends State<LoginPage> {
       "email": _emailController.text,
       "password": _passwordController.text,
     });
-    if (result['err'] != null) {
-      print(result['err']);
+    if (result == null) {
+      return;
     } else {
       //go to home page
       //set result to local storage
