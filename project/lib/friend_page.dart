@@ -40,17 +40,7 @@ class _FriendPageState extends State<FriendPage> {
       friendId: storage.getItem('_id'),
     );
 
-    if (result['err'] != null) {
-      print(result['err']);
-      //show snackbar error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result['err']),
-          //set duration
-          duration: Duration(seconds: 1),
-        ),
-      );
-    } else {
+    if (result != null) {
       setState(() {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
         friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
@@ -65,17 +55,7 @@ class _FriendPageState extends State<FriendPage> {
       friendId: await storage.getItem('_id'),
     );
     print(result);
-    if (result['err'] != null) {
-      print(result['err']);
-      //show snackbar error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result['err']),
-          //set duration
-          duration: Duration(seconds: 1),
-        ),
-      );
-    } else {
+    if (result != null) {
       setState(() {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
         friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
@@ -89,17 +69,7 @@ class _FriendPageState extends State<FriendPage> {
       friendId: storage.getItem('_id'),
     );
 
-    if (result['err'] != null) {
-      print(result['err']);
-      //show snackbar error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result['err']),
-          //set duration
-          duration: Duration(seconds: 1),
-        ),
-      );
-    } else {
+    if (result != null) {
       setState(() {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
         friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));

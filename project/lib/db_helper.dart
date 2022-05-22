@@ -159,7 +159,8 @@ class DBHelper {
         }
         return posts;
       } else {
-        throw Exception('Failed to load internet data');
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return [];
       }
     } catch (e) {
       statusMessage.showSnackBar(message: e.toString(), type: 'err');
@@ -202,7 +203,8 @@ class DBHelper {
         //if error message
         return users;
       } else {
-        throw Exception('Failed to load internet data');
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return users;
       }
     } catch (e) {
       statusMessage.showSnackBar(message: e.toString(), type: 'err');
@@ -266,7 +268,8 @@ class DBHelper {
         statusMessage.showSnackBar(message: 'Friend request sent!', type: 'suc');
         return data;
       } else {
-        throw Exception('Failed to load internet data');
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
       }
     } catch (e) {
       statusMessage.showSnackBar(message: e.toString(), type: 'err');
@@ -276,76 +279,95 @@ class DBHelper {
 
   //get friends requests
   Future<List<User>> getFriendRequests({required String id}) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/get-friend-requests'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "id": id,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      List<User> users = [];
-      for (var t in data) {
-        users.add(
-          User(
-            id: t['_id'],
-            firstName: t['firstName'],
-            lastName: t['lastName'],
-            email: t['email'],
-            password: "", //hide password
-            friends: t['friends'].cast<String>(),
-            friendRequests: t['friendRequests'].cast<String>(),
-          ),
-        );
+    List<User> users = [];
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/get-friend-requests'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "id": id,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        //print(data);
+        if ((data is! List) && data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return users;
+        }
+
+        for (var t in data) {
+          users.add(
+            User(
+              id: t['_id'],
+              firstName: t['firstName'],
+              lastName: t['lastName'],
+              email: t['email'],
+              password: "", //hide password
+              friends: t['friends'].cast<String>(),
+              friendRequests: t['friendRequests'].cast<String>(),
+            ),
+          );
+        }
+        //update friendrequests in localstorage
+        storage.setItem('friendRequests', users.map((e) => e.id).toList());
+        return users;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return users;
       }
-      //update friendrequests in localstorage
-      storage.setItem('friendRequests', users.map((e) => e.id).toList());
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
       return users;
-    } else {
-      throw Exception('Failed to load internet data');
     }
   }
 
   //get friends requests
   Future<List<User>> getFriends({required String id}) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/get-friends'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "id": id,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      List<User> users = [];
-      for (var t in data) {
-        users.add(
-          User(
-            id: t['_id'],
-            firstName: t['firstName'],
-            lastName: t['lastName'],
-            email: t['email'],
-            password: "", //hide password
-            friends: t['friends'].cast<String>(),
-            friendRequests: t['friendRequests'].cast<String>(),
-          ),
-        );
-      }
-      //update friends in localstorage
-      //await storage.setItem('friends', users.map((e) => e.id).toList());
+    List<User> users = [];
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/get-friends'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "id": id,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        //print(data);
+        if ((data is! List) && data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return users;
+        }
 
+        for (var t in data) {
+          users.add(
+            User(
+              id: t['_id'],
+              firstName: t['firstName'],
+              lastName: t['lastName'],
+              email: t['email'],
+              password: "", //hide password
+              friends: t['friends'].cast<String>(),
+              friendRequests: t['friendRequests'].cast<String>(),
+            ),
+          );
+        }
+        return users;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return users;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
       return users;
-    } else {
-      throw Exception('Failed to load internet data');
     }
   }
 
@@ -354,23 +376,33 @@ class DBHelper {
     required String userId,
     required String friendId,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/accept-friend-request'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "friendId": friendId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/accept-friend-request'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "friendId": friendId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Friend request accepted!', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
@@ -379,24 +411,33 @@ class DBHelper {
     required String userId,
     required String friendId,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/reject-friend-request'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "friendId": friendId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      print("NANDITO");
-      print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/reject-friend-request'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "friendId": friendId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Friend request rejected!', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
@@ -405,23 +446,33 @@ class DBHelper {
     required String userId,
     required String friendId,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/remove-friend'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "friendId": friendId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/remove-friend'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "friendId": friendId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Friend removed!', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
