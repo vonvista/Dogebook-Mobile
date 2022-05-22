@@ -90,7 +90,7 @@ class _FeedState extends State<Feed> {
     } else if (widget.mode == "widget") {
       newPosts = db.getUserPostsLim(widget.userId, lastpostid);
     }
-    // dynamic newPosts = db.getPublicPostsLim(lastpostid);
+
     //append new posts and old posts
     int newPostsLength = await newPosts.then((value) => value.length);
     newPostsLength < limit ? hasMorePost = false : hasMorePost = true;
@@ -425,9 +425,7 @@ class _FeedState extends State<Feed> {
       privacy: privacy,
     );
 
-    if (result['err'] != null) {
-      print(result['err']);
-    } else {
+    if (result != null) {
       //go to home page
       Navigator.pop(context);
       _postController.text = '';
@@ -457,9 +455,7 @@ class _FeedState extends State<Feed> {
       privacy: privacy,
     );
 
-    if (result['err'] != null) {
-      print(result['err']);
-    } else {
+    if (result != null) {
       Navigator.pop(context);
       Post newPost = Post(
         id: result['_id'],
@@ -487,9 +483,7 @@ class _FeedState extends State<Feed> {
     dynamic result = await db.deletePost(
       id: id,
     );
-    if (result['err'] != null) {
-      print(result['err']);
-    } else {
+    if (result != null) {
       String deletedId = result['_id'];
       setState(() {
         Future.value(

@@ -88,73 +88,82 @@ class DBHelper {
   }
 
   Future<List<Post>> getPublicPostsLim(String postId, String userId) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/post/get-public-all-lim'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "limit": 10,
-          "postId": postId,
-          "userId": userId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      List<Post> posts = [];
-      for (var t in data) {
-        posts.add(
-          Post(
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/post/get-public-all-lim'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "limit": 10,
+            "postId": postId,
+            "userId": userId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        //print(data);
+        List<Post> posts = [];
+        for (var t in data) {
+          posts.add(
+            Post(
+              id: t['_id'],
+              userId: t['userId']['_id'],
+              name: t['userId']['firstName'] + " " + t['userId']['lastName'],
+              content: t['content'],
+              privacy: t['privacy'],
+              createdAt: convertTime(t['createdAt']),
+            ),
+          );
+          //print(t['_id']);
+        }
+        return posts;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return [];
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return [];
+    }
+  }
+
+  Future<List<Post>> getUserPostsLim(String id, String next) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/post/get-user-posts-lim'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "limit": 10,
+            "id": id,
+            "next": next,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        //print(data);
+        List<Post> posts = [];
+        for (var t in data) {
+          posts.add(Post(
             id: t['_id'],
             userId: t['userId']['_id'],
             name: t['userId']['firstName'] + " " + t['userId']['lastName'],
             content: t['content'],
             privacy: t['privacy'],
             createdAt: convertTime(t['createdAt']),
-          ),
-        );
-        //print(t['_id']);
+          ));
+        }
+        return posts;
+      } else {
+        throw Exception('Failed to load internet data');
       }
-      return posts;
-    } else {
-      throw Exception('Failed to load internet data');
-    }
-  }
-
-  Future<List<Post>> getUserPostsLim(String id, String next) async {
-    //print("AD" + id);
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/post/get-user-posts-lim'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "limit": 10,
-          "id": id,
-          "next": next,
-        },
-      ),
-    );
-
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      List<Post> posts = [];
-      for (var t in data) {
-        posts.add(Post(
-          id: t['_id'],
-          userId: t['userId']['_id'],
-          name: t['userId']['firstName'] + " " + t['userId']['lastName'],
-          content: t['content'],
-          privacy: t['privacy'],
-          createdAt: convertTime(t['createdAt']),
-        ));
-      }
-      return posts;
-    } else {
-      throw Exception('Failed to load internet data');
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return [];
     }
   }
 
@@ -405,23 +414,33 @@ class DBHelper {
     required String content,
     required String privacy,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/post/add'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "content": content,
-          "privacy": privacy,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/post/add'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "content": content,
+            "privacy": privacy,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Post created', type: 'suc');
+        return data;
+      } else {
+        throw Exception('Failed to load internet data');
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
@@ -430,23 +449,33 @@ class DBHelper {
     required String content,
     required String privacy,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/post/edit'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "id": id,
-          "content": content,
-          "privacy": privacy,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/post/edit'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "id": id,
+            "content": content,
+            "privacy": privacy,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Post edited', type: 'suc');
+        return data;
+      } else {
+        throw Exception('Failed to load internet data');
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
@@ -454,20 +483,30 @@ class DBHelper {
   Future deletePost({
     required String id,
   }) async {
-    final response = await http.delete(
-      Uri.parse('http://$serverIP:3001/post/delete'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {"_id": id},
-      ),
-    );
-    //print("HERe");
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.delete(
+        Uri.parse('http://$serverIP:3001/post/delete'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {"_id": id},
+        ),
+      );
+      //print("HERe");
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Post deleted', type: 'suc');
+        return data;
+      } else {
+        throw Exception('Failed to load internet data');
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
