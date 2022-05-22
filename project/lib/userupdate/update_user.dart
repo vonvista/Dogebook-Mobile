@@ -57,6 +57,28 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
+  //create input field for email
+  Widget _emailField(String hintText, String labelText) {
+    return TextFormField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        icon: Icon(Icons.email),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please $hintText';
+        }
+        //check if valid email
+        if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+        return null;
+      },
+    );
+  }
+
   //reusable widget for button
   Widget _buildButton(String text, Function() onPressed) {
     return ElevatedButton(
@@ -103,7 +125,7 @@ class _UpdateUserState extends State<UpdateUser> {
                 const SizedBox(height: 10),
                 _inputField('Enter your last name', 'Last Name', _lastNameController),
                 const SizedBox(height: 10),
-                _inputField('Enter your email', 'Email', _emailController),
+                _emailField('Enter your email', 'Email'),
                 const SizedBox(height: 10),
                 _buildButton('Update profile', _handleUpdateUser),
               ],
@@ -119,7 +141,6 @@ class _UpdateUserState extends State<UpdateUser> {
     if (_formKey.currentState!.validate()) {
       //get user details
       //check if passwords match
-      print("WDADA");
       dynamic result = await db.updateUser(
         userId: storage.getItem('_id'),
         firstName: _firstNameController.text,
@@ -127,22 +148,14 @@ class _UpdateUserState extends State<UpdateUser> {
         email: _emailController.text,
       );
 
-      if (result['err'] != null) {
-        print(result['err']);
-        //show snackbar error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result['err']),
-            //set duration
-            duration: Duration(seconds: 1),
-          ),
-        );
-      } else {
+      if (result != null) {
         print(result);
         //set localstorage values
         await storage.setItem('firstName', _firstNameController.text);
         await storage.setItem('lastName', _lastNameController.text);
         await storage.setItem('email', _emailController.text);
+        //pop navigator
+        Navigator.pop(context);
       }
     }
   }

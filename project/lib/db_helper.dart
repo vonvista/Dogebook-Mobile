@@ -703,24 +703,34 @@ class DBHelper {
     required String oldPassword,
     required String newPassword,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/update-pass'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "oldPassword": oldPassword,
-          "newPassword": newPassword,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/update-pass'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "oldPassword": oldPassword,
+            "newPassword": newPassword,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Password updated', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 
@@ -731,25 +741,35 @@ class DBHelper {
     required String lastName,
     required String email,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/update'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "firstName": firstName,
-          "lastName": lastName,
-          "email": email,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/update'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "firstName": firstName,
+            "lastName": lastName,
+            "email": email,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'User updated', type: 'suc');
+        return data;
+      } else {
+        statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
+        return null;
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 }

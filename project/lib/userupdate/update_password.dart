@@ -123,29 +123,21 @@ class _UpdatePasswordState extends State<UpdatePassword> {
           newPassword: _newPassController.text,
         );
 
-        if (result['err'] != null) {
-          print(result['err']);
-          //show snackbar error
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(result['err']),
-              //set duration
-              duration: Duration(seconds: 1),
-            ),
-          );
-        } else {
-          print(result);
+        if (result != null) {
+          //pop
+          Navigator.pop(context);
         }
-      } else {
-        //show error
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Passwords do not match'),
-            //set duration
-            duration: Duration(seconds: 1),
-          ),
-        );
       }
+      // } else {
+      //   //show error
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //       content: Text('Passwords do not match'),
+      //       //set duration
+      //       duration: Duration(seconds: 1),
+      //     ),
+      //   );
+      // }
     }
   }
 

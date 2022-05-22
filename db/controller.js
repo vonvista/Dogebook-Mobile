@@ -138,7 +138,7 @@ exports.updatePassword = async function(req, res, next) {
       });
     }
     else {
-      res.send({err:'Incorrect password'});
+      res.send({err:'Incorrect old password'});
     }
   }
   else {
