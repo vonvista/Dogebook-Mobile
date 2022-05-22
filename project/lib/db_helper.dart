@@ -245,23 +245,32 @@ class DBHelper {
     required String userId,
     required String friendId,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://$serverIP:3001/user/send-friend-request'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "userId": userId,
-          "friendId": friendId,
-        },
-      ),
-    );
-    //get data from jsonplaceholder and catch error
-    if (response.statusCode == 200) {
-      var data = (jsonDecode(response.body));
-      //print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load internet data');
+    try {
+      final response = await http.post(
+        Uri.parse('http://$serverIP:3001/user/send-friend-request'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "userId": userId,
+            "friendId": friendId,
+          },
+        ),
+      );
+      //get data from jsonplaceholder and catch error
+      if (response.statusCode == 200) {
+        var data = (jsonDecode(response.body));
+        if (data['err'] != null) {
+          statusMessage.showSnackBar(message: data['err'], type: 'err');
+          return null;
+        }
+        statusMessage.showSnackBar(message: 'Friend request sent!', type: 'suc');
+        return data;
+      } else {
+        throw Exception('Failed to load internet data');
+      }
+    } catch (e) {
+      statusMessage.showSnackBar(message: e.toString(), type: 'err');
+      return null;
     }
   }
 

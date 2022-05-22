@@ -48,18 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
       friendId: storage.getItem('_id'),
     );
 
-    if (result['err'] != null) {
-      print(result['err']);
-      //show snackbar error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result['err']),
-          //set duration
-          duration: Duration(seconds: 1),
-        ),
-      );
-    } else {
-      print(result);
+    if (result != null) {
+      print("SUCCESS");
     }
   }
 
