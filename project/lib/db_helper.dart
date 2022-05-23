@@ -34,6 +34,7 @@ class DBHelper {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user),
       );
+      print("HERE");
       //get data from jsonplaceholder and catch error
       if (response.statusCode == 200) {
         var data = (jsonDecode(response.body));
@@ -197,7 +198,8 @@ class DBHelper {
             email: t['email'],
             password: "", //hide password
             friends: t['friends'].cast<String>(), //cast to list of strings,
-            friendRequests: t['friendRequests'].cast<String>(), // "as List<String> doesn't seem to work"
+            friendRequests: t['friendRequests']
+                .cast<String>(), // "as List<String> doesn't seem to work"
           ));
         }
         //if error message
@@ -233,7 +235,8 @@ class DBHelper {
         email: data['email'],
         password: "", //hide password
         friends: data['friends'].cast<String>(), //cast to list of strings,
-        friendRequests: data['friendRequests'].cast<String>(), // "as List<String> doesn't seem to work"
+        friendRequests: data['friendRequests']
+            .cast<String>(), // "as List<String> doesn't seem to work"
       );
     } else {
       throw Exception('Failed to load internet data');
@@ -265,7 +268,8 @@ class DBHelper {
           statusMessage.showSnackBar(message: data['err'], type: 'err');
           return null;
         }
-        statusMessage.showSnackBar(message: 'Friend request sent!', type: 'suc');
+        statusMessage.showSnackBar(
+            message: 'Friend request sent!', type: 'suc');
         return data;
       } else {
         statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
@@ -394,7 +398,8 @@ class DBHelper {
           statusMessage.showSnackBar(message: data['err'], type: 'err');
           return null;
         }
-        statusMessage.showSnackBar(message: 'Friend request accepted!', type: 'suc');
+        statusMessage.showSnackBar(
+            message: 'Friend request accepted!', type: 'suc');
         return data;
       } else {
         statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
@@ -429,7 +434,8 @@ class DBHelper {
           statusMessage.showSnackBar(message: data['err'], type: 'err');
           return null;
         }
-        statusMessage.showSnackBar(message: 'Friend request rejected!', type: 'suc');
+        statusMessage.showSnackBar(
+            message: 'Friend request rejected!', type: 'suc');
         return data;
       } else {
         statusMessage.showSnackBar(message: 'Failed to load', type: 'err');
