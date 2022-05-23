@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'db_helper.dart';
 import 'colors.dart';
 
 import 'package:localstorage/localstorage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
-
-import 'models/user_model.dart';
-import 'models/post_model.dart';
 
 import 'login_page.dart';
 import 'profile_page.dart';
@@ -21,19 +17,27 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  bool rebuild = false;
+  bool rebuild =
+      false; //var for rebuilding page (used as an object key to trigger rebuild)
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
   }
 
-  //create list tile for user
-  Widget _userListTile(String id, String name, String username) {
+  /// @brief: create list tile for friends
+  ///
+  /// @param: id: id of user
+  /// @param: name: name of user
+  /// @param: email: email of user
+  ///
+  /// @return: list tile for friends
+  Widget _userListTile(String id, String name, String email) {
     return ListTile(
       key: ObjectKey(rebuild),
       leading: Hero(
@@ -50,11 +54,15 @@ class _UserPageState extends State<UserPage> {
           color: Colors.transparent,
           child: Text(
             name,
-            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-      subtitle: Text(username),
+      subtitle: Text(email),
       onTap:
           //navigate to profile page
           () async {
@@ -65,9 +73,8 @@ class _UserPageState extends State<UserPage> {
               userId: id,
             ),
           ),
-          //refresh page
         );
-        print("HERE HEEW");
+        //refresh page
         setState(() {
           rebuild = !rebuild;
         });
@@ -75,6 +82,11 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the user page.
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -88,7 +100,10 @@ class _UserPageState extends State<UserPage> {
           const Center(
             child: Text(
               '  View your profile',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
           ),
           _userListTile(
@@ -97,27 +112,27 @@ class _UserPageState extends State<UserPage> {
             "${storage.getItem("firstName")} ${storage.getItem("lastName")}",
             storage.getItem('email'),
           ),
-          Divider(height: 10),
+          const Divider(height: 10),
           //build logout
           ElevatedButton(
-            child: Text('Update Password'),
+            child: const Text('Update Password'),
             onPressed: () async {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UpdatePassword(),
+                  builder: (context) => const UpdatePassword(),
                 ),
               );
             },
           ),
           ElevatedButton(
-            child: Text('Logout'),
+            child: const Text('Logout'),
             onPressed: () {
               storage.clear();
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginPage(),
+                  builder: (context) => const LoginPage(),
                 ),
               );
             },
