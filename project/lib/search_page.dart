@@ -96,6 +96,7 @@ class _SearchPageState extends State<SearchPage> {
   ///
   /// @param: id: id of user
   /// @param: name: name of user
+  /// @param: email: email of user
   ///
   /// @return: list tile for search results
   Widget _userListTile(String id, String name, String email) {

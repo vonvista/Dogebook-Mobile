@@ -5,12 +5,8 @@ import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'models/user_model.dart';
-import 'models/post_model.dart';
 
-import 'feed_page.dart';
 import 'profile_page.dart';
-
-//NOTE: Missing feature pa yung rejecting friend request
 
 class FriendPage extends StatefulWidget {
   const FriendPage({Key? key}) : super(key: key);
@@ -20,13 +16,14 @@ class FriendPage extends StatefulWidget {
 }
 
 class _FriendPageState extends State<FriendPage> {
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  late Future<List<User>> friends;
-  late Future<List<User>> friendRequests;
+  late Future<List<User>> friends; //friends
+  late Future<List<User>> friendRequests; //friend requests
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
@@ -34,6 +31,11 @@ class _FriendPageState extends State<FriendPage> {
     friends = db.getFriends(id: storage.getItem('_id'));
   }
 
+  /// @brief: function for handling accept friend request
+  ///
+  /// @param: id: id of user to be accepted
+  ///
+  /// @return: void
   void _handleAcceptRequest(String id) async {
     dynamic result = await db.acceptFriendRequest(
       userId: id,
@@ -43,12 +45,17 @@ class _FriendPageState extends State<FriendPage> {
     if (result != null) {
       setState(() {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
-        friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
+        friendRequests =
+            Future.value(db.getFriendRequests(id: storage.getItem('_id')));
       });
     }
   }
 
-  //handle reject request
+  /// @brief: function for handling reject friend request
+  ///
+  /// @param: id: id of user to be rejected
+  ///
+  /// @return: void
   void _handleRejectRequest(String id) async {
     dynamic result = await db.rejectFriendRequest(
       userId: id,
@@ -58,11 +65,17 @@ class _FriendPageState extends State<FriendPage> {
     if (result != null) {
       setState(() {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
-        friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
+        friendRequests =
+            Future.value(db.getFriendRequests(id: storage.getItem('_id')));
       });
     }
   }
 
+  /// @brief: function for handling unfriending
+  ///
+  /// @param: id: id of user to be unfriended
+  ///
+  /// @return: void
   void _handleRemoveFriend(String id) async {
     dynamic result = await db.removeFriend(
       userId: id,
@@ -72,15 +85,22 @@ class _FriendPageState extends State<FriendPage> {
     if (result != null) {
       setState(() {
         friends = Future.value(db.getFriends(id: storage.getItem('_id')));
-        friendRequests = Future.value(db.getFriendRequests(id: storage.getItem('_id')));
+        friendRequests =
+            Future.value(db.getFriendRequests(id: storage.getItem('_id')));
       });
       //set friends in localstorage to the new list
       await storage.setItem('friends', await friends.then((value) => value));
     }
   }
 
-  //create list tile for search results
-  Widget _friendReqTile(String id, String name, String username) {
+  /// @brief: create list tile for friend requests
+  ///
+  /// @param: id: id of user
+  /// @param: name: name of user
+  /// @param: email: email of user
+  ///
+  /// @return: list tile for friend requests
+  Widget _friendReqTile(String id, String name, String email) {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
@@ -96,23 +116,27 @@ class _FriendPageState extends State<FriendPage> {
           color: Colors.transparent,
           child: Text(
             name,
-            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-      subtitle: Text(username),
+      subtitle: Text(email),
       //trailing accept and reject buttons
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             onPressed: () {
               _handleAcceptRequest(id);
             },
           ),
           IconButton(
-            icon: Icon(Icons.clear),
+            icon: const Icon(Icons.clear),
             onPressed: () {
               _handleRejectRequest(id);
             },
@@ -134,8 +158,14 @@ class _FriendPageState extends State<FriendPage> {
     );
   }
 
-  //create list tile for search results
-  Widget _friendTile(String id, String name, String username) {
+  /// @brief: create list tile for friends
+  ///
+  /// @param: id: id of user
+  /// @param: name: name of user
+  /// @param: email: email of user
+  ///
+  /// @return: list tile for friends
+  Widget _friendTile(String id, String name, String email) {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
@@ -151,18 +181,22 @@ class _FriendPageState extends State<FriendPage> {
           color: Colors.transparent,
           child: Text(
             name,
-            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-      subtitle: Text(username),
+      subtitle: Text(email),
       //trailing accept and reject buttons
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           //Remove friend text button
           ElevatedButton(
-            child: Text('Remove friend'),
+            child: const Text('Remove friend'),
             onPressed: () {
               _handleRemoveFriend(id);
             },
@@ -184,7 +218,9 @@ class _FriendPageState extends State<FriendPage> {
     );
   }
 
-  //create future builder list of search results
+  /// @brief: create future builder list of friend requests
+  ///
+  /// @return: future builder list of friend requests
   Widget _friendRequestsList() {
     return FutureBuilder<List<User>>(
       future: friendRequests,
@@ -196,17 +232,19 @@ class _FriendPageState extends State<FriendPage> {
               itemBuilder: (BuildContext context, int index) {
                 return _friendReqTile(
                   snapshot.data![index].id,
-                  snapshot.data![index].firstName + ' ' + snapshot.data![index].lastName,
+                  snapshot.data![index].firstName +
+                      ' ' +
+                      snapshot.data![index].lastName,
                   snapshot.data![index].email,
                 );
               },
               shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
             );
           } else {
             return Container(
-              padding: EdgeInsets.all(30),
-              child: Center(
+              padding: const EdgeInsets.all(30),
+              child: const Center(
                 child: Text('No friend requests :('),
               ),
             );
@@ -214,13 +252,16 @@ class _FriendPageState extends State<FriendPage> {
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
     );
   }
 
+  /// @brief: create future builder list of friends
+  ///
+  /// @return: future builder list of friends
   Widget _friendsList() {
     return FutureBuilder<List<User>>(
       future: friends,
@@ -232,17 +273,19 @@ class _FriendPageState extends State<FriendPage> {
               itemBuilder: (BuildContext context, int index) {
                 return _friendTile(
                   snapshot.data![index].id,
-                  snapshot.data![index].firstName + ' ' + snapshot.data![index].lastName,
+                  snapshot.data![index].firstName +
+                      ' ' +
+                      snapshot.data![index].lastName,
                   snapshot.data![index].email,
                 );
               },
               shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
             );
           } else {
             return Container(
-              padding: EdgeInsets.all(30),
-              child: Center(
+              padding: const EdgeInsets.all(30),
+              child: const Center(
                 child: Text('No friends :('),
               ),
             );
@@ -250,18 +293,23 @@ class _FriendPageState extends State<FriendPage> {
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
     );
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the friends page.
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         children: <Widget>[
           const Text(
             'Friend Requests',
