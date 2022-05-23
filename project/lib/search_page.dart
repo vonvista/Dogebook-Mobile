@@ -6,7 +6,6 @@ import 'models/user_model.dart';
 
 import 'profile_page.dart';
 
-import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 class SearchPage extends StatefulWidget {
@@ -20,27 +19,31 @@ class _SearchPageState extends State<SearchPage> {
   //create search controller
   final TextEditingController _searchController = TextEditingController();
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
-  bool rebuild = false;
+  bool rebuild =
+      false; //var for rebuilding page (used as an object key to trigger rebuild)
 
-  late Future<List<User>> searchResults = Future.value([]);
+  late Future<List<User>> searchResults = Future.value([]); //search results
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
   }
 
-  //handle search
+  /// @brief: function to handle search
+  ///
+  /// @return: void
   void _handleSearch() async {
     final String search = _searchController.text;
     //if post is empty
     if (search.isEmpty) {
       return;
     }
-    //post to server
+
     dynamic result = await db.findUser(
       username: search,
     );
@@ -51,7 +54,9 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  //create search bar with submit button
+  /// @brief: create search bar with submit button
+  ///
+  /// @return: search bar widget with submit button
   Widget _searchBar() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -65,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
                 //rounded
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Colors.white,
                   ),
                 ),
@@ -76,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.search, color: Colors.white),
+            icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {
               _handleSearch();
             },
@@ -87,8 +92,13 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  //create list tile for search results
-  Widget _userListTile(String id, String name, String username) {
+  /// @brief: create list tile for search results
+  ///
+  /// @param: id: id of user
+  /// @param: name: name of user
+  ///
+  /// @return: list tile for search results
+  Widget _userListTile(String id, String name, String email) {
     return ListTile(
       leading: Hero(
         tag: 'image_$id',
@@ -107,11 +117,15 @@ class _SearchPageState extends State<SearchPage> {
           color: Colors.transparent,
           child: Text(
             name,
-            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-      subtitle: Text(username),
+      subtitle: Text(email),
       onTap:
           //navigate to profile page
           () async {
@@ -128,7 +142,9 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  //create future builder list of search results
+  /// @brief: create future builder list of search results
+  ///
+  /// @return: future builder list view of search results
   Widget _searchResults() {
     return FutureBuilder<List<User>>(
       future: searchResults,
@@ -139,24 +155,30 @@ class _SearchPageState extends State<SearchPage> {
             itemBuilder: (BuildContext context, int index) {
               return _userListTile(
                 snapshot.data![index].id,
-                snapshot.data![index].firstName + " " + snapshot.data![index].lastName,
+                snapshot.data![index].firstName +
+                    " " +
+                    snapshot.data![index].lastName,
                 snapshot.data![index].email,
               );
             },
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
           );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
     );
   }
 
-  //build search page
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the search page.
   @override
   Widget build(BuildContext context) {
     return SafeArea(
