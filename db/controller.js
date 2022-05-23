@@ -95,7 +95,7 @@ exports.findUsers = async function(req, res, next) {
   // const users = await User.find({firstName: {$regex: req.body.firstName, $options: 'i'}});
   //find users whose first name and last name matches the regex 
   const searchNames = req.body.username.split(' ');
-  var users = new Set();
+  var users = new Map();
   //find users whose first name or last name matches any of the searchNames
   for (var i = 0; i < searchNames.length; i++) {
     //find users whose first name or last name matches any of the searchNames
@@ -105,13 +105,15 @@ exports.findUsers = async function(req, res, next) {
     const searchedUsers = await User.find({$or: [{firstName: {$regex: searchNames[i], $options: 'i'}}, {lastName: {$regex: searchNames[i], $options: 'i'}}]});
     for (var j = 0; j < searchedUsers.length; j++) {
 
-      users.add(searchedUsers[j]);
+      //add to map with key as userId to string and value as user object
+      users.set(searchedUsers[j]._id.toString(), searchedUsers[j]);
     }
   }
 
   console.log([...users])
   if(users){
-    res.send([...users]);
+    //send users but only the values as an array
+    res.send([...users].map(user => user[1]));
   }
   else {
     res.send({err:'User not found'});
