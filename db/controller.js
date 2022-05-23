@@ -377,15 +377,10 @@ exports.getAllPublicPostsLimited = async function(req, res, next) {
   if(req.body.postId != ""){
     //get public post and friend post from array of friends in descending order and limit to 10 starting from postid
     posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: {$in: user.friends}}], _id: {$lt: req.body.postId}}).sort({createdAt: -1}).limit(10).populate('userId', 'firstName lastName');
-
-    // posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: req.body.id}], _id: {$lt: req.body.postId}}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
-    // posts = await Post.find({privacy: 'public', _id: {$lt: req.body.postId}}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
   }
   else {
     //get public post and friends post in descending order and limit to 10
     posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: {$in: user.friends}}, {privacy: 'friends', userId: req.body.userId} ]}).sort({createdAt: -1}).limit(10).populate('userId', 'firstName lastName');
-    //posts = await Post.find({$or: [{privacy: 'public'}, {privacy: 'friends', userId: req.body.id}]}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
-    // posts = await Post.find({privacy: 'public'}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
   }
 
   res.send(posts);
@@ -402,14 +397,26 @@ exports.getUserPosts = async function(req, res, next) {
 // get user posts sorted by data in descending order and limit to 10 starting from postid provided
 exports.getUserPostsLimited = async function(req, res, next) {
   console.log(req.body);
+
+  //get user from userId
+  user = await User.findById(req.body.userId);
   
   var posts;
   if(req.body.next != ""){
-    // get user posts sorted by data in descending order and limit to 10 starting from postid
+    // get user posts sorted by data in descending order and limit to 10 starting from postid, if not friends with userId
     posts = await Post.find({userId: req.body.id, _id: {$lt: req.body.next}}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
   }
   else {
     posts = await Post.find({userId: req.body.id}).sort({_id: -1}).limit(10).populate('userId', 'firstName lastName');
+  }
+
+  //filter posts to public only if user is not friends with userId or if its not your own post
+
+
+  if(user.friends.indexOf(req.body.id) == -1 && req.body.id != req.body.userId){
+    posts = posts.filter(function(post){
+      return post.privacy == 'public';
+    });
   }
 
   res.send(posts);

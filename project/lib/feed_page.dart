@@ -92,7 +92,8 @@ class _FeedState extends State<Feed> {
     if (widget.mode == "normal") {
       newPosts = db.getPublicPostsLim(lastpostid, storage.getItem("_id"));
     } else if (widget.mode == "widget") {
-      newPosts = db.getUserPostsLim(widget.userId, lastpostid);
+      newPosts =
+          db.getUserPostsLim(storage.getItem("_id"), widget.userId, lastpostid);
     }
 
     //append new posts and old posts

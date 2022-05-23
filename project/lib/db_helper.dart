@@ -162,7 +162,11 @@ class DBHelper {
   /// @param next: post id of last post (if empty string, get latest posts)
   ///
   /// @return: returns empty list or list of posts
-  Future<List<Post>> getUserPostsLim(String id, String next) async {
+  Future<List<Post>> getUserPostsLim(
+    String userId,
+    String id,
+    String next,
+  ) async {
     try {
       final response = await http.post(
         Uri.parse('http://$serverIP:3001/post/get-user-posts-lim'),
@@ -170,6 +174,7 @@ class DBHelper {
         body: jsonEncode(
           {
             "limit": 10,
+            "userId": userId,
             "id": id,
             "next": next,
           },
