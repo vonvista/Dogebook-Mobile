@@ -7,7 +7,6 @@ import 'package:localstorage/localstorage.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'models/user_model.dart';
-import 'models/post_model.dart';
 
 import 'feed_page.dart';
 import 'userupdate/update_user.dart';
@@ -18,30 +17,35 @@ class ProfilePage extends StatefulWidget {
     required this.userId,
   }) : super(key: key);
 
-  final String userId;
+  final String userId; //id of user whose profile is being viewed
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Future<User> user;
+  late Future<User> user; //user whose profile is being viewed
 
-  bool rebuild = false;
+  bool rebuild =
+      false; //var for rebuilding page (used as an object key to trigger rebuild)
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
     user = db.getUser(id: widget.userId);
-    print(storage.getItem('friends').contains(widget.userId));
+    // print(storage.getItem('friends').contains(widget.userId));
   }
 
+  /// @brief: function for handling sending friend request
+  ///
+  /// @return: void
   void handleSendRequest() async {
     dynamic result = await db.sendFriendRequest(
       userId: widget.userId,
@@ -53,12 +57,15 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// @brief: function for handling update user button press
+  ///
+  /// @return: void
   void _handleUpdateUser() async {
     //got to user update page
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UpdateUser(),
+        builder: (context) => const UpdateUser(),
       ),
     );
     //refresh the page
@@ -68,54 +75,59 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  //create edit profile button
+  /// @brief: create edit profile button
+  ///
+  /// @return: profile button widget
   Widget _editProfileButton() {
     return Container(
       padding: const EdgeInsets.all(10),
       //if profile is user, show edit profile button, else show add friend button
-
       child: widget.userId == storage.getItem('_id')
           ? ElevatedButton(
-              child: Text('Edit Profile'),
+              child: const Text('Edit Profile'),
               onPressed: () {
                 _handleUpdateUser();
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
                 onPrimary: colors.deg2,
-                minimumSize: Size.fromHeight(40),
+                minimumSize: const Size.fromHeight(40),
               ),
             )
           : storage.getItem('friends').contains(widget.userId)
               ? ElevatedButton(
-                  child: Text('Friends'),
+                  child: const Text('Friends'),
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
                     onPrimary: colors.deg2,
-                    minimumSize: Size.fromHeight(40),
+                    minimumSize: const Size.fromHeight(40),
                   ),
                 )
               : ElevatedButton(
-                  child: Text('Send friend request'),
+                  child: const Text('Send friend request'),
                   onPressed: () {
                     handleSendRequest();
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
                     onPrimary: colors.deg2,
-                    minimumSize: Size.fromHeight(40),
+                    minimumSize: const Size.fromHeight(40),
                   ),
                 ),
     );
   }
 
-  //build profile page with user info
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the profile page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: const Text(''),
         foregroundColor: Colors.white,
         backgroundColor: colors.deg1,
       ),
@@ -126,73 +138,87 @@ class _ProfilePageState extends State<ProfilePage> {
             if (snapshot.hasData) {
               return ListView(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Hero(
-                      tag: "image_${snapshot.data!.id}",
-                      //add white border to profile picture
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                          color: Colors.white,
+                  Container(
+                    color: colors.deg2,
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                        child: Container(
-                          margin: const EdgeInsets.all(2),
-                          child: ProfilePicture(
-                            name: snapshot.data!.firstName + ' ' + snapshot.data!.lastName,
-                            radius: 31,
-                            fontsize: 21,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Center(
-                    child: Hero(
-                      tag: "text_${snapshot.data!.id}",
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          snapshot.data!.firstName + " " + snapshot.data!.lastName,
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        Center(
+                          child: Hero(
+                            tag: "image_${snapshot.data!.id}",
+                            //add white border to profile picture
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white,
+                                ),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                                color: Colors.white,
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(2),
+                                child: ProfilePicture(
+                                  name: snapshot.data!.firstName +
+                                      ' ' +
+                                      snapshot.data!.lastName,
+                                  radius: 31,
+                                  fontsize: 21,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: Hero(
+                            tag: "text_${snapshot.data!.id}",
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                snapshot.data!.firstName +
+                                    " " +
+                                    snapshot.data!.lastName,
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            snapshot.data!.email,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                        _editProfileButton(),
+                      ],
                     ),
                   ),
-                  Center(
-                    child: Text(
-                      snapshot.data!.email,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ),
-                  _editProfileButton(),
-                  Feed(mode: "widget", userId: widget.userId, key: ObjectKey(rebuild)),
+                  Feed(
+                      mode: "widget",
+                      userId: widget.userId,
+                      key: ObjectKey(rebuild)),
                 ],
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),
-      backgroundColor: colors.deg2,
+      backgroundColor: colors.deg5,
     );
   }
 }
