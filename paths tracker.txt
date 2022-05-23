@@ -1,0 +1,14 @@
+1 - Signup Page
+2 - Pressing sign up without any of the fields filed up
+3,4 - Signing up with non-matching passwords on password and repeat password fields
+5,6 - Signing up with all fields field and satisfying conditions
+7 - Signing up with an email that is already registered
+8 - Signing up with invalid email
+
+9 - Login Page
+11 - User not registered in system
+12 - Incorrect password 
+13,14 - Correct email and password
+15 - Login without filling fields
+
+

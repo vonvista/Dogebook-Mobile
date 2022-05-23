@@ -184,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: ListView(
           children: <Widget>[
             _searchBar(),
             _searchResults(),
