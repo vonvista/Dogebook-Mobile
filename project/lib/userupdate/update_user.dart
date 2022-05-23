@@ -111,7 +111,7 @@ class _UpdateUserState extends State<UpdateUser> {
 
   /// @brief: create update user form
   ///
-  /// @return: returns a form with the given parameters
+  /// @return: returns a form for update user
   Widget userForm() {
     return Container(
       padding: const EdgeInsets.all(20),

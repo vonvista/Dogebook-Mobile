@@ -17,32 +17,41 @@ class UpdatePassword extends StatefulWidget {
 }
 
 class _UpdatePasswordState extends State<UpdatePassword> {
-  //create email and password controllers
+  //create password controllers
   final TextEditingController _oldPassController = TextEditingController();
   final TextEditingController _newPassController = TextEditingController();
   final TextEditingController _repeatPassController = TextEditingController();
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
   //create a global key for form validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
   }
 
-  Widget _passwordField(String hintText, String labelText, TextEditingController controller) {
+  /// @brief: create reusable input field specifically for passwords
+  ///
+  /// @param hintText: text to display as hint
+  /// @param labelText: text to display as label
+  /// @param controller: controller for textfield
+  ///
+  /// @return: returns a textfield with the given parameters
+  Widget _passwordField(
+      String hintText, String labelText, TextEditingController controller) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        icon: Icon(Icons.lock),
+        icon: const Icon(Icons.lock),
       ),
       obscureText: true,
       validator: (value) {
@@ -54,7 +63,12 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     );
   }
 
-  //reusable widget for button
+  /// @brief: reusable button widget
+  ///
+  /// @param text: text to display on button
+  /// @param onPressed: function to call when button is pressed
+  ///
+  /// @return: returns a button with the given parameters
   Widget _buildButton(String text, Function() onPressed) {
     return ElevatedButton(
       //set button size
@@ -67,6 +81,9 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     );
   }
 
+  /// @brief: create update password form
+  ///
+  /// @return: returns a form for update password
   Widget passwordForm() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -96,11 +113,14 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                _passwordField('Enter your old password', 'Old Password', _oldPassController),
+                _passwordField('Enter your old password', 'Old Password',
+                    _oldPassController),
                 const SizedBox(height: 10),
-                _passwordField('Enter your new password', 'New Password', _newPassController),
+                _passwordField('Enter your new password', 'New Password',
+                    _newPassController),
                 const SizedBox(height: 10),
-                _passwordField('Repeat your new password', 'Repeat Password', _repeatPassController),
+                _passwordField('Repeat your new password', 'Repeat Password',
+                    _repeatPassController),
                 const SizedBox(height: 10),
                 _buildButton('Update password', _handleUpdatePassword),
               ],
@@ -111,6 +131,9 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     );
   }
 
+  /// @brief: function to handle update password
+  ///
+  /// @return: void
   void _handleUpdatePassword() async {
     //validate form
     if (_formKey.currentState!.validate()) {
@@ -141,6 +164,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     }
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the update password page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
