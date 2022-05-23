@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// color schemes to be used in the application
+
 class AppColors {
   Color deg1 = Color(0xFF242F9B);
   Color deg2dark = const Color(0xFF333C8F);
