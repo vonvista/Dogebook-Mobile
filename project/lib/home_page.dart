@@ -20,21 +20,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; //index of selected tab
   String id = "";
 
-  AppColors colors = AppColors();
-  LocalStorage storage = LocalStorage('project');
+  AppColors colors = AppColors(); //app colors
+  LocalStorage storage = LocalStorage('project'); //local storage
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
   }
 
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
+  /// @brief: function on tab change
+  ///
+  /// @param index: index of selected tab
+  ///
+  /// @return: void
   void _onItemTapped(int index) {
     if (index == 2) {
+      //this is the app icon, do not do anything
       return;
     }
     setState(() {
@@ -42,19 +47,24 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the home page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //create bottom navigation bar with feed, search, icon, friends, and profile
       body: Center(
         child: <Widget>[
-          Feed(),
-          SearchPage(),
-          SizedBox(
+          const Feed(),
+          const SearchPage(),
+          const SizedBox(
             height: 20,
           ),
-          FriendPage(),
-          UserPage(),
+          const FriendPage(),
+          const UserPage(),
         ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
