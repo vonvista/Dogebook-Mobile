@@ -7,8 +7,6 @@ import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'models/comment_model.dart';
 
-import 'feed_page.dart';
-
 class Comments extends StatefulWidget {
   const Comments({Key? key, required this.id}) : super(key: key);
 
@@ -19,23 +17,27 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
-  late Future<List<Comment>> comments;
-  AppColors colors = AppColors();
+  late Future<List<Comment>> comments; //list of comments
+  AppColors colors = AppColors(); //app colors
 
-  LocalStorage storage = LocalStorage('project');
+  LocalStorage storage = LocalStorage('project'); //local storage
 
   //comment controller
   final TextEditingController _commentController = TextEditingController();
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
     comments = db.getComments(widget.id);
-    print(widget.id);
+    //print(widget.id);
   }
 
+  /// @brief: function for handling add comment
+  ///
+  /// @return: void
   void _handleAddComment() async {
     final String comment = _commentController.text;
     //if post is empty
@@ -52,18 +54,25 @@ class _CommentsState extends State<Comments> {
       Comment newComment = Comment(
         id: result['_id'],
         userId: result['userId']['_id'],
-        name: result['userId']['firstName'] + " " + result['userId']['lastName'],
+        name:
+            result['userId']['firstName'] + " " + result['userId']['lastName'],
         comment: result['comment'],
         createdAt: db.convertTime(result['createdAt']),
       );
 
       setState(() {
         //append result on first index of the future list
-        Future.value(comments = comments.then((value) => [...value, newComment]));
+        Future.value(
+            comments = comments.then((value) => [...value, newComment]));
       });
     }
   }
 
+  /// @brief: function for handling delete comment
+  ///
+  /// @param: id: id of comment to be deleted
+  ///
+  /// @return: void
   void _handleDeleteComment(String id) async {
     //post to server
     dynamic result = await db.deleteComment(
@@ -72,18 +81,29 @@ class _CommentsState extends State<Comments> {
     //set comments to exclude delete post by result
     if (result != null) {
       String deletedId = result['_id'];
+      //remove comment from list with matching id
       setState(() {
         Future.value(
           comments = comments.then(
-            (value) => value.where((comment) => comment.id != deletedId).toList(),
+            (value) =>
+                value.where((comment) => comment.id != deletedId).toList(),
           ),
         );
       });
     }
   }
 
-  //comment tile
-  Widget _commentTile(String id, String name, String comment, String createdAt, String userId) {
+  /// @brief: create tile for comment
+  ///
+  /// @param: id: id of comment
+  /// @param: name: name of user
+  /// @param: comment: comment
+  /// @param: createdAt: time of comment
+  /// @param: userId: id of user
+  ///
+  /// @return: list tile widget for comment
+  Widget _commentTile(
+      String id, String name, String comment, String createdAt, String userId) {
     return ListTile(
       leading: ProfilePicture(
         name: name,
@@ -95,16 +115,16 @@ class _CommentsState extends State<Comments> {
         children: [
           Text(
             name,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(
             'at $createdAt',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               color: Colors.grey,
             ),
@@ -115,7 +135,7 @@ class _CommentsState extends State<Comments> {
       //trailing delete button if user is the author
       trailing: storage.getItem('_id') == userId
           ? IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               onPressed: () {
                 _handleDeleteComment(id);
               },
@@ -124,7 +144,9 @@ class _CommentsState extends State<Comments> {
     );
   }
 
-  //create expanding comment field that is maximum of 3 lines with submit button
+  /// @build: create expanding comment field that is maximum of 3 lines with submit button
+  ///
+  /// @return: widget for comment field
   Widget _commentField() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -141,7 +163,7 @@ class _CommentsState extends State<Comments> {
           ),
           //icon button to submit comment
           IconButton(
-            icon: Icon(Icons.send),
+            icon: const Icon(Icons.send),
             onPressed: () {
               _handleAddComment();
             },
@@ -152,7 +174,9 @@ class _CommentsState extends State<Comments> {
     );
   }
 
-  //create comment list
+  /// @brief: create future list builder for comments
+  ///
+  /// @return: list view widget for comments
   Widget _commentList() {
     return Container(
       child: FutureBuilder<List<Comment>>(
@@ -162,7 +186,7 @@ class _CommentsState extends State<Comments> {
             return snapshot.data!.length > 0
                 ? ListView.builder(
                     shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return _commentTile(
@@ -184,17 +208,22 @@ class _CommentsState extends State<Comments> {
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the comments.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments'),
+        title: const Text('Comments'),
         backgroundColor: colors.deg1,
       ),
       body: Container(
