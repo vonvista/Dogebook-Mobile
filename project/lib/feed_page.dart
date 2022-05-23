@@ -8,7 +8,6 @@ import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:transition/transition.dart';
 
 import 'models/post_model.dart';
-import 'models/user_model.dart';
 
 class Feed extends StatefulWidget {
   const Feed({
@@ -17,38 +16,38 @@ class Feed extends StatefulWidget {
     this.mode = "normal",
   }) : super(key: key);
 
-  final String mode;
-  final String userId;
+  final String
+      mode; //mode can be normal (accessed from bottom nav) or widget (accessed from profile page)
+  final String
+      userId; //(for widget mode) id of user whose profile is being viewed
 
   @override
   State<Feed> createState() => _FeedState();
 }
 
 class _FeedState extends State<Feed> {
-  //variable for post privacy
-  String privacy = 'public';
-  String viewPostsOf = 'public';
+  String privacy = 'public'; //variable for post privacy
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
-  late Future<List<Post>> posts = Future.value([]);
-  final LocalStorage storage = LocalStorage('project');
+  late Future<List<Post>> posts = Future.value([]); //list of posts
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  int limit = 0;
-  bool hasMorePost = true;
+  int limit = 0; //limit for number of posts to load (init to zero)
+  bool hasMorePost = true; //boolean for whether there are more posts to load
 
   //post controller
   final TextEditingController _postController = TextEditingController();
   final _postScrollController = ScrollController();
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
     limit = db.limit;
     fetchNextPosts();
-    // db.getPublicPostsLim("628495b811dbd074a7d039e5");
 
     ///NOTE: This is replaced by a button due to complication with nested scroll view
 
@@ -63,17 +62,21 @@ class _FeedState extends State<Feed> {
     // });
   }
 
+  /// @brief: dispose method
   @override
   void dispose() {
     _postController.dispose();
     super.dispose();
   }
 
+  /// @brief: function to fetch next posts
+  ///
+  /// @return: void
   void fetchNextPosts() async {
-    //get length of future post
-    int postLength = await posts.then((value) => value.length);
+    int postLength =
+        await posts.then((value) => value.length); //get length of future post
 
-    String lastpostid;
+    String lastpostid; //id of last post
 
     if (postLength > 0) {
       Post lastpost = await posts.then((value) => value.last);
@@ -82,9 +85,10 @@ class _FeedState extends State<Feed> {
     } else {
       lastpostid = "";
     }
-    //return next posts
+
+    ///return next posts, if normal mode, get post of friends and public posts
+    ///if widget mode get posts of user with id userId
     dynamic newPosts;
-    print("FETCH!");
     if (widget.mode == "normal") {
       newPosts = db.getPublicPostsLim(lastpostid, storage.getItem("_id"));
     } else if (widget.mode == "widget") {
@@ -96,23 +100,26 @@ class _FeedState extends State<Feed> {
     newPostsLength < limit ? hasMorePost = false : hasMorePost = true;
     print(hasMorePost);
     setState(() {
-      posts = Future.wait([posts, newPosts as Future<List<Post>>]).then((value) => value.expand((x) => x).toList());
+      posts = Future.wait([posts, newPosts as Future<List<Post>>])
+          .then((value) => value.expand((x) => x).toList());
     });
   }
 
+  /// @brief: function to handle comment button press
+  ///
+  /// @return: void
   void _handleComments(String id) async {
     //go to comments page
     Navigator.push(
         context,
-        // MaterialPageRoute(
-        //   builder: (context) => Comments(
-        //     id: id,
-        //   ),
-        // ),
-        Transition(child: Comments(id: id), transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+        Transition(
+            child: Comments(id: id),
+            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
   }
 
-  //create button for add post
+  /// @brief: create widget for post bar
+  ///
+  /// @return: post bar widget
   Widget _postBar() {
     return Row(
       children: [
@@ -125,7 +132,7 @@ class _FeedState extends State<Feed> {
                 borderRadius: BorderRadius.circular(15),
               ),
               //height
-              minimumSize: Size(0, 50),
+              minimumSize: const Size(0, 50),
             ),
             //text and icon
             child: Row(
@@ -150,10 +157,13 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  //create card widget for posts, with comments icon
-  Widget _postCard(String id, String name, String time, String post, String postPrivacy, String userId) {
+  /// @brief: create card widget for posts, with comments
+  ///
+  /// @return: post widget
+  Widget _postCard(String id, String name, String time, String post,
+      String postPrivacy, String userId) {
     return Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       //radius
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -176,7 +186,8 @@ class _FeedState extends State<Feed> {
                   children: [
                     Text(
                       name,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 10),
                     Row(children: [
@@ -259,7 +270,9 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  //create list of posts using future builder
+  /// @brief: create list of posts using future builder
+  ///
+  /// @return: listview of posts
   Widget _postsList() {
     return FutureBuilder<List<Post>>(
       future: posts,
@@ -269,7 +282,7 @@ class _FeedState extends State<Feed> {
           return ListView.builder(
             // controller: _postScrollController,
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             itemCount: snapshot.data!.length + 1,
             itemBuilder: (context, index) {
               if (index < snapshot.data!.length) {
@@ -298,7 +311,7 @@ class _FeedState extends State<Feed> {
                             fetchNextPosts();
                           },
                         )
-                      : Text('No more posts'),
+                      : const Text('No more posts'),
                 );
               }
             },
@@ -306,7 +319,7 @@ class _FeedState extends State<Feed> {
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -317,11 +330,13 @@ class _FeedState extends State<Feed> {
   }
 
   //FOR POST DIALOG
-  //create dialog with multiline field and button for posting
+  /// @brief: create modal with multiline field and button for posting
+  ///
+  /// @return: modal for create/edit post
   Widget _postDialog({required String mode, String id = ""}) {
     return Dialog(
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -329,12 +344,12 @@ class _FeedState extends State<Feed> {
               children: [
                 Text(
                   mode == 'add' ? "Create Post" : "Edit Post",
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 //fill space
-                Expanded(child: SizedBox()),
+                const Expanded(child: SizedBox()),
                 IconButton(
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     Navigator.of(context).pop();
                     _postController.clear();
@@ -342,7 +357,7 @@ class _FeedState extends State<Feed> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: _postController,
               maxLines: 5,
@@ -350,16 +365,16 @@ class _FeedState extends State<Feed> {
                 hintText: 'What\'s on your mind?',
                 //black border
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
+                  borderSide: const BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
                 ElevatedButton(
-                  child: Text('Post'),
+                  child: const Text('Post'),
                   onPressed: () {
                     if (mode == 'add') {
                       _handlePost();
@@ -369,8 +384,8 @@ class _FeedState extends State<Feed> {
                   },
                 ),
                 //create dropdown menu with options public or friends
-                SizedBox(width: 10),
-                Expanded(child: SizedBox()),
+                const SizedBox(width: 10),
+                const Expanded(child: SizedBox()),
                 _postPrivacyDropdown(),
               ],
             ),
@@ -380,15 +395,18 @@ class _FeedState extends State<Feed> {
     );
   }
 
+  /// @brief: create dropdown menu with options public or friends for modal window
+  ///
+  /// @return: dropdown menu
   Widget _postPrivacyDropdown() {
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter dropDownState) {
         return DropdownButton<String>(
           value: privacy,
-          icon: Icon(Icons.arrow_drop_down),
+          icon: const Icon(Icons.arrow_drop_down),
           iconSize: 24,
           elevation: 16,
-          style: TextStyle(color: Colors.deepPurple),
+          style: const TextStyle(color: Colors.deepPurple),
           underline: Container(
             height: 2,
             color: Colors.deepPurpleAccent,
@@ -399,7 +417,8 @@ class _FeedState extends State<Feed> {
               privacy = newValue!;
             });
           },
-          items: <String>['public', 'friends'].map<DropdownMenuItem<String>>((String value) {
+          items: <String>['public', 'friends']
+              .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -410,7 +429,9 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  //handle Post
+  /// @brief: function for handling post creation
+  ///
+  /// @return: void
   void _handlePost() async {
     //get post text
     final String post = _postController.text;
@@ -418,7 +439,7 @@ class _FeedState extends State<Feed> {
     if (post.isEmpty) {
       return;
     }
-    //post to server
+
     dynamic result = await db.addPost(
       userId: storage.getItem('_id'),
       content: post,
@@ -433,7 +454,8 @@ class _FeedState extends State<Feed> {
       Post newPost = Post(
         id: result['_id'],
         userId: result['userId']['_id'],
-        name: result['userId']['firstName'] + " " + result['userId']['lastName'],
+        name:
+            result['userId']['firstName'] + " " + result['userId']['lastName'],
         content: result['content'],
         privacy: result['privacy'],
         createdAt: db.convertTime(result['createdAt']),
@@ -445,6 +467,11 @@ class _FeedState extends State<Feed> {
     }
   }
 
+  /// @brief: function for handling post edit
+  ///
+  /// @param: id: post id of post to edit
+  ///
+  /// @return: void
   void _handlePostEdit(String id) async {
     //get post text
 
@@ -460,7 +487,8 @@ class _FeedState extends State<Feed> {
       Post newPost = Post(
         id: result['_id'],
         userId: result['userId']['_id'],
-        name: result['userId']['firstName'] + " " + result['userId']['lastName'],
+        name:
+            result['userId']['firstName'] + " " + result['userId']['lastName'],
         content: result['content'],
         privacy: result['privacy'],
         createdAt: db.convertTime(result['createdAt']),
@@ -478,6 +506,11 @@ class _FeedState extends State<Feed> {
     }
   }
 
+  /// @brief: function for handling post deletion
+  ///
+  /// @param: id: post id of post to delete
+  ///
+  /// @return: void
   void _handlePostDelete(String id) async {
     //post to server
     dynamic result = await db.deletePost(
@@ -495,6 +528,11 @@ class _FeedState extends State<Feed> {
     }
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the feed.
   @override
   Widget build(BuildContext context) {
     //scrollable list of posts
@@ -504,16 +542,18 @@ class _FeedState extends State<Feed> {
         child: ListView(
           controller: _postScrollController,
           shrinkWrap: widget.mode == 'normal' ? false : true,
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           children: <Widget>[
             //hide post bar if userId is not current user
-            (widget.mode == "widget" && widget.userId == storage.getItem('_id')) || widget.mode == "normal"
+            (widget.mode == "widget" &&
+                        widget.userId == storage.getItem('_id')) ||
+                    widget.mode == "normal"
                 ? Align(
                     child: _postBar(),
                   )
                 : Container(),
             //add list of posts
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _postsList(),
           ],
         ),
