@@ -17,25 +17,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //create email and password controllers
+  //text field controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
   //create a global key for form validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
   }
 
-  //create email and password text fields with validators
+  /// @ brief: create text field for email
+  ///
+  /// @return: text field for email
   Widget _emailField() {
     return TextFormField(
       controller: _emailController,
@@ -54,6 +57,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// @ brief: create text field for password
+  ///
+  /// @return: text field for password
   Widget _passwordField() {
     return TextFormField(
       controller: _passwordController,
@@ -72,7 +78,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  //reusable widget for button
+  /// @brief: create reusable button
+  ///
+  /// @param: text: text to display on button
+  /// @param: onPressed: function to call when button is pressed
+  ///
+  /// @return: button widget
   Widget _buildButton(String text, Function() onPressed) {
     return ElevatedButton(
       //set button size
@@ -85,6 +96,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// @brief: create signup button widget
+  ///
+  /// @return: signup button widget
   Widget _buildSignUp() {
     return Row(
       //center the buttons
@@ -111,6 +125,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// @brief: handle login button press
+  ///
+  /// @return: void
   void _handleLogin() async {
     dynamic result = await db.userLogin({
       "email": _emailController.text,
@@ -122,6 +139,8 @@ class _LoginPageState extends State<LoginPage> {
       //go to home page
       //set result to local storage
       print(result);
+
+      //NOTE: Possibly unnecessary
       User user = User(
         id: result['_id'],
         firstName: result['firstName'],
@@ -151,6 +170,9 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  /// @brief: handle signup button press
+  ///
+  /// @return: void
   void _handleSignUp() {
     //navigate to signup page
     Navigator.push(
@@ -161,6 +183,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// @brief: create form for login
+  ///
+  /// @return: form for login
   Widget loginForm() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -197,6 +222,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the login Page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
