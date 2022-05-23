@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  /// @ brief: create text field for email
+  /// @brief: create text field for email
   ///
   /// @return: text field for email
   Widget _emailField() {
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// @ brief: create text field for password
+  /// @brief: create text field for password
   ///
   /// @return: text field for password
   Widget _passwordField() {
@@ -226,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
   ///
   /// @param: context The BuildContext for the widget.
   ///
-  /// @return: a widget that displays the login Page.
+  /// @return: a widget that displays the login page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -11,22 +11,24 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
-  //create username, email, password, and repeat password controllers
+  //create firstname, lastname, email, password, and repeat password controllers
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
 
   //create a global key for form validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  //create username, email, password, and repeat password text fields with validators
-
+  /// @brief: create text field for first name
+  ///
+  /// @return: text field for first name
   Widget _firstNameField() {
     return TextFormField(
       controller: _firstNameController,
@@ -45,6 +47,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  /// @brief: create text field for last name
+  ///
+  /// @return: text field for last name
   Widget _lastNameField() {
     return TextFormField(
       controller: _lastNameController,
@@ -63,7 +68,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  //email text field
+  /// @brief: create text field for email
+  ///
+  /// @return: text field for email
   Widget _emailField() {
     return TextFormField(
       controller: _emailController,
@@ -78,7 +85,9 @@ class _SignUpPageState extends State<SignUpPage> {
           return 'Please enter your email';
         }
         //validate if its a valid email
-        if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+        if (!RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(value)) {
           return 'Please enter a valid email';
         }
         return null;
@@ -86,6 +95,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  /// @brief: create text field for password
+  ///
+  /// @return: text field for password
   Widget _passwordField() {
     return TextFormField(
       controller: _passwordController,
@@ -104,6 +116,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  /// @brief: create text field for repeat password
+  ///
+  /// @return: text field for repeat password
   Widget _repeatPasswordField() {
     return TextFormField(
       controller: _repeatPasswordController,
@@ -124,7 +139,12 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  //reusable widget for button
+  /// @brief: create reusable button
+  ///
+  /// @param: text: text to display on button
+  /// @param: onPressed: function to call when button is pressed
+  ///
+  /// @return: button widget
   Widget _buildButton(String text, Function() onPressed) {
     return ElevatedButton(
       //set button size
@@ -137,32 +157,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildSignUp() {
-    return Row(
-      //center the buttons
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('Don\'t have an account?'),
-        const SizedBox(width: 10),
-        //create a link to sign up page that is clickable
-        ElevatedButton(
-          child: const Text(
-            'Sign Up',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          onPressed: () {
-            print("Go to signup");
-          },
-          style: ElevatedButton.styleFrom(
-              //set the button to no background
-              ),
-        ),
-      ],
-    );
-  }
-
+  /// @brief: handle sign up button press
+  ///
+  /// @return: void
   void _handleSignUp() async {
     if (_formKey.currentState!.validate()) {
       dynamic result = await db.addUser(User(
@@ -182,6 +179,9 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  /// @brief: create form for sign up
+  ///
+  /// @return: form for sign up
   Widget signUpForm() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -225,7 +225,11 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  //build SignUpPage without using scaffold
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the signup page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
