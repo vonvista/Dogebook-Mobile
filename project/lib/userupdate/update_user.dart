@@ -3,10 +3,6 @@ import '../db_helper.dart';
 import '../colors.dart';
 import 'package:lottie/lottie.dart';
 
-import '../models/user_model.dart';
-import '../home_page.dart';
-import '../signup_page.dart';
-
 import 'package:localstorage/localstorage.dart';
 
 class UpdateUser extends StatefulWidget {
@@ -17,20 +13,21 @@ class UpdateUser extends StatefulWidget {
 }
 
 class _UpdateUserState extends State<UpdateUser> {
-  //create email and password controllers
+  //create name and email controllers
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  AppColors colors = AppColors();
+  AppColors colors = AppColors(); //app colors
 
   //create a global key for form validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
 
-  DBHelper db = DBHelper();
+  DBHelper db = DBHelper(); //helper for accessing database functions
 
+  /// @brief: initial state on mount
   @override
   void initState() {
     super.initState();
@@ -40,13 +37,21 @@ class _UpdateUserState extends State<UpdateUser> {
     _emailController.text = storage.getItem('email');
   }
 
-  Widget _inputField(String hintText, String labelText, TextEditingController controller) {
+  /// @brief: create reusable input field
+  ///
+  /// @param hintText: text to display as hint
+  /// @param labelText: text to display as label
+  /// @param controller: controller for textfield
+  ///
+  /// @return: returns a textfield with the given parameters
+  Widget _inputField(
+      String hintText, String labelText, TextEditingController controller) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        icon: Icon(Icons.person),
+        icon: const Icon(Icons.person),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -57,21 +62,28 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
-  //create input field for email
+  /// @brief: create input field for email
+  ///
+  /// @param: hintText: text to display as hint
+  /// @param: labelText: text to display as label
+  ///
+  /// @return: email textfield widget
   Widget _emailField(String hintText, String labelText) {
     return TextFormField(
       controller: _emailController,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        icon: Icon(Icons.email),
+        icon: const Icon(Icons.email),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please $hintText';
         }
         //check if valid email
-        if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+        if (!RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(value)) {
           return 'Please enter a valid email';
         }
         return null;
@@ -79,7 +91,12 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
-  //reusable widget for button
+  /// @brief: reusable button widget
+  ///
+  /// @param text: text to display on button
+  /// @param onPressed: function to call when button is pressed
+  ///
+  /// @return: returns a button with the given parameters
   Widget _buildButton(String text, Function() onPressed) {
     return ElevatedButton(
       //set button size
@@ -92,6 +109,9 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
+  /// @brief: create update user form
+  ///
+  /// @return: returns a form with the given parameters
   Widget userForm() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -121,9 +141,11 @@ class _UpdateUserState extends State<UpdateUser> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                _inputField('Enter your first name', 'First Name', _firstNameController),
+                _inputField('Enter your first name', 'First Name',
+                    _firstNameController),
                 const SizedBox(height: 10),
-                _inputField('Enter your last name', 'Last Name', _lastNameController),
+                _inputField(
+                    'Enter your last name', 'Last Name', _lastNameController),
                 const SizedBox(height: 10),
                 _emailField('Enter your email', 'Email'),
                 const SizedBox(height: 10),
@@ -136,11 +158,12 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
+  /// @brief: function to handle update user
+  ///
+  /// @return: void
   void _handleUpdateUser() async {
     //validate form
     if (_formKey.currentState!.validate()) {
-      //get user details
-      //check if passwords match
       dynamic result = await db.updateUser(
         userId: storage.getItem('_id'),
         firstName: _firstNameController.text,
@@ -149,7 +172,6 @@ class _UpdateUserState extends State<UpdateUser> {
       );
 
       if (result != null) {
-        print(result);
         //set localstorage values
         await storage.setItem('firstName', _firstNameController.text);
         await storage.setItem('lastName', _lastNameController.text);
@@ -160,6 +182,11 @@ class _UpdateUserState extends State<UpdateUser> {
     }
   }
 
+  /// @brief: the build method is called by the flutter framework.
+  ///
+  /// @param: context The BuildContext for the widget.
+  ///
+  /// @return: a widget that displays the update user page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
