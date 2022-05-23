@@ -3,9 +3,7 @@ import '../db_helper.dart';
 import '../colors.dart';
 import 'package:lottie/lottie.dart';
 
-import '../models/user_model.dart';
-import '../home_page.dart';
-import '../signup_page.dart';
+import '../snackbar.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -30,6 +28,8 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   final LocalStorage storage = LocalStorage('project'); //local storage
 
   DBHelper db = DBHelper(); //helper for accessing database functions
+
+  final StatusMessage statusMessage = StatusMessage(); //snackbar
 
   /// @brief: initial state on mount
   @override
@@ -150,17 +150,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
           //pop
           Navigator.pop(context);
         }
+      } else {
+        //show error
+        statusMessage.showSnackBar(
+            message: 'Passwords do not match', type: 'err');
       }
-      // } else {
-      //   //show error
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //       content: Text('Passwords do not match'),
-      //       //set duration
-      //       duration: Duration(seconds: 1),
-      //     ),
-      //   );
-      // }
     }
   }
 

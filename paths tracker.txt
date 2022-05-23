@@ -1,3 +1,4 @@
+DOCUMENTATION TRACKER (Project 23)
 1 - Signup Page
 2 - Pressing sign up without any of the fields filed up
 3,4 - Signing up with non-matching passwords on password and repeat password fields
@@ -10,5 +11,28 @@
 12 - Incorrect password 
 13,14 - Correct email and password
 15 - Login without filling fields
+
+16 - Feed Page
+17,18 - Creating post
+19 - Clicking post without anything -> will not post
+20,21 - Editing post
+22 - Editing post and removing post completely 
+23 - Deleting post 
+
+24 - Search Page
+25 - Searching for a user using first name or last name
+26 - Tapping on a user on search page
+
+27 - Profile Page
+28 - Sending a friend request
+29,30 - Visiting a profile wherein you're already friends
+31 - Sending a friend request wherein you've already sent a request before
+32 - Visiting your own profile
+
+33 - Friends Page
+34,35 - Accept request
+36,37 - Reject Request
+38,39 - Remove friend
+40,41 - Friend limit reached
 
 
