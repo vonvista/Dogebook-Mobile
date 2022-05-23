@@ -264,6 +264,7 @@ exports.acceptFriendRequest = async function(req, res, next) {
     //check if friends of friend is greater than or equal to 8
     if(friend.friends.length >= 8){
       res.send({err:'Friend limit reached (8 friends)'});
+      return;
     }
 
     //add user id and friend id to each other's friends list
