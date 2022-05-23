@@ -135,44 +135,47 @@ class _LoginPageState extends State<LoginPage> {
   ///
   /// @return: void
   void _handleLogin() async {
-    dynamic result = await db.userLogin({
-      "email": _emailController.text,
-      "password": _passwordController.text,
-    });
-    if (result == null) {
-      return;
-    } else {
-      //go to home page
-      //set result to local storage
-      print(result);
+    //check if form is valid
+    if (_formKey.currentState!.validate()) {
+      dynamic result = await db.userLogin({
+        "email": _emailController.text,
+        "password": _passwordController.text,
+      });
+      if (result == null) {
+        return;
+      } else {
+        //go to home page
+        //set result to local storage
+        print(result);
 
-      //NOTE: Possibly unnecessary
-      User user = User(
-        id: result['_id'],
-        firstName: result['firstName'],
-        lastName: result['lastName'],
-        email: result['email'],
-        password: result['password'],
-        friends: result['friends'].cast<String>(),
-        friendRequests: result['friendRequests'].cast<String>(),
-      );
+        //NOTE: Possibly unnecessary
+        User user = User(
+          id: result['_id'],
+          firstName: result['firstName'],
+          lastName: result['lastName'],
+          email: result['email'],
+          password: result['password'],
+          friends: result['friends'].cast<String>(),
+          friendRequests: result['friendRequests'].cast<String>(),
+        );
 
-      await storage.setItem('_id', result['_id']);
-      await storage.setItem('firstName', result['firstName']);
-      await storage.setItem('lastName', result['lastName']);
-      await storage.setItem('username', result['username']);
-      await storage.setItem('email', result['email']);
-      await storage.setItem('password', result['password']);
-      await storage.setItem('friends', result['friends']);
-      await storage.setItem('friendRequests', result['friendRequests']);
+        await storage.setItem('_id', result['_id']);
+        await storage.setItem('firstName', result['firstName']);
+        await storage.setItem('lastName', result['lastName']);
+        await storage.setItem('username', result['username']);
+        await storage.setItem('email', result['email']);
+        await storage.setItem('password', result['password']);
+        await storage.setItem('friends', result['friends']);
+        await storage.setItem('friendRequests', result['friendRequests']);
 
-      //go to home page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
+        //go to home page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+      }
     }
   }
 

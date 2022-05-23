@@ -80,7 +80,7 @@ exports.userLogin = async function(req, res, next) {
     }
   }
   else {
-    res.send({err:'User not found'});
+    res.send({err:'Email not registered'});
   }
 }
 
