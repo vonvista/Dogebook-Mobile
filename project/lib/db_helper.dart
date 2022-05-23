@@ -12,21 +12,36 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 
 class DBHelper {
-  final LocalStorage storage = LocalStorage('project');
+  final LocalStorage storage = LocalStorage('project'); //local storage
+
+  ///!!! SERVER IP, CHANGE THIS TO YOUR SERVER IP !!!
+  ///Using AVD (Android Emulator) - 10.0.2.2
+  ///Using Chrome - 127.0.0.1
+  ///Using external phone or device - IP of your network
+  ///(usually wifi, must be connected with the same network)
   final String serverIP = "10.0.0.61";
 
-  final int limit = 10;
+  final int limit = 10; //limit for pagination
 
-  final StatusMessage statusMessage = StatusMessage();
+  final StatusMessage statusMessage = StatusMessage(); //snackbar
 
+  /// @brief: convert ISO time to date and time format
+  ///
+  /// @param time: ISO time
+  ///
+  /// @return: returns a date and time string
   String convertTime(String time) {
-    //convert ISO time to date and time format
     DateTime dateTime = DateTime.parse(time);
     //return date in format: hh:mm, June 1, 2020
     //DateFormat('MMMM').format(DateTime(0, month))
     return DateFormat('hh:mm a, MMMM d, yyyy').format(dateTime);
   }
 
+  /// @brief: user login http request
+  ///
+  /// @param user: user object
+  ///
+  /// @return: returns null or user data
   Future userLogin(Object user) async {
     try {
       final response = await http.post(
@@ -53,6 +68,11 @@ class DBHelper {
     }
   }
 
+  /// @brief: user signup http request
+  ///
+  /// @param user: user object
+  ///
+  /// @return: returns null or user data
   Future addUser(User user) async {
     try {
       final response = await http.post(
@@ -88,6 +108,12 @@ class DBHelper {
     }
   }
 
+  /// @brief: get all public and user's friends posts http request
+  ///
+  /// @param postId: post id of last post (if empty string, get latest posts)
+  /// @param userId: id of user
+  ///
+  /// @return: returns empty list or list of posts
   Future<List<Post>> getPublicPostsLim(String postId, String userId) async {
     try {
       final response = await http.post(
@@ -130,6 +156,12 @@ class DBHelper {
     }
   }
 
+  /// @brief: get all posts of a user http request
+  ///
+  /// @param id: id of user
+  /// @param next: post id of last post (if empty string, get latest posts)
+  ///
+  /// @return: returns empty list or list of posts
   Future<List<Post>> getUserPostsLim(String id, String next) async {
     try {
       final response = await http.post(
@@ -169,6 +201,11 @@ class DBHelper {
     }
   }
 
+  /// @brief: find user http request
+  ///
+  /// @param username: username of user
+  ///
+  /// @return: returns empty list or list of users
   Future findUser({required String username}) async {
     List<User> users = [];
     try {
@@ -214,6 +251,11 @@ class DBHelper {
     }
   }
 
+  /// @brief: get user http request
+  ///
+  /// @param id: id of user
+  ///
+  /// @return: returns user
   Future<User> getUser({required String id}) async {
     final response = await http.post(
       Uri.parse('http://$serverIP:3001/user/find'),
@@ -245,7 +287,12 @@ class DBHelper {
 
   //FRIEND SYSTEM
 
-  //send friend request
+  /// @brief: send friend request http request
+  ///
+  /// @param userId: id of user being requested
+  /// @param friendId: id of user requesting
+  ///
+  /// @return: returns null or data
   Future sendFriendRequest({
     required String userId,
     required String friendId,
@@ -281,7 +328,11 @@ class DBHelper {
     }
   }
 
-  //get friends requests
+  /// @brief: get friend requests http request
+  ///
+  /// @param id: id of user
+  ///
+  /// @return: returns empty list or list of users
   Future<List<User>> getFriendRequests({required String id}) async {
     List<User> users = [];
     try {
@@ -329,7 +380,11 @@ class DBHelper {
     }
   }
 
-  //get friends requests
+  /// @brief: get friends http request
+  ///
+  /// @param id: id of user
+  ///
+  /// @return: returns empty list or list of users
   Future<List<User>> getFriends({required String id}) async {
     List<User> users = [];
     try {
@@ -375,7 +430,12 @@ class DBHelper {
     }
   }
 
-  //accept friend request
+  /// @brief: accept friend request http request
+  ///
+  /// @param userId: id of user being accepted
+  /// @param friendId: id of user accepting
+  ///
+  /// @return: returns null or data
   Future acceptFriendRequest({
     required String userId,
     required String friendId,
@@ -411,7 +471,12 @@ class DBHelper {
     }
   }
 
-  //reject friend request
+  /// @brief: reject friend request http request
+  ///
+  /// @param userId: id of user being rejected
+  /// @param friendId: id of user rejecting
+  ///
+  /// @return: returns null or data
   Future rejectFriendRequest({
     required String userId,
     required String friendId,
@@ -447,7 +512,12 @@ class DBHelper {
     }
   }
 
-  //remove friend
+  /// @brief: remove friend http request
+  ///
+  /// @param userId: id of user being removed
+  /// @param friendId: id of user removing
+  ///
+  /// @return: returns null or data
   Future removeFriend({
     required String userId,
     required String friendId,
@@ -484,6 +554,13 @@ class DBHelper {
 
   //POST SYSTEM
 
+  /// @brief: add post http request
+  ///
+  /// @param userId: id of user posting
+  /// @param content: content of post
+  /// @param privacy: privacy of post
+  ///
+  /// @return: returns null or post data
   Future addPost({
     required String userId,
     required String content,
@@ -520,6 +597,13 @@ class DBHelper {
     }
   }
 
+  /// @brief: edit post http request
+  ///
+  /// @param id: id of post being edited
+  /// @param content: content of post
+  /// @param privacy: privacy of post
+  ///
+  /// @return: returns null or post data
   Future editPost({
     required String id,
     required String content,
@@ -556,7 +640,11 @@ class DBHelper {
     }
   }
 
-  //delete post
+  /// @brief: delete post http request
+  ///
+  /// @param id: id of post being deleted
+  ///
+  /// @return: returns null or post data
   Future deletePost({
     required String id,
   }) async {
@@ -590,7 +678,11 @@ class DBHelper {
 
   //COMMENTS
 
-  //get comments for post
+  /// @brief: get comments http request
+  ///
+  /// @param postId: id of post
+  ///
+  /// @return: returns empty list or list of comments
   Future<List<Comment>> getComments(String postId) async {
     List<Comment> comments = [];
     try {
@@ -632,7 +724,13 @@ class DBHelper {
     }
   }
 
-  //add comment to post
+  /// @brief: add comment http request
+  ///
+  /// @param postId: id of post
+  /// @param userId: id of user commenting
+  /// @param comment: content of comment
+  ///
+  /// @return: returns null or comment data
   Future addComment({
     required String postId,
     required String userId,
@@ -669,7 +767,11 @@ class DBHelper {
     }
   }
 
-  //delete comment
+  /// @brief: delete comment http request
+  ///
+  /// @param commentId: id of comment being deleted
+  ///
+  /// @return: returns null or comment data
   Future deleteComment({
     required String commentId,
   }) async {
@@ -703,7 +805,13 @@ class DBHelper {
     }
   }
 
-  //update password
+  /// @brief: update password http request
+  ///
+  /// @param userId: id of user
+  /// @param oldPassword: old password
+  /// @param newPassword: new password
+  ///
+  /// @return: returns null or user data
   Future updatePassword({
     required String userId,
     required String oldPassword,
@@ -740,7 +848,14 @@ class DBHelper {
     }
   }
 
-  //update firstname, lastname, email
+  /// @brief: update user http request
+  ///
+  /// @param userId: id of user
+  /// @param firstName: new first name
+  /// @param lastName: new last name
+  /// @param email: new email
+  ///
+  /// @return: returns null or user data
   Future updateUser({
     required String userId,
     required String firstName,
