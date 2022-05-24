@@ -62,104 +62,15 @@ The main challenge in the exercise in learning how to work with Futures with thi
 
 ## Happy paths and Unhappy paths encountered.
 
-NOTE: Some of the systems and variables in place here is due to how jsonplaceholder works. Since we are working with fake data, we are not actually saving anything to the server. So I implemented workarounds just to make things display correctly with the application.
-
 ### 😃 Opening the application
 <p float="left">
   <img src="/screenshots/sc%20(3).jpg" width="40%" />
   <img src="/screenshots/sc%20(4).jpg" width="40%" /> 
 </p>
-🛠️ <strong>To reproduce:</strong> Open and start the application </br>
-💻 <strong>Result:</strong> Todos are fetched in the API and we can scroll through all the todos in the list </br>
-
-### 😃 Adding a new todo
-<p float="left">
-  <img src="/screenshots/sc%20(5).jpg" width="40%" />
-  <img src="/screenshots/sc%20(6).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Tap the floating action button on the bottom right, fill up the title, and uncheck/check the completed box. Press save </br>
-💻 <strong>Result:</strong> Todo is added on the list and a success message is shown </br>
-
-### 😃 Editing a todo from the fetched todos
-<p float="left">
-  <img src="/screenshots/sc%20(7).jpg" width="40%" />
-  <img src="/screenshots/sc%20(8).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Press the pencil icon from any of the tiles from the fetched todos. Edit the title or completed status or just leave it as it is </br>
-💻 <strong>Result:</strong> Changes for the todo is reflected on the list and a success message is shown </br>
-
-### 😃 Deleting a todo from the fetched todos
-<p float="left">
-  <img src="/screenshots/sc%20(9).jpg" width="40%" />
-  <img src="/screenshots/sc%20(10).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Press the trash icon from any of the tiles from the fetched todos </br>
-💻 <strong>Result:</strong> Todo is removed from the list and a success message is shown </br>
-
-### ☹️ Adding a todo without a title
-<p float="left">
-  <img src="/screenshots/sc%20(11).jpg" width="40%" />
-  <img src="/screenshots/sc%20(12).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Tap the floating action button on the bottom right, do not fill up anything. Press save </br>
-💻 <strong>Result:</strong> A message is shown to enter a todo title </br>
-
-### 😃 Adding another todo after adding a todo previously
-<p float="left">
-  <img src="/screenshots/sc%20(13).jpg" width="40%" />
-  <img src="/screenshots/sc%20(14).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Add another todo after a todo was added previously  </br>
-💻 <strong>Result:</strong> The todo that is added previously is replaced by the new todo and a success message is shown. This happens because all of the added todo in jsonplaceholder returns an id of 201 (this is a workaround to how jsonplaceholder works) </br>
-
-### ☹️ Editing the added todo
-<p float="left">
-  <img src="/screenshots/sc%20(15).jpg" width="40%" />
-  <img src="/screenshots/sc%20(16).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Edit the todo that is added </br>
-💻 <strong>Result:</strong> A error message is shown with error 500: internal server error. This happens because the id of added todo which is 201 is not really added in the API, hence the API doesn't know about the existence of todo 201, returning an error. Error is handled </br>
-
-### 😃 Deleting the added todo
-<p float="left">
-  <img src="/screenshots/sc%20(17).jpg" width="40%" />
-  <img src="/screenshots/sc%20(18).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Delete the added todo </br>
-💻 <strong>Result:</strong> The added todo is deleted and a success message is shown </br>
-
-### ☹️ Adding a todo without internet
-<p float="left">
-  <img src="/screenshots/sc%20(19).jpg" width="40%" />
-  <img src="/screenshots/sc%20(20).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Add a todo without internet connectivity (turning off wifi and data) </br>
-💻 <strong>Result:</strong> An error message is shown with the error as SocketException. Error is handled </br>
-
-### ☹️ Editing a todo without internet
-<p float="left">
-  <img src="/screenshots/sc%20(21).jpg" width="40%" />
-  <img src="/screenshots/sc%20(22).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Edit a todo without internet connectivity (turning off wifi and data) </br>
-💻 <strong>Result:</strong> An error message is shown with the error as SocketException. Error is handled </br>
-
-### ☹️ Deleting a todo without internet
-<p float="left">
-  <img src="/screenshots/sc%20(23).jpg" width="40%" />
-  <img src="/screenshots/sc%20(24).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Delete a todo without internet connectivity (turning off wifi and data) </br>
-💻 <strong>Result:</strong> An error message is shown with the error as SocketException. Error is handled </br>
-
-### ☹️ Opening the application without internet
-<p float="left">
-  <img src="/screenshots/sc%20(25).jpg" width="40%" />
-  <img src="/screenshots/sc%20(26).jpg" width="40%" /> 
-</p>
-🛠️ <strong>To reproduce:</strong> Open the application without internet connectivity (turning off wifi and data) </br>
-💻 <strong>Result:</strong> No todos are displayed and an error message is shown with the error as SocketException. Error is handled </br>
-
+🛠️ <strong>To reproduce:</strong> Open and start the application 
+</br>
+💻 <strong>Result:</strong> Todos are fetched in the API and we can scroll through all the todos in the list 
+</br>
 
 
 
