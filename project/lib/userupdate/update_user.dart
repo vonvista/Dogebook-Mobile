@@ -128,7 +128,7 @@ class _UpdateUserState extends State<UpdateUser> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text(
-                  'Update Password',
+                  'Update User',
                   //text size to 40
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
