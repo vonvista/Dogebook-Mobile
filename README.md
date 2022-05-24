@@ -58,7 +58,11 @@ This may happen for two reasons, do the first bullet first before doing the seco
 # Documentation
 
 ## Challenges met while doing the exercise.
-The main challenge in the exercise in learning how to work with Futures with this kind of data. Since we are essentially working with "fake" data, nothing is really saved in the API, which brings many problems especially with how to display the data being processed. This brings a pain point I had with this exercise, with having most of my time wasted with figuring out how to work with jsonplaceholder, even though the networking part is fast to work with. I have to make some workarounds in order to make certain things in the exercise work.
+There were many challenges that I faced during the development of the project. First is the sheer amount of features you need to implement, not only that but you also need to design not only the backend, but the UI as well. I also had the extra challenge which is making my own http endpoints and database using MongoDB because I started the project at the time wherein the project API was not yet given. However, because of that, I think that I improved and learned a lot with working with MongoDB and Mongoose, which is a win for me, and because I created my own server, I have full control of the functionality of the http requests.
+
+I also am challenged a lot with working with Futures, but with experimentation, trial and error, and many failures, I had a more deeper understanding on how they work, how to manipulate them, and how to use them easily. I also encountered a problem with the Navigator and getting previous widgets to refresh upon navigation pop, which made me understand the concept of keys in widgets. I also had a challenge with creating an independent class for status messages using snackbar, which made me understand how to use and create global variables in flutter. 
+
+These aren't all the challenges that I have faced in the development of the project, but one thing is for sure, that I learned a lot from the experience, mistakes, and accomplishments that I had with this project.
 
 ## Happy paths and Unhappy paths encountered.
 
