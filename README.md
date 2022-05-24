@@ -151,7 +151,7 @@ These aren't all the challenges that I have faced in the development of the proj
 
 //From this point onwards, I'll not modify the happy/unahppy emoji
 
-### 😀 Login without filling fields
+### 🙁 Login without filling fields
 <p float="left">
   <img src="/screenshots/sc%20(15).jpg" width="40%" />
 </p>
@@ -166,7 +166,7 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(16).jpg" width="40%" />
 </p>
 
-### 🙁 Create a post
+### 😀 Create a post
 <p float="left">
   <img src="/screenshots/sc%20(17).jpg" width="40%" />
   <img src="/screenshots/sc%20(18).jpg" width="40%" />
@@ -185,7 +185,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> Nothing will happen and nothing will be posted as it needs to have something to be posted
 </br>
 
-### 🙁 Editing a post
+### 😀 Editing a post
 <p float="left">
   <img src="/screenshots/sc%20(20).jpg" width="40%" />
   <img src="/screenshots/sc%20(21).jpg" width="40%" />
@@ -204,7 +204,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong>An error status message is shown saying that it is unable to save post, a post needs content to be edited
 </br>
 
-### 🙁 Deleting a post
+### 😀 Deleting a post
 <p float="left">
   <img src="/screenshots/sc%20(23).jpg" width="40%" />
   <img src="/screenshots/sc%20(24).jpg" width="40%" />
@@ -219,7 +219,7 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(63).jpg" width="40%" />
 </p>
 
-### 🙁 Add comment
+### 😀 Add comment
 <p float="left">
   <img src="/screenshots/sc%20(64).jpg" width="40%" />
   <img src="/screenshots/sc%20(65).jpg" width="40%" />
@@ -229,7 +229,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> A success status message is shown saying that a comment is added an comment can be seen
 </br>
 
-### 🙁 Delete comment
+### 😀 Delete comment
 <p float="left">
   <img src="/screenshots/sc%20(23).jpg" width="40%" />
   <img src="/screenshots/sc%20(24).jpg" width="40%" />
@@ -244,7 +244,7 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(25).jpg" width="40%" />
 </p>
 
-### 🙁 Searching for a user using first name or last name
+### 😀 Searching for a user using first name or last name
 <p float="left">
   <img src="/screenshots/sc%20(26).jpg" width="40%" />
 </p>
@@ -253,7 +253,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> A list of users matching the search query is shown, if no users exist with the search query then no users will be shown
 </br>
 
-### 🙁 Tapping on a user on the search page
+### 😀 Tapping on a user on the search page
 <p float="left">
   <img src="/screenshots/sc%20(27).jpg" width="40%" />
 </p>
@@ -267,7 +267,7 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(28).jpg" width="40%" />
 </p>
 
-### 🙁 Sending a friend request
+### 😀 Sending a friend request
 <p float="left">
   <img src="/screenshots/sc%20(29).jpg" width="40%" />
 </p>
@@ -276,7 +276,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> A success status message is shown saying that friend request is sent.
 </br>
 
-### 🙁 Visiting a profile wherein you're already friends
+### 😀 Visiting a profile wherein you're already friends
 <p float="left">
   <img src="/screenshots/sc%20(68).jpg" width="40%" />
   <img src="/screenshots/sc%20(30).jpg" width="40%" />
@@ -295,7 +295,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> An error status message is shown saying that friend request is already sent
 </br>
 
-### 🙁 Visiting your own profile
+### 😀 Visiting your own profile
 <p float="left">
   <img src="/screenshots/sc%20(31).jpg" width="40%" />
 </p>
@@ -309,7 +309,7 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(33).jpg" width="40%" />
 </p>
 
-### 🙁 Accepting friend request
+### 😀 Accepting friend request
 <p float="left">
   <img src="/screenshots/sc%20(34).jpg" width="40%" />
   <img src="/screenshots/sc%20(35).jpg" width="40%" />
@@ -319,7 +319,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> A success status message is shown saying the friend request is accepted
 </br>
 
-### 🙁 Rejecting friend request
+### 😀 Rejecting friend request
 <p float="left">
   <img src="/screenshots/sc%20(36).jpg" width="40%" />
   <img src="/screenshots/sc%20(37).jpg" width="40%" />
@@ -329,7 +329,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> A success status message is shown saying the friend request is rejected
 </br>
 
-### 🙁 Remove friend
+### 😀 Remove friend
 <p float="left">
   <img src="/screenshots/sc%20(38).jpg" width="40%" />
   <img src="/screenshots/sc%20(39).jpg" width="40%" />
@@ -354,7 +354,7 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(42).jpg" width="40%" />
 </p>
 
-### 🙁 Tapping on your own profile
+### 😀 Tapping on your own profile
 <p float="left">
   <img src="/screenshots/sc%20(43).jpg" width="40%" />
 </p>
@@ -363,7 +363,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> You are redirected to your own profile page
 </br>
 
-### 🙁 Tapping on update password
+### 😀 Tapping on update password
 <p float="left">
   <img src="/screenshots/sc%20(44).jpg" width="40%" />
 </p>
@@ -372,7 +372,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> You are redirected to the update password page
 </br>
 
-### 🙁 Tapping on log out
+### 😀 Tapping on log out
 <p float="left">
   <img src="/screenshots/sc%20(45).jpg" width="40%" />
 </p>
@@ -413,7 +413,7 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> An error status message is shown saying passwords do not match
 </br>
 
-### 🙁 Having all appropriate and correct details
+### 😀 Having all appropriate and correct details
 <p float="left">
   <img src="/screenshots/sc%20(49).jpg" width="40%" />
   <img src="/screenshots/sc%20(50).jpg" width="40%" />
@@ -430,7 +430,7 @@ These aren't all the challenges that I have faced in the development of the proj
 
 ### 🙁 Not filling up any of the fields
 <p float="left">
-  <img src="/screenshots/sc%20(52).jpg" width="40%" />
+  <img src="/screenshots/sc%20(56).jpg" width="40%" />
 </p>
 🛠️ <strong>To reproduce:</strong> Tap on the update profile button without filling up the fields
 </br>
@@ -439,14 +439,14 @@ These aren't all the challenges that I have faced in the development of the proj
 
 ### 🙁 Entering invalid email
 <p float="left">
-  <img src="/screenshots/sc%20(53).jpg" width="40%" />
+  <img src="/screenshots/sc%20(55).jpg" width="40%" />
 </p>
 🛠️ <strong>To reproduce:</strong> Fill up the fields appropriately, enter an invalid email. Press update password
 </br>
 💻 <strong>Result:</strong> Message is shown to enter a valid email on the email field
 </br>
 
-### 🙁 Entering invalid email
+### 🙁 Updating email to an email linked to an account
 <p float="left">
   <img src="/screenshots/sc%20(54).jpg" width="40%" />
 </p>
@@ -455,14 +455,31 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> An error status message is shown that email is already taken
 </br>
 
-### 🙁 Having all appropriate and correct details
+### 😀 Having all appropriate and correct details
 <p float="left">
-  <img src="/screenshots/sc%20(55).jpg" width="40%" />
-  <img src="/screenshots/sc%20(56).jpg" width="40%" />
+  <img src="/screenshots/sc%20(53).jpg" width="40%" />
+  <img src="/screenshots/sc%20(52).jpg" width="40%" />
 </p>
 🛠️ <strong>To reproduce:</strong> Fill up all the fields appropriately. Press update profile
 </br>
 💻 <strong>Result:</strong> A success status message is shown saying that user is updated and user is redirected to profile page
+</br>
+
+## GENERAL - Doing application functions while having no internet connection / not connected to the network
+
+<p float="left">
+  <img src="/screenshots/sc%20(57).jpg" width="28%" />
+  <img src="/screenshots/sc%20(58).jpg" width="28%" />
+  <img src="/screenshots/sc%20(59).jpg" width="28%" />
+</p>
+<p float="left">
+  <img src="/screenshots/sc%20(60).jpg" width="28%" />
+  <img src="/screenshots/sc%20(61).jpg" width="28%" />
+  <img src="/screenshots/sc%20(62).jpg" width="28%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Do any of the application functions without internet
+</br>
+💻 <strong>Result:</strong> An error status message is shown saying SocketException. Error is handled
 </br>
 
 
