@@ -35,4 +35,22 @@ DOCUMENTATION TRACKER (Project 23)
 38,39 - Remove friend
 40,41 - Friend limit reached
 
+42 - User Page
+43 - Tapping on own profile
+44 - Tapping on update password
+45 - Tapping on logout
+
+46 - Update Password Page
+47 - Not filling up any of the fields
+48 - Entering wrong old password
+49 - Having new password and repeat new password mismatch
+50 - Having all appropriate and correct details
+
+51 - Update Profile Page
+52 - Having fields that are not filled up
+53 - Having invalid email
+54 - Updating email to an email linked to an account
+55,56 - Having all appropriate and correct details
+
+57 and above - Everthing else
 
