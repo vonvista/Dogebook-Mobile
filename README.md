@@ -219,6 +219,95 @@ These aren't all the challenges that I have faced in the development of the proj
   <img src="/screenshots/sc%20(63).jpg" width="40%" />
 </p>
 
+### 🙁 Add comment
+<p float="left">
+  <img src="/screenshots/sc%20(64).jpg" width="40%" />
+  <img src="/screenshots/sc%20(65).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Type on the comment field and press the send button
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying that a comment is added an comment can be seen
+</br>
+
+### 🙁 Delete comment
+<p float="left">
+  <img src="/screenshots/sc%20(23).jpg" width="40%" />
+  <img src="/screenshots/sc%20(24).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Press on the delete button on comments that are your own 
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying that comment has been deleted and comment is removed from comment list
+</br>
+
+## Search Page
+<p float="left">
+  <img src="/screenshots/sc%20(25).jpg" width="40%" />
+</p>
+
+### 🙁 Searching for a user using first name or last name
+<p float="left">
+  <img src="/screenshots/sc%20(26).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Type on the search field the name of the user you want to search (either first name, last name, or both) and press the search button
+</br>
+💻 <strong>Result:</strong> A list of users matching the search query is shown, if no users exist with the search query then no users will be shown
+</br>
+
+### 🙁 Tapping on a user on the search page
+<p float="left">
+  <img src="/screenshots/sc%20(27).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on a user that is on the list after having a successful search query
+</br>
+💻 <strong>Result:</strong> You will be redirected to the profile page of the tapped user
+</br>
+
+## Profile Page
+<p float="left">
+  <img src="/screenshots/sc%20(28).jpg" width="40%" />
+</p>
+
+### 🙁 Sending a friend request
+<p float="left">
+  <img src="/screenshots/sc%20(29).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the send friend request button, this will only be visible if the user on the profile page is still not your friend
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying that friend request is sent.
+</br>
+
+### 🙁 Visiting a profile wherein you're already friends
+<p float="left">
+  <img src="/screenshots/sc%20(68).jpg" width="40%" />
+  <img src="/screenshots/sc%20(30).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Visit a profile of a user you're already friends with
+</br>
+💻 <strong>Result:</strong> The posts wall of the user will display both public and friends post
+</br>
+
+### 🙁 Sending a friend request wherein you've already sent a request before
+<p float="left">
+  <img src="/screenshots/sc%20(31).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap the send friend request button to a user you've already sent a friend request
+</br>
+💻 <strong>Result:</strong> An error status message is shown saying that friend request is already sent
+</br>
+
+### 🙁 Visiting your own profile
+<p float="left">
+  <img src="/screenshots/sc%20(31).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap your own profile
+</br>
+💻 <strong>Result:</strong> Your own profile can be viewed along with your public and friends post, as well as a button to edit profile
+</br>
+
+
+
+
+
 
 
 
