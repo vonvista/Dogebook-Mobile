@@ -19,6 +19,10 @@ DOCUMENTATION TRACKER (Project 23)
 22 - Editing post and removing post completely 
 23 - Deleting post 
 
+63 - Comments Page 
+64,65 - Add comment
+66,67 - Delete comment
+
 24 - Search Page
 25 - Searching for a user using first name or last name
 26 - Tapping on a user on search page
