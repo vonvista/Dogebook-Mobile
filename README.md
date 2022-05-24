@@ -304,8 +304,166 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong> Your own profile can be viewed along with your public and friends post, as well as a button to edit profile
 </br>
 
+## Friends Page
+<p float="left">
+  <img src="/screenshots/sc%20(33).jpg" width="40%" />
+</p>
 
+### 🙁 Accepting friend request
+<p float="left">
+  <img src="/screenshots/sc%20(34).jpg" width="40%" />
+  <img src="/screenshots/sc%20(35).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the check button on a user tile that is on the friend request section
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying the friend request is accepted
+</br>
 
+### 🙁 Rejecting friend request
+<p float="left">
+  <img src="/screenshots/sc%20(36).jpg" width="40%" />
+  <img src="/screenshots/sc%20(37).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the cross button on a user tile that is on the friend request section
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying the friend request is rejected
+</br>
+
+### 🙁 Remove friend
+<p float="left">
+  <img src="/screenshots/sc%20(38).jpg" width="40%" />
+  <img src="/screenshots/sc%20(39).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the remove friend button on a user tile that is on the friend section
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying the friend is removed
+</br>
+
+### 🙁 Accepting a friend request when friend count is already on the friend limit
+<p float="left">
+  <img src="/screenshots/sc%20(40).jpg" width="40%" />
+  <img src="/screenshots/sc%20(41).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the check button on a user tile that is on the friend request section while having 8 friends already
+</br>
+💻 <strong>Result:</strong> An error status message is shown saying that the friend limit is reached
+</br>
+
+## User Page
+<p float="left">
+  <img src="/screenshots/sc%20(42).jpg" width="40%" />
+</p>
+
+### 🙁 Tapping on your own profile
+<p float="left">
+  <img src="/screenshots/sc%20(43).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the user tile with your name
+</br>
+💻 <strong>Result:</strong> You are redirected to your own profile page
+</br>
+
+### 🙁 Tapping on update password
+<p float="left">
+  <img src="/screenshots/sc%20(44).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the update password button
+</br>
+💻 <strong>Result:</strong> You are redirected to the update password page
+</br>
+
+### 🙁 Tapping on log out
+<p float="left">
+  <img src="/screenshots/sc%20(45).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the logout button
+</br>
+💻 <strong>Result:</strong> You are loggedo out of the system and you are redirected to the login page
+</br>
+
+## Update Password Page
+<p float="left">
+  <img src="/screenshots/sc%20(49).jpg" width="40%" />
+</p>
+
+### 🙁 Not filling up any of the fields
+<p float="left">
+  <img src="/screenshots/sc%20(46).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the update password button without filling up the fields
+</br>
+💻 <strong>Result:</strong> Messages are shown to fill up the fields without any entries
+</br>
+
+### 🙁 Entering wrong old password
+<p float="left">
+  <img src="/screenshots/sc%20(47).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Fill up all the fields appropriately, enter the wrong old password. Press update password
+</br>
+💻 <strong>Result:</strong> An error status message is shown saying incorrect old password
+</br>
+
+### 🙁 Having new password and repeat new password mismatch
+<p float="left">
+  <img src="/screenshots/sc%20(48).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Fill up all the fields appropriately, have different entries for the new password and repeat password fields. Press update password
+</br>
+💻 <strong>Result:</strong> An error status message is shown saying passwords do not match
+</br>
+
+### 🙁 Having all appropriate and correct details
+<p float="left">
+  <img src="/screenshots/sc%20(49).jpg" width="40%" />
+  <img src="/screenshots/sc%20(50).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Fill up all the fields appropriately. Press update password
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying that password is updated and user is redirected to user page
+</br>
+
+## Update Profile Page
+<p float="left">
+  <img src="/screenshots/sc%20(51).jpg" width="40%" />
+</p>
+
+### 🙁 Not filling up any of the fields
+<p float="left">
+  <img src="/screenshots/sc%20(52).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Tap on the update profile button without filling up the fields
+</br>
+💻 <strong>Result:</strong> Messages are shown to fill up the fields without any entries
+</br>
+
+### 🙁 Entering invalid email
+<p float="left">
+  <img src="/screenshots/sc%20(53).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Fill up the fields appropriately, enter an invalid email. Press update password
+</br>
+💻 <strong>Result:</strong> Message is shown to enter a valid email on the email field
+</br>
+
+### 🙁 Entering invalid email
+<p float="left">
+  <img src="/screenshots/sc%20(54).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Fill up the fields appropriately, enter an email that is already linked to another account. Press update password
+</br>
+💻 <strong>Result:</strong> An error status message is shown that email is already taken
+</br>
+
+### 🙁 Having all appropriate and correct details
+<p float="left">
+  <img src="/screenshots/sc%20(55).jpg" width="40%" />
+  <img src="/screenshots/sc%20(56).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Fill up all the fields appropriately. Press update profile
+</br>
+💻 <strong>Result:</strong> A success status message is shown saying that user is updated and user is redirected to profile page
+</br>
 
 
 
