@@ -65,6 +65,7 @@ class _CommentsState extends State<Comments> {
         Future.value(
             comments = comments.then((value) => [...value, newComment]));
       });
+      _commentController.text = '';
     }
   }
 
