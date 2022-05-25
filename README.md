@@ -214,6 +214,16 @@ These aren't all the challenges that I have faced in the development of the proj
 💻 <strong>Result:</strong>A success status message is shown saying that post is edited and changes can be seen on your wall
 </br>
 
+### 😀 Loading more posts
+<p float="left">
+  <img src="/screenshots/sc%20(69).jpg" width="40%" />
+  <img src="/screenshots/sc%20(70).jpg" width="40%" />
+</p>
+🛠️ <strong>To reproduce:</strong> Go to the bottom of the list of the feed and press the load more button
+</br>
+💻 <strong>Result:</strong> It fetches at most 10 posts. If there are no more posts, the bottom of the feed will say no more posts
+</br>
+
 ## Comments Page
 <p float="left">
   <img src="/screenshots/sc%20(63).jpg" width="40%" />
