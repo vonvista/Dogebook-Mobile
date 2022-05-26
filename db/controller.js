@@ -231,9 +231,11 @@ exports.sendFriendRequest = async function(req, res, next) {
     //check if friend request already exists
     if(user.friendRequests.includes(friend._id)){
       res.send({err:'Friend request already sent'});
+      return
     }
     if(friend.friendRequests.includes(user._id)){
       res.send({err:'User sent you a request, accept it on friends page'});
+      return
     }
     else {
       user.friendRequests.push(friend._id);
