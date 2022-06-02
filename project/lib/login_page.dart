@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   /// @return: text field for email
   Widget _emailField() {
     return TextFormField(
+      key: const Key('email'),
       controller: _emailController,
       decoration: const InputDecoration(
         labelText: 'Email',
@@ -68,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
   /// @return: text field for password
   Widget _passwordField() {
     return TextFormField(
+      key: const Key('password'),
       controller: _passwordController,
       decoration: const InputDecoration(
         labelText: 'Password',
@@ -77,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
       obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter your email';
+          return 'Please enter your password';
         }
         return null;
       },
@@ -90,9 +92,10 @@ class _LoginPageState extends State<LoginPage> {
   /// @param: onPressed: function to call when button is pressed
   ///
   /// @return: button widget
-  Widget _buildButton(String text, Function() onPressed) {
+  Widget _buildButton(String text, Function() onPressed, Key key) {
     return ElevatedButton(
       //set button size
+      key: key,
       child: Text(text),
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -114,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(width: 10),
         //create a link to sign up page that is clickable
         ElevatedButton(
+          key: const Key('signup'),
           child: const Text(
             'Sign Up',
             style: TextStyle(
@@ -220,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 10),
                 _passwordField(),
                 const SizedBox(height: 10),
-                _buildButton('Login', _handleLogin),
+                _buildButton('Login', _handleLogin, const Key('login')),
                 const SizedBox(height: 10),
                 _buildSignUp(),
               ],
