@@ -22,6 +22,7 @@ import 'package:project/feed_page.dart';
 import 'package:project/profile_page.dart';
 import 'package:project/search_page.dart';
 import 'package:project/comments_page.dart';
+import 'package:project/friend_page.dart';
 import 'package:project/db_helper.dart';
 
 const users = [
@@ -866,5 +867,48 @@ void main() {
         expect(find.text('Edit Profile'), findsOneWidget);
       });
     });
+  });
+
+  group('Friend Page Tests', () {
+    testWidgets(
+        "Accepting a friend request when it is already on the friend limit",
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var friendsNav = find.byTooltip('Friends');
+        await tester.tap(friendsNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(FriendPage), findsOneWidget);
+
+        var acceptButton = find.byType(IconButton).at(0);
+        await tester.tap(acceptButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Friend limit reached (8 friends)'), findsOneWidget);
+      });
+    });
+
+    //REDACTED: Tests that are not implemented as test cases
+    //-Accepting friend request (not on friend limit)
+    //-Declining friend request
+    //-Removing friend
   });
 }
