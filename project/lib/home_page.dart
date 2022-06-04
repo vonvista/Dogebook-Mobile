@@ -68,6 +68,7 @@ class _HomePageState extends State<HomePage> {
         ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        key: const Key('navigationBar'),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(

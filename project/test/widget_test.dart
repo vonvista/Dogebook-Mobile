@@ -19,6 +19,8 @@ import 'package:project/login_page.dart';
 import 'package:project/home_page.dart';
 import 'package:project/signup_page.dart';
 import 'package:project/feed_page.dart';
+import 'package:project/profile_page.dart';
+import 'package:project/comments_page.dart';
 import 'package:project/db_helper.dart';
 
 const users = [
@@ -525,6 +527,76 @@ void main() {
 
         expect(find.byType(Feed), findsOneWidget);
         //this one is hard to measure in terms of what to expect
+      });
+    });
+  });
+
+  group('Comments Page Tests', () {
+    testWidgets('Add and Delete Comment', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var createPostButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(createPostButton);
+        await tester.pump(Duration(seconds: 2));
+        var postTextField = find.byType(TextField).at(0);
+        await tester.enterText(postTextField, 'This is a test post');
+        await tester.pump(Duration(seconds: 2));
+        var postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post created'), findsOneWidget);
+
+        //go to comments
+        var commentsButton = find.byType(ElevatedButton).at(1);
+        await tester.tap(commentsButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Comments), findsOneWidget);
+
+        var commentTextField = find.byType(TextField).at(0);
+        await tester.enterText(commentTextField, 'This is a test comment');
+        await tester.pump(Duration(seconds: 2));
+        var commentButton = find.byType(IconButton).at(0);
+        await tester.tap(commentButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Comment added'), findsOneWidget);
+
+        var deleteButton = find.byType(IconButton).at(1);
+        await tester.tap(deleteButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Comment deleted'), findsOneWidget);
+
+        //delete everything ng ginawa
+        var backButton = find.byTooltip('Back');
+        await tester.tap(backButton);
+        await tester.pump(Duration(seconds: 2));
+
+        //delete the post created
+        var deletePostButton = find.byType(IconButton).at(1);
+        await tester.tap(deletePostButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post deleted'), findsOneWidget);
       });
     });
   });
