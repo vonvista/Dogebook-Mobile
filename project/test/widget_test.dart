@@ -20,6 +20,25 @@ import 'package:project/home_page.dart';
 import 'package:project/signup_page.dart';
 import 'package:project/feed_page.dart';
 
+const users = [
+  {
+    'firstName': 'Von',
+    'lastName': 'Vista',
+    'email': 'vovista1@up.edu.ph',
+    'password': '1234',
+    'friends': [],
+    'friendRequests': [],
+  },
+  {
+    'firstName': 'A',
+    'lastName': 'A',
+    'email': 'a@gmail.com',
+    'password': '1234',
+    'friends': [],
+    'friendRequests': [],
+  },
+];
+
 void main() {
   //create a mock http client
 
@@ -28,6 +47,9 @@ void main() {
   final client = MockClient(
     //return a mock response
     (request) async {
+      //print username from body of request
+      final body = json.decode(request.body);
+      print(body);
       if (request.url.toString() == 'http://$serverIP:3001/user/login' &&
           request.body.toString() == '{"username":"test","password":"test"}') {
         return http.Response(
@@ -53,7 +75,7 @@ void main() {
               "email": "",
             },
           ),
-          200,
+          201,
         );
       }
     },
@@ -103,6 +125,8 @@ void main() {
       await tester.pump();
       await tester.tap(loginButton);
       await tester.pump(Duration(seconds: 5));
+
+      expect(find.byType(HomePage), findsOneWidget);
     });
   });
 }
