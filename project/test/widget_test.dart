@@ -725,4 +725,146 @@ void main() {
       });
     });
   });
+
+  group('Profile Page Tests', () {
+    testWidgets('Visiting a profile wherein you\'re already friends',
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var searchNav = find.byTooltip('Search');
+        await tester.tap(searchNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(SearchPage), findsOneWidget);
+
+        var searchField = find.byType(TextField).at(0);
+        var searchButton = find.byType(IconButton).at(0);
+
+        await tester.enterText(searchField, 'user');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(searchButton);
+        await tester.pump(Duration(seconds: 5));
+
+        var user = find.byType(ListTile).at(0);
+        await tester.tap(user);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(ProfilePage), findsOneWidget);
+        expect(find.text('Friends'), findsOneWidget);
+      });
+    });
+
+    testWidgets(
+        "Sending friend request (on a profile that you've already sent before)",
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var searchNav = find.byTooltip('Search');
+        await tester.tap(searchNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(SearchPage), findsOneWidget);
+
+        var searchField = find.byType(TextField).at(0);
+        var searchButton = find.byType(IconButton).at(0);
+
+        await tester.enterText(searchField, 'von');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(searchButton);
+        await tester.pump(Duration(seconds: 5));
+
+        var user = find.byType(ListTile).last;
+        await tester.tap(user);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(ProfilePage), findsOneWidget);
+
+        var sendButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(sendButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Friend request already sent'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Visiting your own profile", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var searchNav = find.byTooltip('Search');
+        await tester.tap(searchNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(SearchPage), findsOneWidget);
+
+        var searchField = find.byType(TextField).at(0);
+        var searchButton = find.byType(IconButton).at(0);
+
+        await tester.enterText(searchField, 'von');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(searchButton);
+        await tester.pump(Duration(seconds: 5));
+
+        var user = find.byType(ListTile).first;
+        await tester.tap(user);
+        await tester.pump(Duration(seconds: 5));
+
+        expect(find.byType(ProfilePage), findsOneWidget);
+        expect(find.text('Edit Profile'), findsOneWidget);
+      });
+    });
+  });
 }
