@@ -14,12 +14,15 @@ import 'package:localstorage/localstorage.dart';
 class DBHelper {
   final LocalStorage storage = LocalStorage('project'); //local storage
 
+  //Client http = Client();
+  //set http to real client for production, set to mock client for testing
+
   ///!!! SERVER IP, CHANGE THIS TO YOUR SERVER IP !!!
   ///Using AVD (Android Emulator) - 10.0.2.2
   ///Using Chrome - 127.0.0.1
   ///Using external phone or device - IP of your network
   ///(usually wifi, must be connected with the same network)
-  final String serverIP = "10.0.0.51";
+  final String serverIP = "192.168.43.174";
 
   final int limit = 10; //limit for pagination
 

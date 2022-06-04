@@ -8,17 +8,18 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/testing.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:integration_test/integration_test.dart';
 
-import 'package:project/main.dart';
+import 'package:project/main.dart' as app;
 import 'package:project/login_page.dart';
 import 'package:project/home_page.dart';
 import 'package:project/signup_page.dart';
 import 'package:project/feed_page.dart';
+import 'package:project/db_helper.dart';
 
 const users = [
   {
@@ -40,95 +41,315 @@ const users = [
 ];
 
 void main() {
-  //create a mock http client
+  const String serverIP = "127.0.0.1";
 
-  const String serverIP = "10.0.0.51";
+  // (request) async {
+  //     //print username from body of request
+  //     final body = json.decode(request.body);
+  //     print(body);
+  //     if (request.url.toString() == 'http://$serverIP:3001/user/login' &&
+  //         request.body.toString() == '{"username":"test","password":"test"}') {
+  //       return http.Response(
+  //         //return a json string
+  //         jsonEncode(
+  //           {
+  //             'firstName': 'Von',
+  //             'lastName': 'Vista',
+  //             'email': 'vovista1@up.edu.ph',
+  //             'password': '1234',
+  //             'friends': [],
+  //             'friendRequests': [],
+  //           },
+  //         ),
+  //         200,
+  //       );
+  //     } else {
+  //       return http.Response(
+  //         jsonEncode(
+  //           {
+  //             "id": "1",
+  //             "username": "test",
+  //             "email": "",
+  //           },
+  //         ),
+  //         201,
+  //       );
+  //     }
+  //   },
 
-  final client = MockClient(
-    //return a mock response
-    (request) async {
-      //print username from body of request
-      final body = json.decode(request.body);
-      print(body);
-      if (request.url.toString() == 'http://$serverIP:3001/user/login' &&
-          request.body.toString() == '{"username":"test","password":"test"}') {
-        return http.Response(
-          //return a json string
-          jsonEncode(
-            {
-              'firstName': 'Von',
-              'lastName': 'Vista',
-              'email': 'vovista1@up.edu.ph',
-              'password': '1234',
-              'friends': [],
-              'friendRequests': [],
-            },
-          ),
-          200,
-        );
-      } else {
-        return http.Response(
-          jsonEncode(
-            {
-              "id": "1",
-              "username": "test",
-              "email": "",
-            },
-          ),
-          201,
-        );
-      }
-    },
-  );
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  group('Login Page Tests', () {
+    testWidgets('Pressing sign up without any of the fields filled up',
+        (tester) async {
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 5));
 
-  testWidgets('Login Page Test', (tester) async {
-    // Build our app and trigger a frame.
-    await tester.runAsync(() async {
-      await tester.pumpWidget(MyApp());
+        expect(find.byType(LoginPage), findsOneWidget);
 
-      expect(find.byType(LoginPage), findsOneWidget);
-      //find text fields
-      final emailField = find.byKey(const Key('email'));
-      final passwordField = find.byKey(const Key('password'));
+        final emailField = find.byType(TextFormField).at(0);
+        final passwordField = find.byType(TextFormField).at(1);
 
-      //find buttons
-      final loginButton = find.byKey(const Key('login'));
-      final signupButton = find.byKey(const Key('signup'));
+        final loginButton = find.byType(ElevatedButton).at(0);
+        final signupButton = find.byType(ElevatedButton).at(1);
 
-      //test login
-      await tester.tap(loginButton);
-      await tester.pump(Duration(seconds: 1));
-      //expect error message on empty email
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 1));
 
-      expect(find.text('Please enter your email'), findsOneWidget);
-      expect(find.text('Please enter your password'), findsOneWidget);
+        expect(find.text('Please enter your email'), findsOneWidget);
+        expect(find.text('Please enter your password'), findsOneWidget);
+      });
+    });
+
+    testWidgets('Logging in with an email not registered in the system',
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 5));
+
+        expect(find.byType(LoginPage), findsOneWidget);
+
+        final emailField = find.byType(TextFormField).at(0);
+        final passwordField = find.byType(TextFormField).at(1);
+
+        final loginButton = find.byType(ElevatedButton).at(0);
+        final signupButton = find.byType(ElevatedButton).at(1);
+
+        await tester.enterText(emailField, 'notinsystem@up.edu.ph');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('Email not registered'), findsOneWidget);
+      });
+    });
+
+    testWidgets('Signing up with all fields field appropriately',
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 5));
+
+        final emailField = find.byType(TextFormField).at(0);
+        final passwordField = find.byType(TextFormField).at(1);
+
+        final loginButton = find.byType(ElevatedButton).at(0);
+        final signupButton = find.byType(ElevatedButton).at(1);
+
+        await tester.enterText(emailField, 'vovista1@up.edu.ph');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 5));
+        await tester.pump(Duration(seconds: 5));
+
+        expect(find.byType(HomePage), findsOneWidget);
+      });
+    });
+
+    testWidgets('Logging in with an incorrect password', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 5));
+
+        expect(find.byType(LoginPage), findsOneWidget);
+
+        final emailField = find.byType(TextFormField).at(0);
+        final passwordField = find.byType(TextFormField).at(1);
+
+        final loginButton = find.byType(ElevatedButton).at(0);
+        final signupButton = find.byType(ElevatedButton).at(1);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '123');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('Incorrect password'), findsOneWidget);
+      });
     });
   });
 
-  testWidgets('Successful login', (tester) async {
-    // Build our app and trigger a frame.
-    await tester.runAsync(() async {
-      await tester.pumpWidget(MyApp());
+  group('Signup Page Tests', () {
+    testWidgets('Pressing sign up without any of the fields filled up',
+        (tester) async {
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(LoginPage), findsOneWidget);
 
-      expect(find.byType(LoginPage), findsOneWidget);
-      //find text fields
-      final emailField = find.byKey(const Key('email'));
-      final passwordField = find.byKey(const Key('password'));
+        var signUpButton = find.byType(ElevatedButton).at(1);
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(SignUpPage), findsOneWidget);
 
-      //find buttons
-      final loginButton = find.byKey(const Key('login'));
-      final signupButton = find.byKey(const Key('signup'));
+        var firstName = find.byType(TextFormField).at(0);
+        var lastName = find.byType(TextFormField).at(1);
+        var email = find.byType(TextFormField).at(2);
+        var password = find.byType(TextFormField).at(3);
+        var repeatPassword = find.byType(TextFormField).at(4);
 
-      //test login
-      await tester.enterText(emailField, 'vovista1@up.edu.ph');
-      await tester.enterText(passwordField, '1234');
-      await tester.pump();
-      await tester.tap(loginButton);
-      await tester.pump(Duration(seconds: 5));
+        signUpButton = find.byType(ElevatedButton).at(0);
 
-      expect(find.byType(HomePage), findsOneWidget);
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('Please enter your first name'), findsOneWidget);
+        expect(find.text('Please enter your last name'), findsOneWidget);
+        expect(find.text('Please enter your email'), findsOneWidget);
+        expect(find.text('Please enter your password'), findsOneWidget);
+        expect(find.text('Please enter your password again'), findsOneWidget);
+      });
+    });
+
+    testWidgets(
+        'Signing up with non-matching passwords on password and repeat password fields',
+        (tester) async {
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(LoginPage), findsOneWidget);
+
+        var signUpButton = find.byType(ElevatedButton).at(1);
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(SignUpPage), findsOneWidget);
+
+        var firstName = find.byType(TextFormField).at(0);
+        var lastName = find.byType(TextFormField).at(1);
+        var email = find.byType(TextFormField).at(2);
+        var password = find.byType(TextFormField).at(3);
+        var repeatPassword = find.byType(TextFormField).at(4);
+
+        await tester.enterText(firstName, 'Von');
+        await tester.enterText(lastName, 'Vista');
+        await tester.enterText(email, 'vonatsiv1030@gmail.com');
+        await tester.enterText(password, '123');
+        await tester.enterText(repeatPassword, '1234');
+
+        signUpButton = find.byType(ElevatedButton).at(0);
+
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('Passwords do not match'), findsOneWidget);
+      });
+    });
+
+    //REDACTED: Test for successful signup is removed to prevent spamming of accounts
+
+    testWidgets('Signing up with an email that is already registered',
+        (tester) async {
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(LoginPage), findsOneWidget);
+
+        var signUpButton = find.byType(ElevatedButton).at(1);
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(SignUpPage), findsOneWidget);
+
+        var firstName = find.byType(TextFormField).at(0);
+        var lastName = find.byType(TextFormField).at(1);
+        var email = find.byType(TextFormField).at(2);
+        var password = find.byType(TextFormField).at(3);
+        var repeatPassword = find.byType(TextFormField).at(4);
+
+        await tester.enterText(firstName, 'Von');
+        await tester.enterText(lastName, 'Vista');
+        await tester.enterText(email, 'vonatsiv1030@gmail.com');
+        await tester.enterText(password, '1234');
+        await tester.enterText(repeatPassword, '1234');
+
+        signUpButton = find.byType(ElevatedButton).at(0);
+
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('There is already a user with this email'),
+            findsOneWidget);
+      });
+    });
+
+    testWidgets('Signing up with invalid email', (tester) async {
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(LoginPage), findsOneWidget);
+
+        var signUpButton = find.byType(ElevatedButton).at(1);
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+        expect(find.byType(SignUpPage), findsOneWidget);
+
+        var firstName = find.byType(TextFormField).at(0);
+        var lastName = find.byType(TextFormField).at(1);
+        var email = find.byType(TextFormField).at(2);
+        var password = find.byType(TextFormField).at(3);
+        var repeatPassword = find.byType(TextFormField).at(4);
+
+        await tester.enterText(firstName, 'Von');
+        await tester.enterText(lastName, 'Vista');
+        await tester.enterText(email, 'vonatsiv1030');
+        await tester.enterText(password, '1234');
+        await tester.enterText(repeatPassword, '1234');
+
+        signUpButton = find.byType(ElevatedButton).at(0);
+
+        await tester.tap(signUpButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('Please enter a valid email'), findsOneWidget);
+      });
+    });
+  });
+
+  group('Feed Page Tests', () {
+    testWidgets('Create and delete a post', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 1));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var createPostButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(createPostButton);
+        await tester.pump(Duration(seconds: 1));
+        var postTextField = find.byType(TextField).at(0);
+        await tester.enterText(postTextField, 'This is a test post');
+        await tester.pump(Duration(seconds: 1));
+        var postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 1));
+
+        expect(find.text('Post created'), findsOneWidget);
+
+        //delete the post created
+        var deletePostButton = find.byType(IconButton).at(1);
+        await tester.tap(deletePostButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post deleted'), findsOneWidget);
+      });
     });
   });
 }
-
-class _MyHttpOverrides extends HttpOverrides {}

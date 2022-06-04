@@ -375,6 +375,7 @@ class _FeedState extends State<Feed> {
             Row(
               children: [
                 ElevatedButton(
+                  key: const Key('postModalButton'),
                   child: const Text('Post'),
                   onPressed: () {
                     if (mode == 'add') {

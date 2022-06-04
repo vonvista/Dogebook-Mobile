@@ -246,7 +246,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: const EdgeInsets.all(10),
                 alignment: Alignment.center,
                 child: Image.asset(
-                  'assets/images/logo title.png',
+                  'assets/images/logotitle.png',
                   height: 50,
                 ),
               ),
