@@ -94,7 +94,7 @@ void main() {
         final signupButton = find.byType(ElevatedButton).at(1);
 
         await tester.tap(loginButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Please enter your email'), findsOneWidget);
         expect(find.text('Please enter your password'), findsOneWidget);
@@ -120,7 +120,7 @@ void main() {
         await tester.enterText(passwordField, '1234');
         await tester.pump();
         await tester.tap(loginButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Email not registered'), findsOneWidget);
       });
@@ -168,7 +168,7 @@ void main() {
         await tester.enterText(passwordField, '123');
         await tester.pump();
         await tester.tap(loginButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Incorrect password'), findsOneWidget);
       });
@@ -180,12 +180,12 @@ void main() {
         (tester) async {
       await tester.runAsync(() async {
         app.main();
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(LoginPage), findsOneWidget);
 
         var signUpButton = find.byType(ElevatedButton).at(1);
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(SignUpPage), findsOneWidget);
 
         var firstName = find.byType(TextFormField).at(0);
@@ -197,7 +197,7 @@ void main() {
         signUpButton = find.byType(ElevatedButton).at(0);
 
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Please enter your first name'), findsOneWidget);
         expect(find.text('Please enter your last name'), findsOneWidget);
@@ -212,12 +212,12 @@ void main() {
         (tester) async {
       await tester.runAsync(() async {
         app.main();
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(LoginPage), findsOneWidget);
 
         var signUpButton = find.byType(ElevatedButton).at(1);
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(SignUpPage), findsOneWidget);
 
         var firstName = find.byType(TextFormField).at(0);
@@ -235,7 +235,7 @@ void main() {
         signUpButton = find.byType(ElevatedButton).at(0);
 
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Passwords do not match'), findsOneWidget);
       });
@@ -247,12 +247,12 @@ void main() {
         (tester) async {
       await tester.runAsync(() async {
         app.main();
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(LoginPage), findsOneWidget);
 
         var signUpButton = find.byType(ElevatedButton).at(1);
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(SignUpPage), findsOneWidget);
 
         var firstName = find.byType(TextFormField).at(0);
@@ -270,7 +270,7 @@ void main() {
         signUpButton = find.byType(ElevatedButton).at(0);
 
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('There is already a user with this email'),
             findsOneWidget);
@@ -280,12 +280,12 @@ void main() {
     testWidgets('Signing up with invalid email', (tester) async {
       await tester.runAsync(() async {
         app.main();
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(LoginPage), findsOneWidget);
 
         var signUpButton = find.byType(ElevatedButton).at(1);
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         expect(find.byType(SignUpPage), findsOneWidget);
 
         var firstName = find.byType(TextFormField).at(0);
@@ -303,7 +303,7 @@ void main() {
         signUpButton = find.byType(ElevatedButton).at(0);
 
         await tester.tap(signUpButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Please enter a valid email'), findsOneWidget);
       });
@@ -315,7 +315,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.runAsync(() async {
         app.main();
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         var emailField = find.byType(TextFormField).at(0);
         var passwordField = find.byType(TextFormField).at(1);
@@ -326,20 +326,20 @@ void main() {
         await tester.enterText(passwordField, '1234');
         await tester.pump();
         await tester.tap(loginButton);
-        await tester.pump(Duration(seconds: 1));
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.byType(Feed), findsOneWidget);
 
         var createPostButton = find.byType(ElevatedButton).at(0);
         await tester.tap(createPostButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         var postTextField = find.byType(TextField).at(0);
         await tester.enterText(postTextField, 'This is a test post');
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
         var postButton = find.byKey(Key('postModalButton'));
         await tester.tap(postButton);
-        await tester.pump(Duration(seconds: 1));
+        await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Post created'), findsOneWidget);
 
@@ -349,6 +349,182 @@ void main() {
         await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Post deleted'), findsOneWidget);
+      });
+    });
+
+    testWidgets('Creat empty post', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var createPostButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(createPostButton);
+        await tester.pump(Duration(seconds: 2));
+        var postTextField = find.byType(TextField).at(0);
+        await tester.pump(Duration(seconds: 2));
+        var postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 2));
+
+        //this means di kumasa yung post, which is success
+        expect(find.text('What\'s on your mind?'), findsOneWidget);
+      });
+    });
+
+    testWidgets('Edit post', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var createPostButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(createPostButton);
+        await tester.pump(Duration(seconds: 2));
+        var postTextField = find.byType(TextField).at(0);
+        await tester.enterText(postTextField, 'This is a test post');
+        await tester.pump(Duration(seconds: 2));
+        var postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post created'), findsOneWidget);
+
+        //edit post
+        var editPostButton = find.byType(IconButton).at(0);
+        await tester.tap(editPostButton);
+        await tester.pump(Duration(seconds: 2));
+        postTextField = find.byType(TextField).at(0);
+        await tester.enterText(postTextField, 'This is a edited post');
+        await tester.pump(Duration(seconds: 2));
+        postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post edited'), findsOneWidget);
+
+        //delete the post created
+        var deletePostButton = find.byType(IconButton).at(1);
+        await tester.tap(deletePostButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post deleted'), findsOneWidget);
+      });
+    });
+
+    testWidgets('Edit post and make content empty', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var createPostButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(createPostButton);
+        await tester.pump(Duration(seconds: 2));
+        var postTextField = find.byType(TextField).at(0);
+        await tester.enterText(postTextField, 'This is a test post');
+        await tester.pump(Duration(seconds: 2));
+        var postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post created'), findsOneWidget);
+
+        //edit post
+        var editPostButton = find.byType(IconButton).at(0);
+        await tester.tap(editPostButton);
+        await tester.pump(Duration(seconds: 2));
+        postTextField = find.byType(TextField).at(0);
+        await tester.enterText(postTextField, '');
+        await tester.pump(Duration(seconds: 2));
+        postButton = find.byKey(Key('postModalButton'));
+        await tester.tap(postButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Unable to save post'), findsOneWidget);
+
+        var closePostButton = find.byKey(Key('closeModalButton'));
+        await tester.tap(closePostButton);
+        await tester.pump(Duration(seconds: 2));
+
+        //delete the post created
+        var deletePostButton = find.byType(IconButton).at(1);
+        await tester.tap(deletePostButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Post deleted'), findsOneWidget);
+      });
+    });
+
+    testWidgets('Load more posts', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var loadMorePosts = find.byKey(Key('loadMoreButton'));
+        await tester.tap(loadMorePosts);
+
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+        //this one is hard to measure in terms of what to expect
       });
     });
   });

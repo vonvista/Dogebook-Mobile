@@ -300,6 +300,7 @@ class _FeedState extends State<Feed> {
                   child: hasMorePost
                       ? //created button to load more posts
                       ElevatedButton(
+                          key: const Key('loadMoreButton'),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const <Widget>[
@@ -350,6 +351,7 @@ class _FeedState extends State<Feed> {
                 //fill space
                 const Expanded(child: SizedBox()),
                 IconButton(
+                  key: const Key('closeModalButton'),
                   icon: const Icon(Icons.close),
                   onPressed: () {
                     Navigator.of(context).pop();
