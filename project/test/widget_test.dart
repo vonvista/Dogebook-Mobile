@@ -20,6 +20,7 @@ import 'package:project/home_page.dart';
 import 'package:project/signup_page.dart';
 import 'package:project/feed_page.dart';
 import 'package:project/profile_page.dart';
+import 'package:project/search_page.dart';
 import 'package:project/comments_page.dart';
 import 'package:project/db_helper.dart';
 
@@ -597,6 +598,130 @@ void main() {
         await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Post deleted'), findsOneWidget);
+      });
+    });
+  });
+
+  group('Search Page Tests', () {
+    testWidgets('Search for user using first name or last name',
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var searchNav = find.byTooltip('Search');
+        await tester.tap(searchNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(SearchPage), findsOneWidget);
+
+        var searchField = find.byType(TextField).at(0);
+        var searchButton = find.byType(IconButton).at(0);
+
+        await tester.enterText(searchField, 'user');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(searchButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(ListTile), findsWidgets);
+      });
+    });
+
+    testWidgets('Search with nothing', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var searchNav = find.byTooltip('Search');
+        await tester.tap(searchNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(SearchPage), findsOneWidget);
+
+        var searchField = find.byType(TextField).at(0);
+        var searchButton = find.byType(IconButton).at(0);
+
+        await tester.enterText(searchField, '');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(searchButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(ListTile), findsNothing);
+      });
+    });
+
+    testWidgets('Tapping on a user on the search page', (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        var searchNav = find.byTooltip('Search');
+        await tester.tap(searchNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(SearchPage), findsOneWidget);
+
+        var searchField = find.byType(TextField).at(0);
+        var searchButton = find.byType(IconButton).at(0);
+
+        await tester.enterText(searchField, 'user');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(searchButton);
+        await tester.pump(Duration(seconds: 2));
+
+        var user = find.byType(ListTile).at(0);
+        await tester.tap(user);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(ProfilePage), findsOneWidget);
       });
     });
   });
