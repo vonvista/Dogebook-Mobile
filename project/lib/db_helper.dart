@@ -22,7 +22,7 @@ class DBHelper {
   ///Using Chrome - 127.0.0.1
   ///Using external phone or device - IP of your network
   ///(usually wifi, must be connected with the same network)
-  final String serverIP = "192.168.43.174";
+  final String serverIP = "10.0.0.51";
 
   final int limit = 10; //limit for pagination
 

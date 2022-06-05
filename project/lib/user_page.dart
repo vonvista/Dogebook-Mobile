@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
+import 'globals.dart' as globals;
 
 import 'package:localstorage/localstorage.dart';
 import 'package:lottie/lottie.dart';
@@ -28,6 +29,7 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
+    print("ON USER PAGE");
   }
 
   /// @brief: create list tile for friends
@@ -95,11 +97,15 @@ class _UserPageState extends State<UserPage> {
       child: ListView(
         shrinkWrap: true,
         children: [
-          Lottie.asset('assets/lottie/moodydog.json'),
+          globals.enableAnimation
+              ? Lottie.asset(
+                  'assets/lottie/moodydog.json',
+                )
+              : Container(),
           //text view profile
           const Center(
             child: Text(
-              '  View your profile',
+              'View your profile',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -115,6 +121,7 @@ class _UserPageState extends State<UserPage> {
           const Divider(height: 10),
           //build logout
           ElevatedButton(
+            key: Key('profileUpdatePass'),
             child: const Text('Update Password'),
             onPressed: () async {
               await Navigator.push(
@@ -126,6 +133,7 @@ class _UserPageState extends State<UserPage> {
             },
           ),
           ElevatedButton(
+            key: Key('profileLogout'),
             child: const Text('Logout'),
             onPressed: () {
               storage.clear();

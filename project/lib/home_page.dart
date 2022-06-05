@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
               color: _selectedIndex == 4 ? Colors.white : colors.deg2dark,
             ),
             label: 'Profile',
+            tooltip: 'User',
             backgroundColor: colors.deg2,
           ),
         ],

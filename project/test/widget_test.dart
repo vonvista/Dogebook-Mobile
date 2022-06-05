@@ -23,7 +23,9 @@ import 'package:project/profile_page.dart';
 import 'package:project/search_page.dart';
 import 'package:project/comments_page.dart';
 import 'package:project/friend_page.dart';
+import 'package:project/user_page.dart';
 import 'package:project/db_helper.dart';
+import 'package:project/userupdate/update_password.dart';
 
 const users = [
   {
@@ -82,6 +84,11 @@ void main() {
   //   },
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(() {
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  });
+
   group('Login Page Tests', () {
     testWidgets('Pressing sign up without any of the fields filled up',
         (tester) async {
@@ -910,5 +917,121 @@ void main() {
     //-Accepting friend request (not on friend limit)
     //-Declining friend request
     //-Removing friend
+  });
+
+  group('User Page Tests', () {
+    testWidgets("Tapping on update password", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdatePassword), findsOneWidget);
+      });
+    });
+
+    testWidgets("Tapping on user profile", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(userTile);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Edit Profile'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Tapping on logout", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(logoutButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(LoginPage), findsOneWidget);
+      });
+    });
   });
 }

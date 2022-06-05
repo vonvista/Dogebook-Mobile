@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../db_helper.dart';
 import '../colors.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project/globals.dart' as globals;
 
 import '../snackbar.dart';
 
@@ -175,7 +176,12 @@ class _UpdatePasswordState extends State<UpdatePassword> {
           child: Column(
             children: [
               Container(
-                child: Lottie.asset('assets/lottie/password.json', height: 100),
+                child: globals.enableAnimation
+                    ? Lottie.asset(
+                        'assets/lottie/password.json',
+                        height: 100,
+                      )
+                    : Container(),
               ),
               passwordForm(),
               Container(
