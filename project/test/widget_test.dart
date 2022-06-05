@@ -30,6 +30,7 @@ import 'package:project/friend_page.dart';
 import 'package:project/user_page.dart';
 import 'package:project/db_helper.dart';
 import 'package:project/userupdate/update_password.dart';
+import 'package:project/userupdate/update_user.dart';
 
 const users = [
   {
@@ -354,7 +355,7 @@ void main() {
         await tester.pump(Duration(seconds: 2));
         var postButton = find.byKey(Key('postModalButton'));
         await tester.tap(postButton);
-        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 3));
 
         expect(find.text('Post created'), findsOneWidget);
 
@@ -1247,6 +1248,221 @@ void main() {
         await tester.pump(Duration(seconds: 2));
 
         expect(find.text('Password updated'), findsWidgets);
+      });
+    });
+  });
+
+  group('Update Profile Tests', () {
+    testWidgets("Not filling up any of the fields", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        await tester.tap(userTile);
+        await tester.pump(Duration(seconds: 2));
+
+        var updateProfileButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdateUser), findsOneWidget);
+
+        var firstNameField = find.byType(TextFormField).at(0);
+        var lastNameField = find.byType(TextFormField).at(1);
+        emailField = find.byType(TextFormField).at(2);
+        updateProfileButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(firstNameField, '');
+        await tester.enterText(lastNameField, '');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Please Enter your first name'), findsOneWidget);
+        expect(find.text('Please Enter your last name'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Entering invalid email", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        await tester.tap(userTile);
+        await tester.pump(Duration(seconds: 2));
+
+        var updateProfileButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdateUser), findsOneWidget);
+
+        var firstNameField = find.byType(TextFormField).at(0);
+        var lastNameField = find.byType(TextFormField).at(1);
+        emailField = find.byType(TextFormField).at(2);
+        updateProfileButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Please enter a valid email'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Updating email to an email linked to an account",
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        await tester.tap(userTile);
+        await tester.pump(Duration(seconds: 2));
+
+        var updateProfileButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdateUser), findsOneWidget);
+
+        var firstNameField = find.byType(TextFormField).at(0);
+        var lastNameField = find.byType(TextFormField).at(1);
+        emailField = find.byType(TextFormField).at(2);
+        updateProfileButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'a@gmail.com');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Email already taken'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Having all appropriate and correct details", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        await tester.tap(userTile);
+        await tester.pump(Duration(seconds: 2));
+
+        var updateProfileButton = find.byType(ElevatedButton).at(0);
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdateUser), findsOneWidget);
+
+        var firstNameField = find.byType(TextFormField).at(0);
+        var lastNameField = find.byType(TextFormField).at(1);
+        emailField = find.byType(TextFormField).at(2);
+        updateProfileButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'Von');
+        await tester.enterText(emailField, 'Vista');
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updateProfileButton);
+        await tester.pump(Duration(seconds: 4));
+
+        expect(find.text('User updated'), findsOneWidget);
       });
     });
   });
