@@ -5,6 +5,10 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+/// NOTE: While testing, please set the boolean in globals.dart to false.
+/// Else, UserPage, UpdatePassword, and UpdateProfile tests will not work.
+/// This is a problem with lottie animations
+
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
@@ -1031,6 +1035,218 @@ void main() {
         await tester.pump(Duration(seconds: 2));
 
         expect(find.byType(LoginPage), findsOneWidget);
+      });
+    });
+  });
+
+  group('Update Password Tests', () {
+    testWidgets("Not filling up any of the fields", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdatePassword), findsOneWidget);
+
+        var oldPassField = find.byType(TextFormField).at(0);
+        var newPassField = find.byType(TextFormField).at(1);
+        var repeatPassField = find.byType(TextFormField).at(2);
+        updatePassButton = find.byType(ElevatedButton).at(0);
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Please Enter your old password'), findsOneWidget);
+        expect(find.text('Please Enter your new password'), findsOneWidget);
+        expect(find.text('Please Repeat your new password'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Entering wrong old password", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdatePassword), findsOneWidget);
+
+        var oldPassField = find.byType(TextFormField).at(0);
+        var newPassField = find.byType(TextFormField).at(1);
+        var repeatPassField = find.byType(TextFormField).at(2);
+        updatePassButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(oldPassField, '123');
+        await tester.enterText(newPassField, '1234');
+        await tester.enterText(repeatPassField, '1234');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Incorrect old password'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Having new password and repeat new password mismatch",
+        (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdatePassword), findsOneWidget);
+
+        var oldPassField = find.byType(TextFormField).at(0);
+        var newPassField = find.byType(TextFormField).at(1);
+        var repeatPassField = find.byType(TextFormField).at(2);
+        updatePassButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(oldPassField, '1234');
+        await tester.enterText(newPassField, '123');
+        await tester.enterText(repeatPassField, '1234');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Passwords do not match'), findsOneWidget);
+      });
+    });
+
+    testWidgets("Having all appropriate and correct details", (tester) async {
+      // Build our app and trigger a frame.
+      await tester.runAsync(() async {
+        app.main();
+        await tester.pump(Duration(seconds: 2));
+
+        var emailField = find.byType(TextFormField).at(0);
+        var passwordField = find.byType(TextFormField).at(1);
+
+        var loginButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(emailField, 'vonatsiv1030@gmail.com');
+        await tester.enterText(passwordField, '1234');
+        await tester.pump();
+        await tester.tap(loginButton);
+        await tester.pump(Duration(seconds: 2));
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(Feed), findsOneWidget);
+
+        final profileNav = find.byTooltip('User');
+
+        await tester.tap(profileNav);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UserPage), findsOneWidget);
+
+        var userTile = find.byType(ListTile).at(0);
+        var updatePassButton = find.byType(ElevatedButton).at(0);
+        var logoutButton = find.byType(ElevatedButton).at(1);
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.byType(UpdatePassword), findsOneWidget);
+
+        var oldPassField = find.byType(TextFormField).at(0);
+        var newPassField = find.byType(TextFormField).at(1);
+        var repeatPassField = find.byType(TextFormField).at(2);
+        updatePassButton = find.byType(ElevatedButton).at(0);
+
+        await tester.enterText(oldPassField, '1234');
+        await tester.enterText(newPassField, '1234');
+        await tester.enterText(repeatPassField, '1234');
+        await tester.pump(Duration(seconds: 2));
+
+        await tester.tap(updatePassButton);
+        await tester.pump(Duration(seconds: 2));
+
+        expect(find.text('Password updated'), findsWidgets);
       });
     });
   });
