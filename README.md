@@ -40,6 +40,18 @@ Installation guide: https://phoenixnap.com/kb/install-node-js-npm-on-windows
 
 - Once done, you can now press ```Fn + F5``` on any of the ```.dart``` files under the ```lib``` directory to build and run the project.
 
+## Integration Testing
+
+Test cases in widget_test.dart are all successful locally
+
+<p float="left">
+  <img src="/screenshots/tests%20(1).png" width="40%" />
+</p>
+
+For a copy of my version of my database on the state of the testing, mongodump is in Project23 folder on root
+
+- For restoring mongodb database, see https://www.mongodb.com/docs/database-tools/mongorestore/
+
 ## Common Problems
 
 ### MongoDB - ```MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017``` upon npm start on db directory
