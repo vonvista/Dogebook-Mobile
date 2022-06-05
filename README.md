@@ -42,7 +42,7 @@ Installation guide: https://phoenixnap.com/kb/install-node-js-npm-on-windows
 
 ## Integration Testing
 
-Test cases in widget_test.dart are all successful locally
+Test cases in widget_test.dart are all successful locally, please look at NOTE on the file before running tests
 
 <p float="left">
   <img src="/screenshots/tests%20(1).png" width="40%" />
